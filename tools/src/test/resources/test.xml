@@ -1,0 +1,53 @@
+
+  <?xml version="1.0" encoding="UTF-8"?>
+
+  	<configuration>
+			<building >
+	<bigtower><class>name.herve.sltd.engine.buildings.Tower</class	>
+		<metal_cost>1500</metal_cost>
+		<!-- yeah !  -->
+		<reload_time>
+		300
+		</reload_time><shot>
+			<damage>25</damage>
+			<range>7.0
+			</range>
+			<speed>50.0</speed>
+		</shot>
+	</bigtower>
+	<tower>
+		<class>name.herve.sltd.engine.buildings.Tower</ class>
+		<metal_cost>1000</metal_cost>
+		<reload_time>		300</reload_time>			
+		<shot>
+		<!-- </shot> -->
+			<	damage>10</damage>
+<range>5.0</range>
+			<speed>50.0</speed>
+		</shot>
+	</tower>  
+</building>
+<unit>
+	<bigtank>
+		<acceleration>1.0</acceleration>
+		<build_time>3000</build_time>
+		<class>name.herve.sltd.engine.units.Tank</class>
+		< max_armor> 300 </max_armor>
+		<metal_cost >200</metal_cost	>
+		<	score_value	>1</	score_value>
+		<speed	>3.0</   speed >
+	</bigtank>
+	<tank>
+		<acceleration>6.0  </acceleration>
+		<build_time>1000</build_time>
+		<class>name.herve.sltd.engine.units.Tank</class>
+		<max_armor>100</max_armor>
+		<metal_cost>         100  </metal_cost>
+		<score_value>1</score_value>
+		<speed>6.0</speed>
+		
+		
+		
+	</tank>
+</unit>
+</configuration>

@@ -1,1 +1,4 @@
 target/
+/resources
+/maven.txt
+/todo.txt

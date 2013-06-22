@@ -1,0 +1,55 @@
+Board board = boardFactory.getCustomBoard();
+
+# testGamePath(10);
+Dijkstra list : 15002 / 14920 / 14930
+Dijkstra heap : 11902 / 11850 / 11860
+AStar    list :  7313 /  7280 /  7280
+AStar    heap :  6137 /  6090 /  6110
+AStar2   list :  1414 /  1390 /  1400
+AStar2   heap :   445 /   440 /   440
+
+# testGamePath(100) AStar2   heap
+float : 3620 / 3480 / 3570
+int   : 
+
+
+# ---------------------------- OLD STUFF ------------------------------------------
+
+
+
+# Time [init+game+nocache] (10)
+Dijkstra - MySortedLinkedList : 15129 / 15060 / 15070
+Dijkstra - MySortedBinaryHeap : 14223 / 14180 / 14180
+AStar    - MySortedBinaryHeap : 8283 / 8230 / 8230
+AStar    - MySortedLinkedList : 7719 / 7680 / 7690
+AStar2                        : 7705 / 7650 / 7670
+                                7478 / 7450 / 7450
+
+# Dijkstra --------------------------
+Time [init]         (10000) : 5768 / 5500 / 5690
+Time [init+all]        (10) : 8508 / 8460 / 8470
+Time [init+all+cache] (100) : 2512 / 2320 / 2470
+Time [init+all+nocache] (1) : 28373 / 28260 / 28280
+
+init  :   0,57 ms
+all   : 850,00 ms
+cache :  16,66 ms
+
+# Float cost
+Time [init+all] (10) : 9173 / 9120 / 9120
+
+# Diagonal
+Time [init+all]        (10) : 13020 / 12960 / 12960
+Time [init+all]        (10) : 12953 / 12880 / 12880
+Time [init+all+mylist] (10) : 13891 / 13810 / 13820
+
+# Game path only
+Time [init+game]        (100) : 3737 / 3680 / 3700
+Time [init+game+nocache] (10) : 12549 / 12450 / 12470
+
+
+
+# AStar --------------------------
+Time [init+game+nocache]        (10) : 4200 / 4180 / 4190
+Time [init+game+nocache+mylist] (10) : 7534 / 7490 / 7500
+

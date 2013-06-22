@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+<name>0001.png</name>
+<meta>
+<pixelSizeX>1</pixelSizeX>
+<pixelSizeY>1</pixelSizeY>
+<pixelSizeZ>1</pixelSizeZ>
+<timeInterval>1</timeInterval>
+<channelName0>ch 0</channelName0>
+<channelName1>ch 1</channelName1>
+<channelName2>ch 2</channelName2>
+<channelName3>ch 3</channelName3>
+</meta>
+<rois/>
+</root>
