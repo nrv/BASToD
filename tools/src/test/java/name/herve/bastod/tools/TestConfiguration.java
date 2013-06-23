@@ -23,6 +23,9 @@ import java.io.File;
 import name.herve.bastod.tools.SLTDException;
 import name.herve.bastod.tools.conf.Configuration;
 
+/**
+ * @author Nicolas HERVE - n.herve@laposte.net
+ */
 public class TestConfiguration {
 
 	/**

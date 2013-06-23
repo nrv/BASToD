@@ -18,25 +18,51 @@
  */
 package name.herve.bastod.tools;
 
-import name.herve.bastod.tools.math.Vector;
+import java.awt.Color;
+import java.awt.geom.Point2D;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class TestVector {
+public class Ball {
+	private int id;
+	private Point2D position;
+	private Point2D speed;
+	private Color color;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Vector v1 = new Vector();
-		Vector v2 = new Vector();
-		
-		for (int i = 0; i <= 360; i++) {
-			Vector v2p = v2.copy().rotateRad(2 * Math.PI * i / 360);
-			System.out.println(i + " -> " + v2p + " / " + v1.angleRad(v2p) / Math.PI);
-		}
-
+	public Ball() {
+		super();
 	}
 
+	public Color getColor() {
+		return color;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Point2D getPosition() {
+		return position;
+	}
+
+	public Point2D getSpeed() {
+		return speed;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setPosition(Point2D position) {
+		this.position = position;
+	}
+
+	public void setSpeed(Point2D speed) {
+		this.speed = speed;
+	}
 }
