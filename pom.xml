@@ -3,19 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>name.herve</groupId>
 	<artifactId>bastod</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>BASToD</name>
 	<description>Balanced Annihilation Style TOwer Defense</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-<!-- 	<repositories> -->
-<!-- 		<repository> -->
-<!-- 			<id>externallibs</id> -->
-<!-- 			<url>file://${project.basedir}/externallibs</url> -->
-<!-- 		</repository> -->
-<!-- 	</repositories> -->
 	<build>
 		<plugins>
 			<plugin>
@@ -47,9 +41,9 @@
 		<url>https://github.com/nrv/BASToD</url>
 	</scm>
 	<modules>
-		<module>engine</module>
-		<module>tools</module>
-		<module>guifwk</module>
-		<module>client</module>
+		<module>bastod-engine</module>
+		<module>game-tools</module>
+		<module>game-guifwk</module>
+		<module>bastod-client</module>
 	</modules>
 </project>

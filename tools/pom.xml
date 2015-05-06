@@ -4,10 +4,10 @@
 	<parent>
 		<artifactId>bastod</artifactId>
 		<groupId>name.herve</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<artifactId>tools</artifactId>
+	<artifactId>game-tools</artifactId>
 	<repositories>
 		<repository>
 			<id>externallibs</id>
