@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -49,7 +49,7 @@ public abstract class Configuration {
 		w.write(cs);
 	}
 
-	public static void dump(Configuration c, String comment, File file) throws SLTDException {
+	public static void dump(Configuration c, String comment, File file) throws GameException {
 		DateFormat df = new SimpleDateFormat("EEEEE d MMMMM yyyy 'at' HH:mm:ss", Locale.US);
 		BufferedWriter w = null;
 		try {
@@ -111,7 +111,7 @@ public abstract class Configuration {
 			}
 
 		} catch (IOException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		} finally {
 			if (w != null) {
 				try {
@@ -122,11 +122,11 @@ public abstract class Configuration {
 		}
 	}
 
-	public static Configuration load(String f) throws SLTDException {
+	public static Configuration load(String f) throws GameException {
 		URL url = Configuration.class.getClassLoader().getResource(f);
 
 		if (url == null) {
-			throw new SLTDException("Unable to find configuration file '" + f + "'");
+			throw new GameException("Unable to find configuration file '" + f + "'");
 		}
 
 		try {
@@ -137,19 +137,19 @@ public abstract class Configuration {
 				return new PropertiesConfiguration(file);
 			}
 		} catch (URISyntaxException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		}
 	}
 
 	private File f;
 
-	public Configuration(File f) throws SLTDException {
+	public Configuration(File f) throws GameException {
 		super();
 		this.f = f;
 		load();
 	}
 
-	public boolean getBoolean(String key) throws SLTDException {
+	public boolean getBoolean(String key) throws GameException {
 		return Boolean.parseBoolean(getString(key));
 	}
 
@@ -157,29 +157,29 @@ public abstract class Configuration {
 		return f;
 	}
 
-	public float getFloat(String key) throws SLTDException {
+	public float getFloat(String key) throws GameException {
 		try {
 			return Float.parseFloat(getString(key));
 		} catch (NumberFormatException e) {
-			throw new SLTDException("Property " + key + " in " + getFile() + " is not a valid float : " + e.getMessage());
+			throw new GameException("Property " + key + " in " + getFile() + " is not a valid float : " + e.getMessage());
 		}
 	}
 
-	public int getInt(String key) throws SLTDException {
+	public int getInt(String key) throws GameException {
 		try {
 			return Integer.parseInt(getString(key));
 		} catch (NumberFormatException e) {
-			throw new SLTDException("Property " + key + " in " + getFile() + " is not a valid int : " + e.getMessage());
+			throw new GameException("Property " + key + " in " + getFile() + " is not a valid int : " + e.getMessage());
 		}
 	}
 
 	public abstract Set<String> getKeys();
 
-	public long getLong(String key) throws SLTDException {
+	public long getLong(String key) throws GameException {
 		try {
 			return Long.parseLong(getString(key));
 		} catch (NumberFormatException e) {
-			throw new SLTDException("Property " + key + " in " + getFile() + " is not a valid long : " + e.getMessage());
+			throw new GameException("Property " + key + " in " + getFile() + " is not a valid long : " + e.getMessage());
 		}
 	}
 
@@ -187,7 +187,7 @@ public abstract class Configuration {
 		return new TreeSet<String>(getKeys());
 	}
 
-	public abstract String getString(String key) throws SLTDException;
+	public abstract String getString(String key) throws GameException;
 
-	protected abstract void load() throws SLTDException;
+	protected abstract void load() throws GameException;
 }

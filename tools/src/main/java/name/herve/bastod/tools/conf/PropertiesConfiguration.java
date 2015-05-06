@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -33,27 +33,27 @@ import name.herve.bastod.tools.SLTDException;
 public class PropertiesConfiguration extends Configuration {
 	private Properties props;
 
-	public PropertiesConfiguration(File f) throws SLTDException {
+	public PropertiesConfiguration(File f) throws GameException {
 		super(f);
 	}
 	
-	public String getString(String key) throws SLTDException {
+	public String getString(String key) throws GameException {
 		String p = props.getProperty(key);
 		if (p == null) {
-			throw new SLTDException("Property " + key + " not found in " + getFile());
+			throw new GameException("Property " + key + " not found in " + getFile());
 		}
 		return p;
 	}
 
 	@Override
-	protected void load() throws SLTDException {
+	protected void load() throws GameException {
 		props = new Properties();
 		try {
 			props.load(new FileInputStream(getFile()));
 		} catch (FileNotFoundException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		} catch (IOException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		}
 	}
 

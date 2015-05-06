@@ -21,7 +21,7 @@ package name.herve.bastod.engine.improvements;
 import name.herve.bastod.engine.Engine;
 import name.herve.bastod.engine.Improvement;
 import name.herve.bastod.engine.Player;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.math.Vector;
 
@@ -32,7 +32,7 @@ public class IncreaseSpeedImprovement extends Improvement {
 	private int cost;
 	private float factor;
 
-	public IncreaseSpeedImprovement(Configuration conf) throws SLTDException {
+	public IncreaseSpeedImprovement(Configuration conf) throws GameException {
 		super(conf);
 		
 		cost = conf.getInt(Engine.CF_IMP_INCREASE_SPEED_COST_I);

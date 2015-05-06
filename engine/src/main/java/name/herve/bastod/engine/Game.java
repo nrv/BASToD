@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.conf.PropertiesConfiguration;
 import name.herve.bastod.tools.math.Dimension;
@@ -58,7 +58,7 @@ public class Game {
 	private List<Shot> shots;
 	private Type type;
 
-	public Game(Type type, Configuration conf) throws SLTDException {
+	public Game(Type type, Configuration conf) throws GameException {
 		super();
 
 		this.conf = conf;

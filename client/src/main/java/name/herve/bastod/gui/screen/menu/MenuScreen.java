@@ -39,7 +39,7 @@ import name.herve.bastod.guifwk.GUIEvent;
 import name.herve.bastod.guifwk.buttons.GUIButtonListener;
 import name.herve.bastod.guifwk.buttons.SelectorButton;
 import name.herve.bastod.guifwk.buttons.TextButton;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 
 import com.badlogic.gdx.Gdx;
@@ -99,7 +99,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 				engine.setGame(game);
 				GameScreen gs = new GameScreen(getGameApplication(), engine);
 				setChangeScreenOnNextRender(gs);
-			} catch (SLTDException e) {
+			} catch (GameException e) {
 				Gdx.app.error("conf", e.getMessage());
 				Gdx.app.exit();
 			}
@@ -155,7 +155,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 			msb = new SelectorButton<String>("MapSelectorButton", "Choose a map : ", maps, (w - 160) / 2, h / 2 - 50);
 			msb.start();
 			components.add(msb);
-		} catch (SLTDException e) {
+		} catch (GameException e) {
 			Gdx.app.error("maps", e.getMessage());
 			Gdx.app.exit();
 		}

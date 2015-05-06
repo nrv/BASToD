@@ -21,21 +21,21 @@ package name.herve.bastod.tools;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class SLTDException extends Exception {
+public class GameException extends Exception {
 	private static final long serialVersionUID = 3439790964311008334L;
 
-	public SLTDException() {
+	public GameException() {
 	}
 
-	public SLTDException(String message) {
+	public GameException(String message) {
 		super(message);
 	}
 
-	public SLTDException(Throwable cause) {
+	public GameException(Throwable cause) {
 		super(cause);
 	}
 
-	public SLTDException(String message, Throwable cause) {
+	public GameException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

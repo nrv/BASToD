@@ -30,7 +30,7 @@ import name.herve.bastod.engine.Game.Type;
 import name.herve.bastod.engine.pathfinder.PathFinder;
 import name.herve.bastod.engine.pathfinder.PathFinder.Algorithm;
 import name.herve.bastod.engine.units.Blocking;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.graph.Path;
 import name.herve.bastod.tools.math.Dimension;
@@ -208,7 +208,7 @@ public class TestPathFinderPerf {
 		}
 	}
 
-	public static void main(String[] args) throws SLTDException {
+	public static void main(String[] args) throws GameException {
 		TestPathFinderPerf test = new TestPathFinderPerf();
 
 		Configuration gconf = Configuration.load(Type.TWO_PLAYERS.getFile());

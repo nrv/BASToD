@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -39,7 +39,7 @@ public class XMLConfiguration extends Configuration {
 
 	private Map<String, String> props;
 
-	public XMLConfiguration(File f) throws SLTDException {
+	public XMLConfiguration(File f) throws GameException {
 		super(f);
 	}
 
@@ -49,13 +49,13 @@ public class XMLConfiguration extends Configuration {
 	}
 
 	@Override
-	public String getString(String key) throws SLTDException {
+	public String getString(String key) throws GameException {
 		return props.get(key);
 	}
 
 	// Nasty but it works !
 	@Override
-	protected void load() throws SLTDException {
+	protected void load() throws GameException {
 		props = new HashMap<String, String>();
 
 		BufferedReader r = null;
@@ -82,7 +82,7 @@ public class XMLConfiguration extends Configuration {
 
 				if (c == '<') {
 					if (insideOpeningTag || insideClosingTag) {
-						throw new SLTDException("Invalid XML, found a '<' inside a tag");
+						throw new GameException("Invalid XML, found a '<' inside a tag");
 					}
 					if (!insideComment && !insideHeader) {
 						if (idx + 1 < sb.length()) {
@@ -101,21 +101,21 @@ public class XMLConfiguration extends Configuration {
 										idx += 3;
 									}
 								} else {
-									throw new SLTDException("Invalid XML, found a '<!' in last position");
+									throw new GameException("Invalid XML, found a '<!' in last position");
 								}
 							} else {
 								insideOpeningTag = true;
 								currentTag = new StringBuilder();
 							}
 						} else {
-							throw new SLTDException("Invalid XML, found a '<' in last position");
+							throw new GameException("Invalid XML, found a '<' in last position");
 						}
 					}
 				} else if (c == '>') {
 					if (insideOpeningTag) {
 						String tag = currentTag.toString().trim();
 						if (currentKey.isEmpty() && !ROOT_NODE.equalsIgnoreCase(tag)) {
-							throw new SLTDException("Invalid XML, first tag '" + ROOT_NODE + "' expected");
+							throw new GameException("Invalid XML, first tag '" + ROOT_NODE + "' expected");
 						}
 						currentKey.addLast(tag);
 						insideOpeningTag = false;
@@ -125,7 +125,7 @@ public class XMLConfiguration extends Configuration {
 						String val = currentValue.toString().trim();
 
 						if (!tag.equalsIgnoreCase(currentKey.getLast())) {
-							throw new SLTDException("Invalid XML, found closing tag '" + tag + "' where '" + currentKey.getLast() + "' was expected");
+							throw new GameException("Invalid XML, found closing tag '" + tag + "' where '" + currentKey.getLast() + "' was expected");
 						}
 
 						if (val.length() > 0) {
@@ -153,7 +153,7 @@ public class XMLConfiguration extends Configuration {
 							insideHeader = false;
 						}
 					} else {
-						throw new SLTDException("Invalid XML, found a '>' without corresponding '<'");
+						throw new GameException("Invalid XML, found a '>' without corresponding '<'");
 					}
 				} else {
 					if (insideOpeningTag || insideClosingTag) {
@@ -167,11 +167,11 @@ public class XMLConfiguration extends Configuration {
 			}
 
 			if (insideOpeningTag || insideClosingTag || insideComment || insideHeader || currentKey.size() > 0) {
-				throw new SLTDException("Invalid XML, everything is not closed properly");
+				throw new GameException("Invalid XML, everything is not closed properly");
 			}
 
 		} catch (IOException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		} finally {
 			try {
 				if (r != null) {

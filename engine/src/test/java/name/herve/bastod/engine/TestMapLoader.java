@@ -19,14 +19,14 @@
 package name.herve.bastod.engine;
 
 import name.herve.bastod.engine.BoardFactory;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class TestMapLoader {
 
-	public static void main(String[] args) throws SLTDException {
+	public static void main(String[] args) throws GameException {
 		BoardFactory factory = new BoardFactory();
 
 		for (String name : factory.getAvailableMaps(true)) {

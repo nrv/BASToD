@@ -22,7 +22,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.conf.PropertiesConfiguration;
 

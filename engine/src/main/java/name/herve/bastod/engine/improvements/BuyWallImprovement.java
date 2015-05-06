@@ -23,7 +23,7 @@ import name.herve.bastod.engine.Improvement;
 import name.herve.bastod.engine.Player;
 import name.herve.bastod.engine.buildings.Wall;
 import name.herve.bastod.engine.units.Blocking;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.math.Vector;
 
@@ -33,7 +33,7 @@ import name.herve.bastod.tools.math.Vector;
 public class BuyWallImprovement extends Improvement {
 	private int cost;
 
-	public BuyWallImprovement(Configuration conf) throws SLTDException {
+	public BuyWallImprovement(Configuration conf) throws GameException {
 		super(conf);
 		
 		cost = conf.getInt(Engine.CF_WALL_METAL_COST_I);

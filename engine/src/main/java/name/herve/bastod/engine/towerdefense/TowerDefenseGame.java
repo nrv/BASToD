@@ -29,7 +29,7 @@ import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.PlayerAction.Action;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.bastod.tools.Constants;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 
 /**
@@ -48,7 +48,7 @@ public class TowerDefenseGame implements PlayerActionsProvider {
 	private float difficulty;
 	private int n;
 
-	public TowerDefenseGame(Player me, Game game) throws SLTDException {
+	public TowerDefenseGame(Player me, Game game) throws GameException {
 		super();
 		this.game = game;
 		this.me = me;

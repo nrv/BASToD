@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 import name.herve.bastod.engine.buildings.Wall;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.math.Dimension;
 import name.herve.bastod.tools.math.Vector;
 
@@ -68,15 +68,15 @@ public class BoardFactory {
 		board.addUnit(wall);
 	}
 
-	private Board createBoard() throws SLTDException {
+	private Board createBoard() throws GameException {
 		return new Board(new Dimension(Engine.GRID_WIDTH, Engine.GRID_HEIGHT), Engine._SQUARE_SIZE);
 	}
 
-	public List<String> getAvailableMaps(boolean full) throws SLTDException {
+	public List<String> getAvailableMaps(boolean full) throws GameException {
 		URL url = GameFactory.class.getClassLoader().getResource(MAP_DIR);
 
 		if (url == null) {
-			throw new SLTDException("Unable to find maps directory '" + MAP_DIR + "'");
+			throw new GameException("Unable to find maps directory '" + MAP_DIR + "'");
 		}
 
 		List<String> ret = new ArrayList<String>();
@@ -97,11 +97,11 @@ public class BoardFactory {
 			ret.addAll(Arrays.asList(files));
 			return ret;
 		} catch (URISyntaxException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		}
 	}
 
-	public Board getCustomBoard() throws SLTDException {
+	public Board getCustomBoard() throws GameException {
 		Board board = getEmptyBoard();
 
 		int bw = board.getGridDimension().getW();
@@ -141,7 +141,7 @@ public class BoardFactory {
 		return board;
 	}
 
-	public Board getEmptyBoard() throws SLTDException {
+	public Board getEmptyBoard() throws GameException {
 		Board board = createBoard();
 
 		setDefaultStartPositions(board);
@@ -152,7 +152,7 @@ public class BoardFactory {
 		return board;
 	}
 
-	public Board getRandomBoard() throws SLTDException {
+	public Board getRandomBoard() throws GameException {
 		Board board = getEmptyBoard();
 
 		Random rd = new Random(seed);
@@ -171,7 +171,7 @@ public class BoardFactory {
 		return board;
 	}
 
-	public Board loadMap(String name) throws SLTDException {
+	public Board loadMap(String name) throws GameException {
 		// System.out.println("loadMap : " + name);
 
 		if (name.equals("* Empty")) {
@@ -197,7 +197,7 @@ public class BoardFactory {
 			fileName += MAP_EXT;
 			url = GameFactory.class.getClassLoader().getResource(fileName);
 			if (url == null) {
-				throw new SLTDException("Unable to find map file '" + fileName + "'");
+				throw new GameException("Unable to find map file '" + fileName + "'");
 			}
 		}
 
@@ -206,9 +206,9 @@ public class BoardFactory {
 		try {
 			reader = new BufferedReader(new FileReader(new File(url.toURI())));
 		} catch (URISyntaxException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		} catch (FileNotFoundException e) {
-			throw new SLTDException(e);
+			throw new GameException(e);
 		}
 
 		int mw, mh;
@@ -218,11 +218,11 @@ public class BoardFactory {
 		try {
 			line = reader.readLine();
 		} catch (IOException e1) {
-			throw new SLTDException(e1);
+			throw new GameException(e1);
 		}
 
 		if (line == null) {
-			throw new SLTDException("First line of '" + fileName + "' missing");
+			throw new GameException("First line of '" + fileName + "' missing");
 		}
 
 		String[] l = line.split(",");
@@ -230,36 +230,36 @@ public class BoardFactory {
 		try {
 			mw = Integer.parseInt(l[0].trim());
 		} catch (NumberFormatException e) {
-			throw new SLTDException("First line of '" + fileName + "' must contains the width of the map");
+			throw new GameException("First line of '" + fileName + "' must contains the width of the map");
 		}
 
 		try {
 			line = reader.readLine();
 		} catch (IOException e1) {
-			throw new SLTDException(e1);
+			throw new GameException(e1);
 		}
 
 		if (line == null) {
-			throw new SLTDException("Second line of '" + fileName + "' missing");
+			throw new GameException("Second line of '" + fileName + "' missing");
 		}
 
 		l = line.split(",");
 		try {
 			mh = Integer.parseInt(l[0].trim());
 		} catch (NumberFormatException e) {
-			throw new SLTDException("Second line of '" + fileName + "' must contains the height of the map");
+			throw new GameException("Second line of '" + fileName + "' must contains the height of the map");
 		}
 
 		System.out.println("    - map dim  : [" + mw + ", " + mh + "]");
 
 		int xOffset = (board.getGridDimension().getW() - mw) / 2;
 		if (xOffset < 0) {
-			throw new SLTDException("In '" + fileName + "' - Map width is too big : " + mw + " > " + board.getGridDimension().getW());
+			throw new GameException("In '" + fileName + "' - Map width is too big : " + mw + " > " + board.getGridDimension().getW());
 		}
 
 		int yOffset = (board.getGridDimension().getH() - mh) / 2;
 		if (yOffset < 0) {
-			throw new SLTDException("In '" + fileName + "' - Map height is too big : " + mh + " > " + board.getGridDimension().getH());
+			throw new GameException("In '" + fileName + "' - Map height is too big : " + mh + " > " + board.getGridDimension().getH());
 		}
 
 		System.out.println("    - xOffset = " + xOffset + ", yOffset = " + yOffset);
@@ -268,11 +268,11 @@ public class BoardFactory {
 			try {
 				line = reader.readLine();
 			} catch (IOException e) {
-				throw new SLTDException(e);
+				throw new GameException(e);
 			}
 
 			if (line == null) {
-				throw new SLTDException("In '" + fileName + "' - Map line " + (y + 1) + " is missing");
+				throw new GameException("In '" + fileName + "' - Map line " + (y + 1) + " is missing");
 			}
 
 			l = line.split(",");
@@ -288,12 +288,12 @@ public class BoardFactory {
 					addWall(board, currentPosition);
 				} else if (MAP_S1.equalsIgnoreCase(l[x])) {
 					if (board.getStartPosition(0) != null) {
-						throw new SLTDException("In '" + fileName + "' - Start position for player 1 is defined several times !");
+						throw new GameException("In '" + fileName + "' - Start position for player 1 is defined several times !");
 					}
 					board.setStartPosition(0, currentPosition);
 				} else if (MAP_S2.equalsIgnoreCase(l[x])) {
 					if (board.getStartPosition(1) != null) {
-						throw new SLTDException("In '" + fileName + "' - Start position for player 2 is defined several times !");
+						throw new GameException("In '" + fileName + "' - Start position for player 2 is defined several times !");
 					}
 					board.setStartPosition(1, currentPosition);
 				} else if (MAP_E1.equalsIgnoreCase(l[x])) {
@@ -313,12 +313,12 @@ public class BoardFactory {
 		}
 
 		if (board.getNbStartPositions() < 2) {
-			throw new SLTDException("In '" + fileName + "' - Not enough start positions : " + board.getNbStartPositions());
+			throw new GameException("In '" + fileName + "' - Not enough start positions : " + board.getNbStartPositions());
 		}
 
 		for (int i = 0; i < board.getNbStartPositions(); i++) {
 			if (board.getEndPositions(i) == null) {
-				throw new SLTDException("In '" + fileName + "' - No end position for player " + (i + 1));
+				throw new GameException("In '" + fileName + "' - No end position for player " + (i + 1));
 			}
 		}
 

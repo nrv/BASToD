@@ -22,14 +22,14 @@ import name.herve.bastod.engine.Game;
 import name.herve.bastod.engine.GameFactory;
 import name.herve.bastod.engine.Game.Type;
 import name.herve.bastod.engine.simulator.Simulator;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class TestEngine {
-	public static void main(String[] args) throws SLTDException {
+	public static void main(String[] args) throws GameException {
 		Configuration gconf = Configuration.load(Type.TWO_PLAYERS.getFile());
 		long seed = 1864750354l;
 		

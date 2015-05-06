@@ -24,7 +24,7 @@ import name.herve.bastod.engine.Player;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.bastod.engine.players.ComputerPlayer;
 import name.herve.bastod.engine.units.Blocking;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.conf.PropertiesConfiguration;
 import name.herve.bastod.tools.math.Vector;
@@ -40,7 +40,7 @@ public class BuyFactoryImprovement extends Improvement {
 	private float tankSpeedOnGrid;
 	private float tankAccelerationOnGrid;
 
-	public BuyFactoryImprovement(Configuration conf) throws SLTDException {
+	public BuyFactoryImprovement(Configuration conf) throws GameException {
 		super(conf);
 		
 		tankBuildTimeMilli = conf.getInt(Engine.CF_TANK_BUILD_TIME_MILLI_I);

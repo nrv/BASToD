@@ -23,7 +23,7 @@ import name.herve.bastod.engine.Improvement;
 import name.herve.bastod.engine.Player;
 import name.herve.bastod.engine.buildings.Tower;
 import name.herve.bastod.engine.units.Blocking;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.math.Vector;
 
@@ -38,7 +38,7 @@ public class BuyTowerImprovement extends Improvement {
 	private float towerShotSpeed;
 	
 
-	public BuyTowerImprovement(Configuration conf) throws SLTDException {
+	public BuyTowerImprovement(Configuration conf) throws GameException {
 		super(conf);
 		
 		towerMetalCost = conf.getInt(Engine.CF_TOWER_METAL_COST_I);

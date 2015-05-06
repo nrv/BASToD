@@ -32,7 +32,7 @@ import name.herve.bastod.engine.improvements.IncreaseSpeedImprovement;
 import name.herve.bastod.engine.improvements.MoreMetalImprovement;
 import name.herve.bastod.engine.players.ComputerPlayer;
 import name.herve.bastod.engine.towerdefense.TowerDefenseGame;
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 import name.herve.bastod.tools.math.Vector;
 
@@ -40,7 +40,7 @@ import name.herve.bastod.tools.math.Vector;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class GameFactory {
-	private static void initImprovements(Game game) throws SLTDException {
+	private static void initImprovements(Game game) throws GameException {
 		game.addAvailableImprovement(new BuyTowerImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyWallImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyFactoryImprovement(game.getConf()));
@@ -48,7 +48,7 @@ public class GameFactory {
 		game.addAvailableImprovement(new IncreaseSpeedImprovement(game.getConf()));
 	}
 
-	public static Game createGame(Type type, Configuration conf, Player[] players, Board board) throws SLTDException {
+	public static Game createGame(Type type, Configuration conf, Player[] players, Board board) throws GameException {
 		Game game = new Game(type, conf);
 
 		initImprovements(game);
@@ -116,7 +116,7 @@ public class GameFactory {
 		return game;
 	}
 
-	public static Game createGame(Type type, Configuration conf, long seed) throws SLTDException {
+	public static Game createGame(Type type, Configuration conf, long seed) throws GameException {
 		Player[] players = new Player[2];
 
 		for (int i = 0; i < 2; i++) {

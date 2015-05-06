@@ -20,7 +20,7 @@ package name.herve.bastod.tools;
 
 import java.io.File;
 
-import name.herve.bastod.tools.SLTDException;
+import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 
 /**
@@ -40,7 +40,7 @@ public class TestConfiguration {
 			Configuration c2 = Configuration.load("test.xml");
 			Configuration.dump(c2, "Dump test in xml format", new File("test_result2.xml"));
 			Configuration.dump(c2, "Dump test in properties format", new File("test_result2.conf"));
-		} catch (SLTDException e) {
+		} catch (GameException e) {
 			e.printStackTrace();
 		}
 
