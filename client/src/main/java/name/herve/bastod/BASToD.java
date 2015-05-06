@@ -85,8 +85,8 @@ public class BASToD extends AbstractGame {
 		r.addTexture("factory-red", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/factory/red/" + blender.format(0) + ".png")));
 		r.addTexture("factory-blue", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/factory/blue/" + blender.format(0) + ".png")));
 
-		r.addTexture("target-red", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/target/red/" + blender.format(0) + ".png")));
-		r.addTexture("target-blue", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/target/blue/" + blender.format(0) + ".png")));
+		r.addTexture("target-red", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/target0/red/" + blender.format(0) + ".png")));
+		r.addTexture("target-blue", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/target0/blue/" + blender.format(0) + ".png")));
 
 		r.addTexture("wall", new Texture(Gdx.files.internal(sqs + "/3d/" + set + "/" + view + "/wall/" + blender.format(0) + ".png")));
 
