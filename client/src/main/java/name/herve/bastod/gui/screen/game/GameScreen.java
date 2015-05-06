@@ -420,11 +420,11 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	@Override
-	public boolean touchMoved(int x, int y) {
+	public boolean mouseMoved(int x, int y) {
 		cx = x;
 		cy = y;
 
-		return playerManager.touchMoved(x, y);
+		return playerManager.mouseMoved(x, y);
 	}
 
 }

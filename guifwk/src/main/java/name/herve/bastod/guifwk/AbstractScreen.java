@@ -1,18 +1,18 @@
 /*
  * Copyright 2012, 2013 Nicolas HERVE
- * 
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,7 @@ package name.herve.bastod.guifwk;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -49,7 +49,7 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 	public void batchBegin() {
 		super.batchBegin(cameraCombined());
 	}
-	
+
 	protected Matrix4 cameraCombined() {
 		return camera.combined;
 	}
@@ -89,7 +89,7 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 	@Override
 	public void hide() {
 	}
-	
+
 	public boolean isCached() {
 		return getCacheName() != null;
 	}
@@ -114,18 +114,23 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 	}
 
 	@Override
+	public boolean mouseMoved(int arg0, int arg1) {
+		return false;
+	}
+
+	@Override
 	public void pause() {
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
-		
+
 		renderFrame(delta);
-		
+
 		if (isChangeScreenOnNextRender()) {
 			if (nextScreenInCache != null) {
 				getGameApplication().setScreen(nextScreenInCache);
@@ -134,22 +139,22 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 			}
 		}
 	}
-	
+
 	public abstract void renderFrame(float delta);
 
 	@Override
 	public void resize(int w, int h) {
 		this.screenWidth = w;
 		this.screenHeight = h;
-		
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, screenWidth, screenHeight);
 	}
-	
+
 	@Override
 	public void resume() {
 	}
-	
+
 	@Override
 	public boolean scrolled(int arg0) {
 		return false;
@@ -159,16 +164,16 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 		this.cacheName = cacheName;
 	}
 
-	public void setChangeScreenOnNextRender(String nextScreenInCache) {
-		this.changeScreenOnNextRender = true;
-		this.nextScreenInCache = nextScreenInCache;
-		this.nextScreen = null;
-	}
-	
 	public void setChangeScreenOnNextRender(AbstractScreen nextScreen) {
 		this.changeScreenOnNextRender = true;
 		this.nextScreenInCache = null;
 		this.nextScreen = nextScreen;
+	}
+
+	public void setChangeScreenOnNextRender(String nextScreenInCache) {
+		this.changeScreenOnNextRender = true;
+		this.nextScreenInCache = nextScreenInCache;
+		this.nextScreen = null;
 	}
 
 	@Override
@@ -187,15 +192,10 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 	}
 
 	@Override
-	public boolean touchMoved(int x, int y) {
-		return false;
-	}
-
-	@Override
 	public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
 		return false;
 	}
-	
+
 	public void unsetChangeScreenOnNextRender() {
 		changeScreenOnNextRender = false;
 	}

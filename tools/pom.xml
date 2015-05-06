@@ -8,6 +8,12 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>tools</artifactId>
+	<repositories>
+		<repository>
+			<id>externallibs</id>
+			<url>file://${project.basedir}/externallibs</url>
+		</repository>
+	</repositories>	
 	<dependencies>
 		<dependency>
 			<groupId>com.captiveimagination</groupId>

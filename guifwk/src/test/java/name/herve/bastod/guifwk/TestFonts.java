@@ -24,19 +24,24 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.stbtt.TrueTypeFontFactory;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class TestFonts implements ApplicationListener {
 
-	public void test(float f1, float f2, float f3, float f4, float f5) {
-		BitmapFont font = TrueTypeFontFactory.createBitmapFont(Gdx.files.internal("font/arial.ttf"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", f1, f2, f3, f4, f5);
-
-		TextBounds b = font.getBounds("NICOLAS");
+	public void test(int size) {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/arial.ttf"));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = size;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
 		
-		System.out.println(f1 + " " + f2+ " " + f3+ " " + f4+ " " + f5+ " --> " + b.width + " " + b.height);
+		TextBounds b = font.getBounds("azertyuiopqsdfghjklmwxcvbn");
+		
+		System.out.println(size+ " --> " + b.width + " " + b.height);
 		
 		font.dispose();
 	}
@@ -46,7 +51,7 @@ public class TestFonts implements ApplicationListener {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.resizable = false;
-		cfg.useGL20 = true;
+		cfg.useGL30 = true;
 		cfg.width = 1024;
 		cfg.height = 768;
 
@@ -57,8 +62,8 @@ public class TestFonts implements ApplicationListener {
 
 	@Override
 	public void create() {
-		for (int s = 1; s < 60; s++) {
-			test(1024, 768, s, 1024, 768);
+		for (int s = 5; s < 60; s++) {
+			test(s);
 		}
 		Gdx.app.exit();
 		

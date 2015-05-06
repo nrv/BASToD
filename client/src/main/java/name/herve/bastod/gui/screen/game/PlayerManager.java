@@ -216,7 +216,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		return false;
 	}
 
-	public boolean touchMoved(int x, int y) {
+	public boolean mouseMoved(int x, int y) {
 		cx = x;
 		cy = y;
 

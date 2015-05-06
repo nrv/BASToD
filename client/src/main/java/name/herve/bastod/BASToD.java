@@ -47,7 +47,7 @@ public class BASToD extends AbstractGame {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.resizable = false;
 		cfg.title = "SLTD";
-		cfg.useGL20 = true;
+		cfg.useGL30 = true;
 		cfg.width = sltd.getW();
 		cfg.height = sltd.getH();
 

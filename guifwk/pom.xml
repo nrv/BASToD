@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>guifwk</artifactId>
 	<properties>
-		<gdx.version>0.9.5</gdx.version>
+		<gdx.version>1.4.2-SNAPSHOT</gdx.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,23 +29,20 @@
 		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-backend-lwjgl-natives</artifactId>
+			<artifactId>gdx-platform</artifactId>
+			<version>${gdx.version}</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-freetype</artifactId>
 			<version>${gdx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-natives</artifactId>
+			<artifactId>gdx-freetype-platform</artifactId>
 			<version>${gdx.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-stb-truetype-natives</artifactId>
-			<version>${gdx.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-stb-truetype</artifactId>
-			<version>${gdx.version}</version>
-		</dependency>		
+			<classifier>natives-desktop</classifier> 
+		</dependency>	
 	</dependencies>
 </project>

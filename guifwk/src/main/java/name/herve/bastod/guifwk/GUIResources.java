@@ -29,7 +29,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.stbtt.TrueTypeFontFactory;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -52,7 +53,11 @@ public class GUIResources {
 	public static final String SCORE_CHARACTERS = "0123456789-+.$";
 	
 	public static BitmapFont createFont(String file, int size, Color color) {
-		BitmapFont font = TrueTypeFontFactory.createBitmapFont(Gdx.files.internal(file), FONT_CHARACTERS, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), size, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(file));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = size;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
 		font.setColor(color);
 		font.setUseIntegerPositions(true);
 		font.setFixedWidthGlyphs(SCORE_CHARACTERS);

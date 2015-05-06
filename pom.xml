@@ -10,12 +10,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<repositories>
-		<repository>
-			<id>externallibs</id>
-			<url>file://${project.basedir}/externallibs</url>
-		</repository>
-	</repositories>
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>externallibs</id> -->
+<!-- 			<url>file://${project.basedir}/externallibs</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
 	<build>
 		<plugins>
 			<plugin>
