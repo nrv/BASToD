@@ -88,12 +88,10 @@ public class SpriteManager extends AbstractDisplayManager {
 	}
 
 	private Texture initArmorLeft(int step, Color c) {
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-
 		int sqs = engine.getGridSquareSize();
 
 		Pixmap p = new Pixmap(sqs, sqs + 4, Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		p.setColor(c);
 
 		//p.drawRectangle(0, 0, sqs, 3);
@@ -103,7 +101,6 @@ public class SpriteManager extends AbstractDisplayManager {
 
 		Texture t = new Texture(p);
 		p.dispose();
-		Pixmap.setBlending(bck);
 
 		return t;
 	}
@@ -119,10 +116,8 @@ public class SpriteManager extends AbstractDisplayManager {
 		if (!pathTextures.containsKey(m)) {
 			Dimension dimB = engine.getBoardDimension();
 
-			Blending bck = Pixmap.getBlending();
-			Pixmap.setBlending(Blending.None);
-
 			Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
+			p.setBlending(Blending.None);
 
 			Color c = Color.GREEN.cpy();
 			p.setColor(c);
@@ -142,7 +137,6 @@ public class SpriteManager extends AbstractDisplayManager {
 
 			pathTextures.put(m, new Texture(p));
 			p.dispose();
-			Pixmap.setBlending(bck);
 		}
 
 		draw(pathTextures.get(m), Engine._SP_SIDE, Engine._SP_BOTTOM);

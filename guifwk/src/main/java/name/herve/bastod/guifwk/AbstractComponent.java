@@ -18,12 +18,14 @@
  */
 package name.herve.bastod.guifwk;
 
+import java.awt.geom.Rectangle2D;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
@@ -79,24 +81,31 @@ public abstract class AbstractComponent extends AbstractDisplay implements OnScr
 		}
 	}
 
+	public Rectangle2D.Float getBounds(BitmapFont font, CharSequence cs) {
+		GlyphLayout layout = new GlyphLayout();
+		layout.setText(font, cs);
+		return new Rectangle2D.Float(0, 0, layout.width, layout.height);
+	}
+	
 	public void draw(BitmapFont font, CharSequence cs, VerticalAlignment va, HorizontalAlignment ha) {
 		float x = getX();
 		float y = getY();
 		
-		TextBounds b = font.getBounds(cs);
+		Rectangle2D.Float layout = getBounds(font, cs);
+//		TextBounds b = font.getBounds(cs);
 		
 		switch (va) {
 		case MIDDLE :
-			y += (getHeight() - b.height) / 2;
+			y += (getHeight() - layout.height) / 2;
 			break;
 		case ABOVE :
 			y += getHeight() + SMALL_SPACER;
 			break;
 		case UNDER:
-			y -= b.height + SMALL_SPACER;
+			y -= layout.height + SMALL_SPACER;
 			break;
 		case TOP:
-			y += getHeight() - b.height - SMALL_SPACER;
+			y += getHeight() - layout.height - SMALL_SPACER;
 			break;
 		case BOTTOM:
 			y += SMALL_SPACER;
@@ -105,16 +114,16 @@ public abstract class AbstractComponent extends AbstractDisplay implements OnScr
 		
 		switch (ha) {
 		case CENTER:
-			x += (getWidth() - b.width) / 2;
+			x += (getWidth() - layout.width) / 2;
 			break;
 		case LEFT_OUTISDE:
-			x -= b.width + SMALL_SPACER;
+			x -= layout.width + SMALL_SPACER;
 			break;
 		case RIGHT_OUTSIDE:
 			x += getWidth() + SMALL_SPACER;
 			break;
 		case RIGHT:
-			x += getWidth() - b.width + SMALL_SPACER;
+			x += getWidth() - layout.width + SMALL_SPACER;
 			break;
 		case LEFT:
 			x += SMALL_SPACER;
@@ -254,10 +263,11 @@ public abstract class AbstractComponent extends AbstractDisplay implements OnScr
 		lastUpdateTime = 0;
 		
 		
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
+//		Blending bck = Pixmap.getBlending();
+//		Pixmap.setBlending(Blending.None);
 
 		Pixmap p = new Pixmap(getWidth(), getHeight(), Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		Color c1 = Color.BLACK.cpy();
 		c1.a = 0.8f;
 		p.setColor(c1);
@@ -275,7 +285,7 @@ public abstract class AbstractComponent extends AbstractDisplay implements OnScr
 		
 		disabled = new Texture(p);
 		p.dispose();
-		Pixmap.setBlending(bck);
+//		Pixmap.setBlending(bck);
 		
 	}
 

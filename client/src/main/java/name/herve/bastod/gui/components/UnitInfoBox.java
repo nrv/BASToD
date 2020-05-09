@@ -48,10 +48,8 @@ public class UnitInfoBox extends AbstractComponent {
 		
 		moveTo(u.getPositionOnBoard().getXInt(), u.getPositionOnBoard().getYInt());
 		
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-
 		Pixmap p = new Pixmap(getWidth(), getHeight(), Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		Color c1 = Color.YELLOW;
 		c1.a = 1f;
 		p.setColor(c1);
@@ -66,7 +64,6 @@ public class UnitInfoBox extends AbstractComponent {
 
 		setBackground(new Texture(p));
 		p.dispose();
-		Pixmap.setBlending(bck);
 	}
 
 	@Override

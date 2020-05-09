@@ -57,10 +57,8 @@ public class DualScoreBar extends AbstractComponent {
 	
 	@Override
 	public Texture updateComponent() {
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-
 		Pixmap p = new Pixmap(getWidth(), getHeight(), Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		Color c = GUIResources.getInstance().getColor(GUIResources.WHITE);
 
 		Color c1 = GUIResources.getInstance().getColor(player1.getColor()).cpy();
@@ -84,7 +82,6 @@ public class DualScoreBar extends AbstractComponent {
 
 		Texture t = new Texture(p);
 		p.dispose();
-		Pixmap.setBlending(bck);
 
 		return t;
 	}

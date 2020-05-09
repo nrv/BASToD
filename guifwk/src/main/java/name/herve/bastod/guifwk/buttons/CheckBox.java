@@ -18,12 +18,14 @@
  */
 package name.herve.bastod.guifwk.buttons;
 
-import name.herve.bastod.guifwk.AbstractButton;
-import name.herve.bastod.guifwk.GUIResources;
+import java.awt.geom.Rectangle2D;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+
+import name.herve.bastod.guifwk.AbstractButton;
+import name.herve.bastod.guifwk.GUIResources;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -56,12 +58,13 @@ public class CheckBox extends AbstractButton {
 		font = GUIResources.getInstance().getFont(GUIResources.FONT_STANDARD_WHITE);
 
 		setChecked(false);
-
-		TextBounds b = font.getBounds(text);
+		
+		Rectangle2D.Float layout = getBounds(font, text);
+//		TextBounds b = font.getBounds(text);
 		txo = tChecked.getWidth() + SMALL_SPACER;
-		tyo = (tChecked.getHeight() - b.height) / 2;
+		tyo = (tChecked.getHeight() - layout.height) / 2;
 
-		setBounds(tChecked.getWidth() + (int) Math.ceil(b.width), tChecked.getHeight());
+		setBounds(tChecked.getWidth() + (int) Math.ceil(layout.width), tChecked.getHeight());
 	}
 
 	@Override

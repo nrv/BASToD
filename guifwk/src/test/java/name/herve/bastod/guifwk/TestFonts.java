@@ -20,10 +20,10 @@ package name.herve.bastod.guifwk;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
@@ -39,9 +39,11 @@ public class TestFonts implements ApplicationListener {
 		BitmapFont font = generator.generateFont(parameter);
 		generator.dispose();
 		
-		TextBounds b = font.getBounds("azertyuiopqsdfghjklmwxcvbn");
+		GlyphLayout layout = new GlyphLayout();
+		layout.setText(font, "azertyuiopqsdfghjklmwxcvbn");
+//		TextBounds b = font.getBounds("azertyuiopqsdfghjklmwxcvbn");
 		
-		System.out.println(size+ " --> " + b.width + " " + b.height);
+		System.out.println(size+ " --> " + layout.width + " " + layout.height);
 		
 		font.dispose();
 	}
@@ -49,13 +51,13 @@ public class TestFonts implements ApplicationListener {
 	
 	
 	public static void main(String[] args) {
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.resizable = false;
-		cfg.useGL30 = true;
-		cfg.width = 1024;
-		cfg.height = 768;
+		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
+//		cfg.resizable = false;
+//		cfg.useGL30 = true;
+//		cfg.width = 1024;
+//		cfg.height = 768;
 
-		new LwjglApplication(new TestFonts(), cfg);
+		new Lwjgl3Application(new TestFonts(), cfg);
 	}
 
 

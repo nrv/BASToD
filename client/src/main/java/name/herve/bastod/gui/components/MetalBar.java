@@ -18,21 +18,21 @@
  */
 package name.herve.bastod.gui.components;
 
+import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.guifwk.AbstractComponent;
-import name.herve.bastod.guifwk.GUIResources;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+
+import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.Player;
+import name.herve.bastod.guifwk.AbstractComponent;
+import name.herve.bastod.guifwk.GUIResources;
 
 // TODO verifier problème quand speed != 1
 /**
@@ -63,9 +63,9 @@ public class MetalBar extends AbstractComponent {
 		drawCentered(GUIResources.getInstance().getFont(player.getColor()), strMetal);
 		
 		BitmapFont font = GUIResources.getInstance().getFont(GUIResources.FONT_SMALL_WHITE);
-		TextBounds b = font.getBounds(strDeltaA);
+		Rectangle2D.Float b = getBounds(font, strDeltaA);
 		draw(font, strDeltaA, getX() + getWidth() - b.width - 4, getY() + getHeight() - b.height - 4);
-		b = font.getBounds(strDeltaR);
+		b = getBounds(font, strDeltaR);
 		draw(font, strDeltaR, getX() + getWidth() - b.width - 4, getY() +  4);
 		
 		//draw(, strMetal, getX() + getWidth() / 2 - 20, getY() + halfHeight + halfHeight / 2 + 7);
@@ -81,10 +81,8 @@ public class MetalBar extends AbstractComponent {
 
 	@Override
 	public Texture updateComponent() {
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-
 		Pixmap p = new Pixmap(getWidth(), getHeight(), Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		Color c1 = GUIResources.getInstance().getColor(player.getColor()).cpy();
 		c1.a = 1f;
 		p.setColor(c1);
@@ -102,7 +100,6 @@ public class MetalBar extends AbstractComponent {
 
 		Texture t = new Texture(p);
 		p.dispose();
-		Pixmap.setBlending(bck);
 
 		return t;
 	}

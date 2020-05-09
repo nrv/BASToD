@@ -20,6 +20,12 @@ package name.herve.bastod;
 
 import java.text.DecimalFormat;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+
 import name.herve.bastod.engine.Engine;
 import name.herve.bastod.engine.Player;
 import name.herve.bastod.gui.components.ImprovementButton;
@@ -27,12 +33,6 @@ import name.herve.bastod.gui.components.UnitInfoBox;
 import name.herve.bastod.gui.screen.title.TitleScreen;
 import name.herve.bastod.guifwk.AbstractGame;
 import name.herve.bastod.guifwk.GUIResources;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -44,14 +44,14 @@ public class BASToD extends AbstractGame {
 	public static void main(String[] args) {
 		BASToD sltd = new BASToD(Engine._VIEWPORT_WIDTH, Engine._VIEWPORT_HEIGHT);
 
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.resizable = false;
-		cfg.title = "SLTD";
-		cfg.useGL30 = true;
-		cfg.width = sltd.getW();
-		cfg.height = sltd.getH();
+		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
+//		cfg.resizable = false;
+//		cfg.title = "SLTD";
+//		cfg.useGL30 = true;
+//		cfg.width = sltd.getW();
+//		cfg.height = sltd.getH();
 
-		new LwjglApplication(sltd, cfg);
+		new Lwjgl3Application(sltd, cfg);
 	}
 
 	public BASToD(int w, int h) {

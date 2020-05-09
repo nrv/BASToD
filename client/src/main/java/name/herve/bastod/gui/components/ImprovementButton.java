@@ -58,7 +58,7 @@ public class ImprovementButton extends ImageButton {
 		
 		font = GUIResources.getInstance().getFont(GUIResources.FONT_SMALL_WHITE);
 		
-		setBounds(getBackground().getWidth(), (int)Math.ceil(getBackground().getHeight() + SMALL_SPACER + font.getBounds("0").height));
+		setBounds(getBackground().getWidth(), (int)Math.ceil(getBackground().getHeight() + SMALL_SPACER + getBounds(font, "0").height));
 		setyOffset(0);
 	}
 

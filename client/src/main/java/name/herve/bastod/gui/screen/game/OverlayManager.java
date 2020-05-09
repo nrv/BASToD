@@ -22,6 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
+import com.badlogic.gdx.graphics.Texture;
+
 import name.herve.bastod.engine.Engine;
 import name.herve.bastod.engine.EngineEvent;
 import name.herve.bastod.engine.EngineListener;
@@ -33,11 +38,6 @@ import name.herve.bastod.guifwk.AbstractDisplayManager;
 import name.herve.bastod.guifwk.GUIResources;
 import name.herve.bastod.tools.math.Dimension;
 import name.herve.bastod.tools.math.Vector;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Blending;
-import com.badlogic.gdx.graphics.Texture;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -61,12 +61,10 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 	}
 	
 	public void renderDebugLoS(Vector pos) {
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-		
 		Dimension dimG = engine.getGridDimension();
 		Dimension dimB = engine.getBoardDimension();
 		Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		
 		Color ok = Color.GREEN;
 		ok.a = 0.2f;
@@ -87,8 +85,6 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		Texture debug = new Texture(p);
 		p.dispose();
 
-		Pixmap.setBlending(bck);
-		
 		batchBegin();
 		draw(debug, Engine._SP_SIDE, Engine._SP_BOTTOM);
 		batchEnd();
@@ -135,10 +131,8 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		if (buildPositions == null) {
 			Dimension dimB = engine.getBoardDimension();
 
-			Blending bck = Pixmap.getBlending();
-			Pixmap.setBlending(Blending.None);
-
 			Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
+			p.setBlending(Blending.None);
 
 			for (Player player : engine.getPlayers()) {
 				Color c = GUIResources.getInstance().getColor(player.getColor()).cpy();
@@ -157,8 +151,6 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 
 			buildPositions = new Texture(p);
 			p.dispose();
-
-			Pixmap.setBlending(bck);
 		}
 
 		batchBegin();
@@ -174,10 +166,8 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 			Dimension dimB = engine.getBoardDimension();
 			int sqs = engine.getGridSquareSize();
 
-			Blending bck = Pixmap.getBlending();
-			Pixmap.setBlending(Blending.None);
-
 			Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
+			p.setBlending(Blending.None);
 			Color c = Color.WHITE.cpy();
 			c.a = 0.2f;
 			p.setColor(c);
@@ -193,8 +183,6 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 
 			grid = new Texture(p);
 			p.dispose();
-
-			Pixmap.setBlending(bck);
 		}
 
 		batchBegin();
@@ -232,17 +220,14 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 				if (!towerRanges.containsKey(k)) {
 					int gfxSize = shotRange * 2;
 
-					Blending bck = Pixmap.getBlending();
-					Pixmap.setBlending(Blending.None);
-
 					Pixmap p = new Pixmap(gfxSize, gfxSize, Pixmap.Format.RGBA8888);
+					p.setBlending(Blending.None);
 					Color c = GUIResources.getInstance().getColor(selected.getPlayer().getColor()).cpy();
 					c.a = 0.2f;
 					p.setColor(c);
 					p.fillCircle(shotRange, shotRange, shotRange);
 					Texture t = new Texture(p);
 					p.dispose();
-					Pixmap.setBlending(bck);
 					towerRanges.put(k, t);
 				}
 

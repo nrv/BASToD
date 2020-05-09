@@ -54,10 +54,8 @@ public class SingleScoreBar extends AbstractComponent {
 	
 	@Override
 	public Texture updateComponent() {
-		Blending bck = Pixmap.getBlending();
-		Pixmap.setBlending(Blending.None);
-
 		Pixmap p = new Pixmap(getWidth(), getHeight(), Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 		Color c1 = GUIResources.getInstance().getColor(player.getColor()).cpy();
 		c1.a = 1f;
 		p.setColor(c1);
@@ -73,7 +71,6 @@ public class SingleScoreBar extends AbstractComponent {
 
 		Texture t = new Texture(p);
 		p.dispose();
-		Pixmap.setBlending(bck);
 
 		return t;
 	}
