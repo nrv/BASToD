@@ -2,3 +2,5 @@ target/
 /resources
 /maven.txt
 /todo.txt
+.project
+.settings
