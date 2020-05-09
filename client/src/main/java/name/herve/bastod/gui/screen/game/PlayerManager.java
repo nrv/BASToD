@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,8 @@ package name.herve.bastod.gui.screen.game;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.badlogic.gdx.math.Vector3;
 
 import name.herve.bastod.engine.Engine;
 import name.herve.bastod.engine.Player;
@@ -32,8 +34,6 @@ import name.herve.bastod.guifwk.GUIResources;
 import name.herve.bastod.guifwk.buttons.GUIButtonListener;
 import name.herve.bastod.guifwk.layout.ComponentsLineLayout;
 import name.herve.bastod.tools.math.Vector;
-
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -96,6 +96,17 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		return false;
 	}
 
+	public boolean mouseMoved(int x, int y) {
+		cx = x;
+		cy = y;
+
+		if ((state == State.BUY_TOWER) || (state == State.BUY_WALL)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private Vector positionOnGrid(int x, int y) {
 		// System.out.println("positionOnGrid("+x+", "+y+")");
 		Vector3 touchPos = new Vector3();
@@ -109,7 +120,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 
 		vm = engine.fromBoardToGrid(vm);
 
-		// System.out.println("  -> " + vm);
+		// System.out.println(" -> " + vm);
 
 		return vm;
 	}
@@ -132,10 +143,10 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		// System.out.println("renderBuy " + pos);
 		batchBegin();
 
-		if (pos != null && engine.isOpenedBuildPosition(engine.getPlayer(player), pos)) {
+		if ((pos != null) && engine.isOpenedBuildPosition(engine.getPlayer(player), pos)) {
 			if (snapToGrid) {
 				Vector v = engine.fromGridToBoard(pos);
-				draw(GUIResources.getInstance().getSprite(sprite, player), Engine._SP_SIDE + v.getXInt() - halfSQS, Engine._SP_BOTTOM + v.getYInt() - halfSQS);
+				draw(GUIResources.getInstance().getSprite(sprite, player), (Engine._SP_SIDE + v.getXInt()) - halfSQS, (Engine._SP_BOTTOM + v.getYInt()) - halfSQS);
 			} else {
 				draw(GUIResources.getInstance().getSprite(sprite, player), x - halfSQS, getScreenHeight() - y - halfSQS);
 			}
@@ -169,7 +180,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		state = State.NOTHING;
 		halfSQS = engine.getGridSquareSize() / 2f;
 
-		interfaces = new HashMap<Player, PlayerInterface>();
+		interfaces = new HashMap<>();
 	}
 
 	@Override
@@ -211,17 +222,6 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 					interfaces.get(pa.getPlayer()).addAction(pa);
 				}
 			}
-		}
-
-		return false;
-	}
-
-	public boolean mouseMoved(int x, int y) {
-		cx = x;
-		cy = y;
-
-		if ((state == State.BUY_TOWER) || (state == State.BUY_WALL)) {
-			return true;
 		}
 
 		return false;

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,7 +22,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import name.herve.bastod.guifwk.AbstractButton;
 import name.herve.bastod.guifwk.GUIResources;
@@ -58,13 +57,12 @@ public class CheckBox extends AbstractButton {
 		font = GUIResources.getInstance().getFont(GUIResources.FONT_STANDARD_WHITE);
 
 		setChecked(false);
-		
-		Rectangle2D.Float layout = getBounds(font, text);
-//		TextBounds b = font.getBounds(text);
-		txo = tChecked.getWidth() + SMALL_SPACER;
-		tyo = (tChecked.getHeight() - layout.height) / 2;
 
-		setBounds(tChecked.getWidth() + (int) Math.ceil(layout.width), tChecked.getHeight());
+		Rectangle2D.Float b = getBounds(font, text);
+		txo = tChecked.getWidth() + SMALL_SPACER;
+		tyo = (tChecked.getHeight() - b.height) / 2;
+
+		setBounds(tChecked.getWidth() + (int) Math.ceil(b.width), tChecked.getHeight());
 	}
 
 	@Override
@@ -74,7 +72,8 @@ public class CheckBox extends AbstractButton {
 
 	@Override
 	public void drawText() {
-		draw(font, text, getX() + txo, getY() + tyo);
+		Rectangle2D.Float b = getBounds(font, text);
+		draw(font, text, getX() + txo, getY() + tyo + b.height);
 	}
 
 	@Override

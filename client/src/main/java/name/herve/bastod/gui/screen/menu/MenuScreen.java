@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,13 +21,17 @@ package name.herve.bastod.gui.screen.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector3;
+
 import name.herve.bastod.engine.Board;
 import name.herve.bastod.engine.BoardFactory;
 import name.herve.bastod.engine.Engine;
 import name.herve.bastod.engine.Game;
+import name.herve.bastod.engine.Game.Type;
 import name.herve.bastod.engine.GameFactory;
 import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.Game.Type;
 import name.herve.bastod.engine.players.ComputerPlayer;
 import name.herve.bastod.engine.players.HumanPlayer;
 import name.herve.bastod.gui.screen.game.GameScreen;
@@ -41,10 +45,6 @@ import name.herve.bastod.guifwk.buttons.SelectorButton;
 import name.herve.bastod.guifwk.buttons.TextButton;
 import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector3;
 
 // TODO regarder http://steigert.blogspot.fr/
 
@@ -63,7 +63,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 	private HumanOrComputerButton p1;
 	private HumanOrComputerButton p2;
 	private BoardFactory boardFactory;
-	
+
 	public MenuScreen(AbstractGame game) {
 		super(game);
 		setCacheName(CACHE_NAME);
@@ -106,10 +106,10 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 		} else if (event.getSource().getName().equals(GAME_TYPE_NAME)) {
 			switch (gt.getSelected()) {
 			case TOWER_DEFENSE:
-					p1.setEnabled(false);
-					p1.setHuman();
-					p2.setEnabled(false);
-					p2.setComputer();
+				p1.setEnabled(false);
+				p1.setHuman();
+				p2.setEnabled(false);
+				p2.setComputer();
 				break;
 			case TWO_PLAYERS:
 				p1.setEnabled(true);
@@ -123,9 +123,9 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 		int w = getScreenWidth();
 		int h = getScreenHeight();
 
-		components = new ArrayList<AbstractComponent>();
+		components = new ArrayList<>();
 
-		gt = new SelectorButton<Type>(GAME_TYPE_NAME, "Choose a game type : ", Game.Type.values(), (w - 160) / 2, h / 2 + 100);
+		gt = new SelectorButton<>(GAME_TYPE_NAME, "Choose a game type : ", Game.Type.values(), (w - 160) / 2, (h / 2) + 100);
 		gt.start();
 		gt.addListener(this);
 		components.add(gt);
@@ -145,14 +145,14 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 			p2.setEnabled(false);
 		}
 
-		TextButton start = new TextButton(START_NAME, "Launch game", (w - 160) / 2, h / 2 - 100);
+		TextButton start = new TextButton(START_NAME, "Launch game", (w - 160) / 2, (h / 2) - 100);
 		start.addListener(this);
 		start.start();
 		components.add(start);
 
 		try {
 			String[] maps = boardFactory.getAvailableMaps(true).toArray(new String[] {});
-			msb = new SelectorButton<String>("MapSelectorButton", "Choose a map : ", maps, (w - 160) / 2, h / 2 - 50);
+			msb = new SelectorButton<>("MapSelectorButton", "Choose a map : ", maps, (w - 160) / 2, (h / 2) - 50);
 			msb.start();
 			components.add(msb);
 		} catch (GameException e) {

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,7 +56,7 @@ public class Board {
 	}
 
 	public static Vector g2b(Vector p, int squareSize) {
-		return new Vector((p.getX() + 0.5f) * squareSize, (p.getY()+ 0.5f) * squareSize);
+		return new Vector((p.getX() + 0.5f) * squareSize, (p.getY() + 0.5f) * squareSize);
 	}
 
 	private Dimension boardDimension;
@@ -73,13 +73,13 @@ public class Board {
 		super();
 		this.gridDimension = gridDimension;
 		this.squareSize = squareSize;
-		this.boardDimension = new Dimension(gridDimension.getW() * squareSize, gridDimension.getH() * squareSize);
-		this.pathFinder = new PathFinder(Algorithm.THETASTAR, gridDimension, false);
-		boardUnits = new ArrayList<Unit>();
-		startPositions = new HashMap<Integer, Vector>();
-		endPositions = new HashMap<Integer, List<Vector>>();
-		towerPositions = new HashMap<Integer, List<Vector>>();
-		buildPositions = new HashMap<Integer, List<Vector>>();
+		boardDimension = new Dimension(gridDimension.getW() * squareSize, gridDimension.getH() * squareSize);
+		pathFinder = new PathFinder(Algorithm.THETASTAR, gridDimension, false);
+		boardUnits = new ArrayList<>();
+		startPositions = new HashMap<>();
+		endPositions = new HashMap<>();
+		towerPositions = new HashMap<>();
+		buildPositions = new HashMap<>();
 	}
 
 	public void addBuildPosition(int index, Vector pos) {
@@ -204,12 +204,12 @@ public class Board {
 		Vector sg = fromBoardToGrid(s);
 		Vector se = fromBoardToGrid(e);
 
-		if (sg != null && se != null) {
+		if ((sg != null) && (se != null)) {
 			Path p = shortestPathOnGrid(sg, se);
 			p = fromGridToBoard(p);
 			return p;
 		}
-		
+
 		return null;
 	}
 

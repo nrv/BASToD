@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,8 +46,8 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 	private Texture buildPositions;
 	private Engine engine;
 	private Texture grid;
-//	private float halfSQS;
-	
+	// private float halfSQS;
+
 	private Unit lastSelected;
 	private UnitInfoBox ibx;
 
@@ -59,56 +59,24 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 			buildPositions = null;
 		}
 	}
-	
-	public void renderDebugLoS(Vector pos) {
-		Dimension dimG = engine.getGridDimension();
-		Dimension dimB = engine.getBoardDimension();
-		Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
-		p.setBlending(Blending.None);
-		
-		Color ok = Color.GREEN;
-		ok.a = 0.2f;
-		Color nok = Color.ORANGE;
-		nok.a = 0.2f;
-		
-		for (int x= 0; x < dimG.getW(); x++) {
-			for (int y= 0; y < dimG.getH(); y++) {
-				Vector v = new Vector(x, y);
-				if (engine.lineOfSight(pos, v)) {
-					drawTintedSquare(p, ok, engine.fromGridToBoard(v));
-				} else {
-					drawTintedSquare(p, nok, engine.fromGridToBoard(v));
-				}
-			}
-		}
-		
-		Texture debug = new Texture(p);
-		p.dispose();
 
-		batchBegin();
-		draw(debug, Engine._SP_SIDE, Engine._SP_BOTTOM);
-		batchEnd();
-		
-		debug.dispose();
-	}
-	
 	private void drawTintedSquare(Pixmap p, Color c, Vector v) {
 		Dimension dimB = engine.getBoardDimension();
 		int sqs = engine.getGridSquareSize();
 		int step = (sqs - 2) / 7;
 		int h = dimB.getH();
-		
+
 		int x = v.getXInt();
 		int y = v.getYInt();
-		
+
 		p.setColor(c);
-		
+
 		for (int dx = step; dx < sqs; dx += step) {
-			p.drawLine(x + dx, h - y, x + dx, h - y - sqs + 1);
+			p.drawLine(x + dx, h - y, x + dx, (h - y - sqs) + 1);
 		}
-		
+
 		for (int dy = step; dy < sqs; dy += step) {
-			p.drawLine(x + 1, h - y - dy, x + sqs - 1, h - y - dy);
+			p.drawLine(x + 1, h - y - dy, (x + sqs) - 1, h - y - dy);
 		}
 	}
 
@@ -158,7 +126,37 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		batchEnd();
 	}
 
+	public void renderDebugLoS(Vector pos) {
+		Dimension dimG = engine.getGridDimension();
+		Dimension dimB = engine.getBoardDimension();
+		Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
+		p.setBlending(Blending.None);
 
+		Color ok = Color.GREEN;
+		ok.a = 0.2f;
+		Color nok = Color.ORANGE;
+		nok.a = 0.2f;
+
+		for (int x = 0; x < dimG.getW(); x++) {
+			for (int y = 0; y < dimG.getH(); y++) {
+				Vector v = new Vector(x, y);
+				if (engine.lineOfSight(pos, v)) {
+					drawTintedSquare(p, ok, engine.fromGridToBoard(v));
+				} else {
+					drawTintedSquare(p, nok, engine.fromGridToBoard(v));
+				}
+			}
+		}
+
+		Texture debug = new Texture(p);
+		p.dispose();
+
+		batchBegin();
+		draw(debug, Engine._SP_SIDE, Engine._SP_BOTTOM);
+		batchEnd();
+
+		debug.dispose();
+	}
 
 	public void renderGrid() {
 		if (grid == null) {
@@ -189,7 +187,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		draw(grid, Engine._SP_SIDE, Engine._SP_BOTTOM);
 		batchEnd();
 	}
-	
+
 	public void renderUnitInfoBox(Unit selected) {
 		if (selected != null) {
 			if (selected != lastSelected) {
@@ -198,19 +196,20 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 				}
 				lastSelected = selected;
 				ibx = new UnitInfoBox(selected);
-				if (ibx.getX() + ibx.getWidth() > getScreenWidth()) {
-					ibx.moveTo(selected.getPositionOnBoard().getXInt() - ibx.getWidth(), ibx.getY());
-				}
-				if (ibx.getY() - ibx.getHeight() < 0) {
-					ibx.moveTo(ibx.getX(), selected.getPositionOnBoard().getYInt() + ibx.getHeight());
-				}
 				ibx.start();
 			}
-			
+
+			ibx.moveTo(selected.getPositionOnBoard().getXInt(), selected.getPositionOnBoard().getYInt());
+			if ((ibx.getX() + ibx.getWidth()) > getScreenWidth()) {
+				ibx.moveTo(selected.getPositionOnBoard().getXInt() - ibx.getWidth(), ibx.getY());
+			}
+			if ((ibx.getY() - ibx.getHeight()) < 0) {
+				ibx.moveTo(ibx.getX(), selected.getPositionOnBoard().getYInt() + ibx.getHeight());
+			}
 			ibx.render();
 		}
 	}
-	
+
 	public void renderUnitOverlay(Unit selected) {
 		if (selected != null) {
 			if (selected instanceof Tower) {
@@ -232,7 +231,8 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 				}
 
 				batchBegin();
-				draw(towerRanges.get(k), Engine._SP_SIDE + selected.getPositionOnBoard().getX() - shotRange, Engine._SP_BOTTOM + selected.getPositionOnBoard().getY() - shotRange);
+				draw(towerRanges.get(k), (Engine._SP_SIDE + selected.getPositionOnBoard().getX()) - shotRange,
+						(Engine._SP_BOTTOM + selected.getPositionOnBoard().getY()) - shotRange);
 				batchEnd();
 			}
 		}
@@ -247,9 +247,9 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 	public void start() {
 		super.start();
 
-		towerRanges = new HashMap<String, Texture>();
+		towerRanges = new HashMap<>();
 		grid = null;
-//		halfSQS = engine.getGridSquareSize() / 2f;
+		// halfSQS = engine.getGridSquareSize() / 2f;
 	}
 
 	@Override

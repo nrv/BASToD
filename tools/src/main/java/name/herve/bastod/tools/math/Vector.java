@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -64,13 +64,13 @@ public class Vector {
 	public float angleDeg(Vector o) {
 		return (float) radToDeg(angleRad(o));
 	}
-	
+
 	public float angleRad() {
 		return (float) (Math.atan2(y, x));
 	}
-	
+
 	public float angleRad(Vector o) {
-		return (float)Math.acos(dot(o)) / (length() * o.length());
+		return (float) Math.acos(dot(o)) / (length() * o.length());
 	}
 
 	public Vector copy() {
@@ -78,18 +78,18 @@ public class Vector {
 	}
 
 	public double degToRad(double a) {
-		a = Math.PI * a / 180d;
+		a = (Math.PI * a) / 180d;
 		return a;
 	}
-	
+
 	public float distance(Vector oth) {
 		float dx = oth.x - x;
 		float dy = oth.y - y;
-		return (float) Math.sqrt(dx * dx + dy * dy);
+		return (float) Math.sqrt((dx * dx) + (dy * dy));
 	}
 
 	public float dot(Vector o) {
-		return x * o.x + y * o.y;
+		return (x * o.x) + (y * o.y);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Vector {
 	}
 
 	public float length() {
-		return (float) Math.sqrt(x * x + y * y);
+		return (float) Math.sqrt((x * x) + (y * y));
 	}
 
 	public float manhattan(Vector oth) {
@@ -132,8 +132,8 @@ public class Vector {
 	}
 
 	public Vector multiply(float f) {
-		this.x *= f;
-		this.y *= f;
+		x *= f;
+		y *= f;
 		return this;
 	}
 
@@ -146,7 +146,7 @@ public class Vector {
 	}
 
 	public double radToDeg(double a) {
-		a = a * 180d / Math.PI;
+		a = (a * 180d) / Math.PI;
 		if (a < 0) {
 			a += 360;
 		}
@@ -173,17 +173,17 @@ public class Vector {
 		double s = Math.sin(alpha);
 		double c = Math.cos(alpha);
 
-		float xp = (float) (x * c - y * s);
-		y = (float) (x * s + y * c);
+		float xp = (float) ((x * c) - (y * s));
+		y = (float) ((x * s) + (y * c));
 		x = xp;
-		
+
 		return this;
 	}
 
 	public float squaredDistance(Vector oth) {
 		float dx = oth.x - x;
 		float dy = oth.y - y;
-		return dx * dx + dy * dy;
+		return (dx * dx) + (dy * dy);
 	}
 
 	@Override

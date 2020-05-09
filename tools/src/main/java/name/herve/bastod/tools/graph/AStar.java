@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,45 +30,32 @@ import name.herve.bastod.tools.sortedlist.MyLinkedList;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class AStar extends GraphPathFinderAlgorithm {
-	private interface Heuristic {
-		int estimateCost(Node n1, Node n2);
-	}
-	
 	private class EuclidianHeuristic implements Heuristic {
 		@Override
 		public int estimateCost(Node n1, Node n2) {
 			return (int) (FLOAT_TO_INT * n1.getPosition().distance(n2.getPosition()));
 		}
 	}
-	
-//	private class ManhattanHeuristic implements Heuristic {
-//		@Override
-//		public float estimateCost(Node n1, Node n2) {
-//			return n1.getPosition().manhattan(n2.getPosition());
-//		}
-//	}
+
+	private interface Heuristic {
+		int estimateCost(Node n1, Node n2);
+	}
+
+	// private class ManhattanHeuristic implements Heuristic {
+	// @Override
+	// public float estimateCost(Node n1, Node n2) {
+	// return n1.getPosition().manhattan(n2.getPosition());
+	// }
+	// }
 
 	private Heuristic h;
 
 	public AStar(Graph g) {
 		super(g);
-		
+
 		h = new EuclidianHeuristic();
 	}
 
-	private List<Node> reconstructPath(int[] c, int current) {
-		List<Node> path = null;
-
-		if (c[current] >= 0) {
-			path = reconstructPath(c, c[current]);
-			path.add(graph.get(current));
-		} else {
-			path = new ArrayList<Node>();
-		}
-		
-		return path;
-	}
-	
 	@Override
 	public Node getNode(int id) {
 		return graph.get(id);
@@ -77,7 +64,7 @@ public class AStar extends GraphPathFinderAlgorithm {
 	@Override
 	public List<Node> getPathNodes(Node start, Node end) {
 		// System.out.println("AStar path " + start + " - " + end);
-		
+
 		int sz = graph.size();
 
 		boolean[] closed = new boolean[sz];
@@ -95,7 +82,7 @@ public class AStar extends GraphPathFinderAlgorithm {
 		MyLinkedList open2 = new MyLinkedList();
 		open2.setCost(f);
 		open2.reset();
-		
+
 		int ios = graph.indexOf(start);
 		int ioe = graph.indexOf(end);
 		open2.add(ios);
@@ -117,7 +104,7 @@ public class AStar extends GraphPathFinderAlgorithm {
 					continue;
 				}
 
-				int gAttempt = g[current] + (int)(FLOAT_TO_INT * cn.getCost(nb));
+				int gAttempt = g[current] + (int) (FLOAT_TO_INT * cn.getCost(nb));
 				int nbIdx = open2.getIndex(inb);
 
 				if ((nbIdx == -1) || (gAttempt < g[inb])) {
@@ -136,5 +123,18 @@ public class AStar extends GraphPathFinderAlgorithm {
 		}
 
 		return null;
+	}
+
+	private List<Node> reconstructPath(int[] c, int current) {
+		List<Node> path = null;
+
+		if (c[current] >= 0) {
+			path = reconstructPath(c, c[current]);
+			path.add(graph.get(current));
+		} else {
+			path = new ArrayList<>();
+		}
+
+		return path;
 	}
 }

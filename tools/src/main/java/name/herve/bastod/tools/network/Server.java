@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,6 +38,16 @@ public class Server extends NetworkComponent {
 	}
 
 	@Override
+	public void connected(JGNConnection connection) {
+		System.out.println(connection + " connected on server");
+	}
+
+	@Override
+	public void disconnected(JGNConnection connection) {
+		System.out.println(connection + " disconnected from server");
+	}
+
+	@Override
 	public void init() throws NetworkException {
 		try {
 			server = new JGNServer(new InetSocketAddress(InetAddress.getLocalHost(), getTcpPort()), new InetSocketAddress(InetAddress.getLocalHost(), getUdpPort()));
@@ -48,16 +58,6 @@ public class Server extends NetworkComponent {
 			throw new NetworkException(e);
 		}
 
-	}
-
-	@Override
-	public void connected(JGNConnection connection) {
-		System.out.println(connection + " connected on server");
-	}
-
-	@Override
-	public void disconnected(JGNConnection connection) {
-		System.out.println(connection + " disconnected from server");
 	}
 
 	@Override

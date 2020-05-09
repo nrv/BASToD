@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,7 +40,7 @@ public class ComponentsLineLayout extends AbstractLayoutComponent implements Ite
 	public ComponentsLineLayout() {
 		super();
 
-		components = new ArrayList<OnScreen>();
+		components = new ArrayList<>();
 		setSpacing(Spacing.FILL1);
 	}
 
@@ -64,6 +64,7 @@ public class ComponentsLineLayout extends AbstractLayoutComponent implements Ite
 		return components.indexOf(o);
 	}
 
+	@Override
 	public Iterator<OnScreen> iterator() {
 		return components.iterator();
 	}
@@ -76,11 +77,11 @@ public class ComponentsLineLayout extends AbstractLayoutComponent implements Ite
 		return components.remove(index);
 	}
 
-
 	public void setSpacing(Spacing spacing) {
 		this.spacing = spacing;
 	}
 
+	@Override
 	public void validate() {
 		if (getNbComponents() == 0) {
 			return;
@@ -94,20 +95,20 @@ public class ComponentsLineLayout extends AbstractLayoutComponent implements Ite
 			totalHeight = Math.max(totalHeight, c.getHeight());
 		}
 
-		int yOffset = getY() + (getHeight() - totalHeight) / 2;
+		int yOffset = getY() + ((getHeight() - totalHeight) / 2);
 		int widthLeft = Math.max(0, getWidth() - totalWidth);
 
 		if (spacing == Spacing.RIGHT) {
-			float currentX = getX() + getWidth() - 1;
+			float currentX = (getX() + getWidth()) - 1;
 			for (ListIterator<OnScreen> iterator = components.listIterator(components.size()); iterator.hasPrevious();) {
 				OnScreen c = iterator.previous();
 				currentX -= c.getWidth();
-				c.moveTo((int)currentX, yOffset);
+				c.moveTo((int) currentX, yOffset);
 			}
 		} else if (spacing == Spacing.LEFT) {
 			float currentX = getX();
 			for (OnScreen c : this) {
-				c.moveTo((int)currentX, yOffset);
+				c.moveTo((int) currentX, yOffset);
 				currentX += c.getWidth();
 			}
 		} else {
@@ -125,12 +126,12 @@ public class ComponentsLineLayout extends AbstractLayoutComponent implements Ite
 					currentX += spacer;
 				}
 				for (OnScreen c : this) {
-					c.moveTo((int)currentX, yOffset);
+					c.moveTo((int) currentX, yOffset);
 					currentX += spacer + c.getWidth();
 				}
 			}
 		}
-		
+
 		for (OnScreen c : this) {
 			c.validate();
 		}

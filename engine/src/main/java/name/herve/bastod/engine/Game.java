@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,7 +26,6 @@ import java.util.Map;
 
 import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
-import name.herve.bastod.tools.conf.PropertiesConfiguration;
 import name.herve.bastod.tools.math.Dimension;
 import name.herve.bastod.tools.math.Vector;
 
@@ -36,9 +35,9 @@ import name.herve.bastod.tools.math.Vector;
 public class Game {
 	public enum Type {
 		TOWER_DEFENSE("conf/tower_defense.conf"), TWO_PLAYERS("conf/two_players.conf");
-		
+
 		private final String file;
-		
+
 		private Type(String file) {
 			this.file = file;
 		}
@@ -47,7 +46,7 @@ public class Game {
 			return file;
 		}
 	};
-		
+
 	private Map<String, Improvement> availableImprovements;
 	private Board board;
 	private Configuration conf;
@@ -63,11 +62,11 @@ public class Game {
 
 		this.conf = conf;
 
-		players = new ArrayList<Player>();
-		shots = new ArrayList<Shot>();
+		players = new ArrayList<>();
+		shots = new ArrayList<>();
 		over = false;
 
-		availableImprovements = new HashMap<String, Improvement>();
+		availableImprovements = new HashMap<>();
 
 		metalIncreaseRatePerSec = conf.getInt(Engine.CF_GAME_METAL_INCREASE_RATE_PER_SEC_I);
 		this.type = type;
@@ -120,7 +119,7 @@ public class Game {
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}
-	
+
 	public Player getPlayer(String name) {
 		for (Player p : players) {
 			if (name.equals(p.getColor())) {
@@ -139,6 +138,10 @@ public class Game {
 		return shots;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
 	public boolean isOver() {
 		return over;
 	}
@@ -150,16 +153,12 @@ public class Game {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
+
 	public void setNow(long now) {
 		this.now = now;
 	}
 
 	public void setOver(boolean over) {
 		this.over = over;
-	}
-
-	public Type getType() {
-		return type;
 	}
 }

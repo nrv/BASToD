@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,8 +43,12 @@ public class FunnyGame extends JPanel implements MouseListener {
 	public FunnyGame() {
 		super();
 
-		balls = new ArrayList<Ball>();
+		balls = new ArrayList<>();
 		rd = new Random(System.currentTimeMillis());
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class FunnyGame extends JPanel implements MouseListener {
 		ball.setSpeed(new Point2D.Double(dx, dy));
 
 		balls.add(ball);
-		
+
 		repaint();
 	}
 
@@ -83,28 +87,24 @@ public class FunnyGame extends JPanel implements MouseListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		
-		Graphics2D g2 = (Graphics2D)g;
+
+		Graphics2D g2 = (Graphics2D) g;
 		int w = getWidth();
 		int h = getHeight();
 		int r = Math.max(w, h) / 25;
 		int offset = r / 2;
-		
+
 		for (Ball ball : balls) {
 			g2.setColor(ball.getColor());
-			g2.fillOval((int)(ball.getPosition().getX() * w) - offset, (int)(ball.getPosition().getY() * h) - offset, r, r);
+			g2.fillOval((int) (ball.getPosition().getX() * w) - offset, (int) (ball.getPosition().getY() * h) - offset, r, r);
 		}
-	}
-
-	public void startInterface() {
-		addMouseListener(this);
-	}
-
-	public Color getColor() {
-		return color;
 	}
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public void startInterface() {
+		addMouseListener(this);
 	}
 }

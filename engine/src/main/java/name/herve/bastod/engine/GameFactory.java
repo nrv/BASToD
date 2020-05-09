@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,12 +40,22 @@ import name.herve.bastod.tools.math.Vector;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class GameFactory {
-	private static void initImprovements(Game game) throws GameException {
-		game.addAvailableImprovement(new BuyTowerImprovement(game.getConf()));
-		game.addAvailableImprovement(new BuyWallImprovement(game.getConf()));
-		game.addAvailableImprovement(new BuyFactoryImprovement(game.getConf()));
-		game.addAvailableImprovement(new MoreMetalImprovement(game.getConf()));
-		game.addAvailableImprovement(new IncreaseSpeedImprovement(game.getConf()));
+	public static Game createGame(Type type, Configuration conf, long seed) throws GameException {
+		Player[] players = new Player[2];
+
+		for (int i = 0; i < 2; i++) {
+			players[i] = new ComputerPlayer(i);
+		}
+
+		BoardFactory boardFactory = new BoardFactory();
+		boardFactory.setSeed(seed);
+
+		// Board board = boardFactory.getRandomBoard(seed);
+		Board board = boardFactory.getCustomBoard();
+		// Board board = boardFactory.getEmptyBoard();
+		// Board board = boardFactory.loadMap("map_04");
+
+		return createGame(type, conf, players, board);
 	}
 
 	public static Game createGame(Type type, Configuration conf, Player[] players, Board board) throws GameException {
@@ -116,21 +126,11 @@ public class GameFactory {
 		return game;
 	}
 
-	public static Game createGame(Type type, Configuration conf, long seed) throws GameException {
-		Player[] players = new Player[2];
-
-		for (int i = 0; i < 2; i++) {
-			players[i] = new ComputerPlayer(i);
-		}
-
-		BoardFactory boardFactory = new BoardFactory();
-		boardFactory.setSeed(seed);
-
-		// Board board = boardFactory.getRandomBoard(seed);
-		Board board = boardFactory.getCustomBoard();
-		// Board board = boardFactory.getEmptyBoard();
-		// Board board = boardFactory.loadMap("map_04");
-
-		return createGame(type, conf, players, board);
+	private static void initImprovements(Game game) throws GameException {
+		game.addAvailableImprovement(new BuyTowerImprovement(game.getConf()));
+		game.addAvailableImprovement(new BuyWallImprovement(game.getConf()));
+		game.addAvailableImprovement(new BuyFactoryImprovement(game.getConf()));
+		game.addAvailableImprovement(new MoreMetalImprovement(game.getConf()));
+		game.addAvailableImprovement(new IncreaseSpeedImprovement(game.getConf()));
 	}
 }

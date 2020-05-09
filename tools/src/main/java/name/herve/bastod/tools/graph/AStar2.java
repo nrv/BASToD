@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,7 +46,7 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 
 	public AStar2(Graph graph) {
 		super(graph);
-		
+
 		this.graph = graph;
 
 		int sz = graph.size();
@@ -78,35 +78,27 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 			g_y[n] = node.getPosition().getYInt();
 			int nb = 0;
 			for (Node nbn : node) {
-				idx = n * 8 + nb;
+				idx = (n * 8) + nb;
 				g_nb[idx] = graph.indexOf(nbn);
 				g_c[idx] = (int) (node.getCost(nbn) * FLOAT_TO_INT);
 				nb++;
 			}
 			for (; nb < 8; nb++) {
-				idx = n * 8 + nb;
+				idx = (n * 8) + nb;
 				g_nb[idx] = -1;
 				g_c[idx] = Integer.MAX_VALUE;
 			}
 		}
 	}
 
-	private List<Node> reconstructPath(int current) {
-		List<Node> path = null;
-
-		if (cf[current] >= 0) {
-			path = reconstructPath(cf[current]);
-			path.add(graph.get(current));
-		} else {
-			path = new ArrayList<Node>();
-		}
-
-		return path;
+	@Override
+	public Node getNode(int id) {
+		return graph.get(id);
 	}
 
 	@Override
 	public List<Node> getPathNodes(Node start, Node end) {
-		//System.out.println("AStar2.path(" + start + ", " + end + ")");
+		// System.out.println("AStar2.path(" + start + ", " + end + ")");
 		Arrays.fill(closed, false);
 		Arrays.fill(f, 0);
 		Arrays.fill(g, 0);
@@ -123,7 +115,7 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 
 		dx = g_x[ios] - g_x[ioe];
 		dy = g_y[ios] - g_y[ioe];
-		f[ios] = g[ios] + (int) (FLOAT_TO_INT * Math.sqrt(dx * dx + dy * dy));
+		f[ios] = g[ios] + (int) (FLOAT_TO_INT * Math.sqrt((dx * dx) + (dy * dy)));
 
 		while (!open.isEmpty()) {
 			int current = open.get();
@@ -135,13 +127,13 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 			closed[current] = true;
 
 			for (int nbIdx = 0; nbIdx < 8; nbIdx++) {
-				int inb = g_nb[current * 8 + nbIdx];
+				int inb = g_nb[(current * 8) + nbIdx];
 				if (inb >= 0) {
 					if (closed[inb] || !g_a[inb]) {
 						continue;
 					}
 
-					int gAttempt = g[current] + g_c[current * 8 + nbIdx];
+					int gAttempt = g[current] + g_c[(current * 8) + nbIdx];
 
 					int inbHeapIdx = open.getIndex(inb);
 					if ((inbHeapIdx == -1) || (gAttempt < g[inb])) {
@@ -150,7 +142,7 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 
 						dx = g_x[inb] - g_x[ioe];
 						dy = g_y[inb] - g_y[ioe];
-						int finb = gAttempt + (int) (FLOAT_TO_INT * Math.sqrt(dx * dx + dy * dy));
+						int finb = gAttempt + (int) (FLOAT_TO_INT * Math.sqrt((dx * dx) + (dy * dy)));
 
 						f[inb] = finb;
 
@@ -166,9 +158,17 @@ public class AStar2 extends GraphPathFinderAlgorithm {
 
 		return null;
 	}
-	
-	@Override
-	public Node getNode(int id) {
-		return graph.get(id);
+
+	private List<Node> reconstructPath(int current) {
+		List<Node> path = null;
+
+		if (cf[current] >= 0) {
+			path = reconstructPath(cf[current]);
+			path.add(graph.get(current));
+		} else {
+			path = new ArrayList<>();
+		}
+
+		return path;
 	}
 }

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,6 @@ package name.herve.bastod.tools;
 
 import java.io.File;
 
-import name.herve.bastod.tools.GameException;
 import name.herve.bastod.tools.conf.Configuration;
 
 /**
@@ -36,7 +35,7 @@ public class TestConfiguration {
 			Configuration c1 = Configuration.load("test.conf");
 			Configuration.dump(c1, "Dump test in xml format", new File("test_result.xml"));
 			Configuration.dump(c1, "Dump test in properties format", new File("test_result.conf"));
-			
+
 			Configuration c2 = Configuration.load("test.xml");
 			Configuration.dump(c2, "Dump test in xml format", new File("test_result2.xml"));
 			Configuration.dump(c2, "Dump test in properties format", new File("test_result2.conf"));

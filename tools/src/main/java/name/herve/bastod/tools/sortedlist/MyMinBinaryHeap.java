@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,15 +30,15 @@ public class MyMinBinaryHeap implements MySortedList {
 	private int[] heap;
 	private int[] index;
 	private int heapSize;
-	
+
 	public MyMinBinaryHeap(int maxSize) {
 		super();
-		
+
 		heap = new int[maxSize + 1];
 		index = new int[maxSize + 1];
 		heapSize = 0;
 	}
-	
+
 	@Override
 	public void add(Integer n) {
 		heapSize++;
@@ -64,13 +64,13 @@ public class MyMinBinaryHeap implements MySortedList {
 			}
 		}
 	}
-	
+
 	private boolean check() {
 		return check(1);
 	}
-	
+
 	private boolean check(int u) {
-		int f1 = 2 * u + 1;
+		int f1 = (2 * u) + 1;
 		int f2 = 2 * u;
 		if (f1 <= heapSize) {
 			if (f[heap[u]] > f[heap[f1]]) {
@@ -94,10 +94,10 @@ public class MyMinBinaryHeap implements MySortedList {
 		}
 		return true;
 	}
-	
+
 	public void display() {
 		if (heapSize > 0) {
-			System.out.print("HEAP("+heapSize+") : ");
+			System.out.print("HEAP(" + heapSize + ") : ");
 			for (int n = 1; (n <= heapSize) && (n <= 20); n++) {
 				System.out.print("[" + heap[n] + "/" + f[heap[n]] + "]");
 			}
@@ -121,7 +121,7 @@ public class MyMinBinaryHeap implements MySortedList {
 			u = v;
 			u2 = 2 * u;
 			u21 = u2 + 1;
-			
+
 			if (u21 <= heapSize) {
 				if (f[heap[u]] >= f[heap[u2]]) {
 					v = u2;
@@ -148,12 +148,12 @@ public class MyMinBinaryHeap implements MySortedList {
 
 		return result;
 	}
-	
+
 	@Override
 	public int getIndex(Integer n) {
 		return index[n];
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		return heapSize == 0;
@@ -165,7 +165,7 @@ public class MyMinBinaryHeap implements MySortedList {
 		Arrays.fill(index, -1);
 		heapSize = 0;
 	}
-	
+
 	@Override
 	public void setCost(int[] f) {
 		this.f = f;

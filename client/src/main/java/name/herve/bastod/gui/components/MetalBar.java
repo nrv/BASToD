@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,21 +61,21 @@ public class MetalBar extends AbstractComponent {
 	@Override
 	public void drawText() {
 		drawCentered(GUIResources.getInstance().getFont(player.getColor()), strMetal);
-		
+
 		BitmapFont font = GUIResources.getInstance().getFont(GUIResources.FONT_SMALL_WHITE);
 		Rectangle2D.Float b = getBounds(font, strDeltaA);
-		draw(font, strDeltaA, getX() + getWidth() - b.width - 4, getY() + getHeight() - b.height - 4);
+		draw(font, strDeltaA, (getX() + getWidth()) - b.width - 4, (getY() + getHeight())  - 4);
 		b = getBounds(font, strDeltaR);
-		draw(font, strDeltaR, getX() + getWidth() - b.width - 4, getY() +  4);
-		
-		//draw(, strMetal, getX() + getWidth() / 2 - 20, getY() + halfHeight + halfHeight / 2 + 7);
-		//draw(GUIResources.getInstance().getFont(GUIResources.FONT_STANDARD_WHITE), strDelta, getX() + getWidth() / 2 - 10, getY() + halfHeight / 2 + 7);
+		draw(font, strDeltaR, (getX() + getWidth()) - b.width - 4, getY() + b.height + 4);
+
+		// draw(, strMetal, getX() + getWidth() / 2 - 20, getY() + halfHeight + halfHeight / 2 + 7);
+		// draw(GUIResources.getInstance().getFont(GUIResources.FONT_STANDARD_WHITE), strDelta, getX() + getWidth() / 2 - 10, getY() + halfHeight / 2 + 7);
 	}
 
 	@Override
 	public void stop() {
 		super.stop();
-		
+
 		disposeComponent();
 	}
 
@@ -91,7 +91,7 @@ public class MetalBar extends AbstractComponent {
 
 		c1.a = 0.5f;
 		p.setColor(c1);
-		int w = player.getMetal() * (getWidth() - 2) / player.getMaxMetal();
+		int w = (player.getMetal() * (getWidth() - 2)) / player.getMaxMetal();
 		p.fillRectangle(1, 1, w, getHeight() - 2);
 
 		strMetal = "$ " + player.getMetal();

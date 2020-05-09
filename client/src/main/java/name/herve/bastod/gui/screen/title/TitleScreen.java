@@ -1,44 +1,53 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
 package name.herve.bastod.gui.screen.title;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 
 import name.herve.bastod.gui.screen.menu.MenuScreen;
 import name.herve.bastod.guifwk.AbstractGame;
 import name.herve.bastod.guifwk.AbstractScreen;
 import name.herve.bastod.guifwk.GUIResources;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class TitleScreen extends AbstractScreen {
 	public static final String CACHE_NAME = "title";
-	
+
 	// private float z;
 
 	public TitleScreen(AbstractGame sltd) {
 		super(sltd);
 		// z = 0;
 		setCacheName(CACHE_NAME);
+	}
+
+	@Override
+	public boolean keyDown(int k) {
+		if (k == Input.Keys.ESCAPE) {
+			Gdx.app.exit();
+		}
+
+		return false;
 	}
 
 	@Override
@@ -63,14 +72,5 @@ public class TitleScreen extends AbstractScreen {
 		}
 
 		return true;
-	}
-
-	@Override
-	public boolean keyDown(int k) {
-		if (k == Input.Keys.ESCAPE) {
-			Gdx.app.exit();
-		}
-
-		return false;
 	}
 }

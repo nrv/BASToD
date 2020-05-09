@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ public class Engine {
 	public final static int _SP_BOTTOM = 98;
 	public final static int _SP_SIDE = 0;
 	public final static int _SP_TOP = 30;
-	public final static int BOARD_WIDTH = _VIEWPORT_WIDTH - 2 * _SP_SIDE;
+	public final static int BOARD_WIDTH = _VIEWPORT_WIDTH - (2 * _SP_SIDE);
 	public final static int BOARD_HEIGHT = _VIEWPORT_HEIGHT - _SP_BOTTOM - _SP_TOP;
 	public final static int GRID_WIDTH = BOARD_WIDTH / _SQUARE_SIZE;
 	public final static int GRID_HEIGHT = BOARD_HEIGHT / _SQUARE_SIZE;
@@ -102,7 +102,7 @@ public class Engine {
 		rd = new Random(seed);
 		speed = 1;
 		started = false;
-		listeners = new ArrayList<EngineListener>();
+		listeners = new ArrayList<>();
 	}
 
 	public boolean addBoardUnit(Unit e) {
@@ -148,7 +148,7 @@ public class Engine {
 	}
 
 	private void computeOpenedBuildPositions() {
-		openedBuildPositions = new ArrayList<Vector>();
+		openedBuildPositions = new ArrayList<>();
 
 		Player aPlayer = game.getPlayers().iterator().next();
 		Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
@@ -213,17 +213,17 @@ public class Engine {
 	public long getNow() {
 		return game.getNow();
 	}
-	
+
 	public long getNowMilli() {
 		return game.getNow() / Constants.NANO_MILLI;
 	}
 
-	public Player getPlayer(String name) {
-		return game.getPlayer(name);
-	}
-
 	public Player getPlayer(int index) {
 		return game.getPlayer(index);
+	}
+
+	public Player getPlayer(String name) {
+		return game.getPlayer(name);
 	}
 
 	public Collection<Player> getPlayers() {
@@ -240,10 +240,6 @@ public class Engine {
 
 	public boolean isGameOver() {
 		return game.isOver();
-	}
-
-	public boolean isTowerDefenseGame() {
-		return game.getType() == Game.Type.TOWER_DEFENSE;
 	}
 
 	public boolean isImprovementAffordableForPlayer(String imp, Player p) {
@@ -267,7 +263,7 @@ public class Engine {
 				return false;
 			}
 
-			int idx = v.getXInt() * cacheH + v.getYInt();
+			int idx = (v.getXInt() * cacheH) + v.getYInt();
 			if (cachePathAvailableOnGrid[idx] == null) {
 				Player aPlayer = game.getPlayers().iterator().next();
 				Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
@@ -287,8 +283,16 @@ public class Engine {
 		return game.getBoard().isOpened(p);
 	}
 
+	public boolean isPaused() {
+		return paused;
+	}
+
 	public boolean isStarted() {
 		return started;
+	}
+
+	public boolean isTowerDefenseGame() {
+		return game.getType() == Game.Type.TOWER_DEFENSE;
 	}
 
 	public boolean lineOfSight(Vector s, Vector sp) {
@@ -301,6 +305,10 @@ public class Engine {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 	private void setSpawn(Player p, boolean v) {
@@ -368,7 +376,7 @@ public class Engine {
 			if (p.getScore() <= 0) {
 				game.setOver(true);
 			}
-			List<Destructible> destroyedUnits = new ArrayList<Destructible>();
+			List<Destructible> destroyedUnits = new ArrayList<>();
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Destructible) {
 					Destructible d = (Destructible) u;
@@ -448,7 +456,7 @@ public class Engine {
 	}
 
 	private void stepMoveShots(long delta) {
-		List<Shot> shotsWithTargetReached = new ArrayList<Shot>();
+		List<Shot> shotsWithTargetReached = new ArrayList<>();
 		for (Shot s : game.getShots()) {
 			if (s.isTargetReached()) {
 				shotsWithTargetReached.add(s);
@@ -463,7 +471,7 @@ public class Engine {
 
 	private void stepMoveUnits(long delta) {
 		for (Player p : game.getPlayers()) {
-			List<Mobile> unitWithTargetReached = new ArrayList<Mobile>();
+			List<Mobile> unitWithTargetReached = new ArrayList<>();
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Mobile) {
 					Mobile m = (Mobile) u;
@@ -502,7 +510,7 @@ public class Engine {
 	private void stepSpawnUnits() {
 		for (Player p : game.getPlayers()) {
 			if (p.isSpawnEnabled()) {
-				Set<Unit> newUnits = new HashSet<Unit>();
+				Set<Unit> newUnits = new HashSet<>();
 				for (Unit u : p.getUnits()) {
 					if (u instanceof Spawning) {
 						Spawning spu = (Spawning) u;
@@ -538,13 +546,5 @@ public class Engine {
 		for (EngineListener l : listeners) {
 			l.engineEvent(event);
 		}
-	}
-
-	public boolean isPaused() {
-		return paused;
-	}
-
-	public void setPaused(boolean paused) {
-		this.paused = paused;
 	}
 }

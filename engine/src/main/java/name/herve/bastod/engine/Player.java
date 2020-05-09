@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -52,7 +52,7 @@ public abstract class Player implements Comparable<Player> {
 	private int score;
 	private boolean spawnEnabled;
 	private float speedMultiplier;
-	
+
 	private Vector startPositionOnBoard;
 
 	private Statistics stats;
@@ -60,20 +60,20 @@ public abstract class Player implements Comparable<Player> {
 
 	public Player(int index) {
 		super();
-		units = new HashSet<Unit>();
+		units = new HashSet<>();
 		metalAcc = 0;
 		metalMultiplier = 1f;
 		speedMultiplier = 1f;
 		stats = new Statistics();
 		this.index = index;
 		setSpawnEnabled(false);
-		
+
 		actions = Collections.synchronizedList(new ArrayList<PlayerAction>());
 		idGenerator = new IDGenerator();
 	}
-	
+
 	public void addMetal(int amount) {
-		//System.out.println("addMetal("+amount+")");
+		// System.out.println("addMetal("+amount+")");
 		metal += amount;
 
 		metalAdded += amount;
@@ -82,14 +82,14 @@ public abstract class Player implements Comparable<Player> {
 			metal = maxMetal;
 		}
 	}
-	
+
 	public void addScore(int amount) {
-		this.score += amount;
+		score += amount;
 	}
-	
+
 	public boolean addUnit(Unit e) {
 		e.setPlayer(this);
-		((AbstractUnit)e).setId(idGenerator.getId());
+		((AbstractUnit) e).setId(idGenerator.getId());
 		return units.add(e);
 	}
 
@@ -119,9 +119,9 @@ public abstract class Player implements Comparable<Player> {
 		return actions;
 	}
 
-//	public int getBoardXOffset() {
-//		return boardXOffset;
-//	}
+	// public int getBoardXOffset() {
+	// return boardXOffset;
+	// }
 
 	public PlayerActionsProvider getActionsProvider() {
 		return actionsProvider;
@@ -193,27 +193,28 @@ public abstract class Player implements Comparable<Player> {
 
 	public void removeMetal(int amount) {
 		metalRemoved += amount;
-		this.metal -= amount;
+		metal -= amount;
 	}
 
-//	public void setBoardXOffset(int boardXOffset) {
-//		this.boardXOffset = boardXOffset;
-//	}
+	// public void setBoardXOffset(int boardXOffset) {
+	// this.boardXOffset = boardXOffset;
+	// }
 
 	public void removeScore(int amount) {
-		this.score -= amount;
+		score -= amount;
 	}
 
 	public boolean removeUnit(Unit o) {
+		o.setOnBoard(false);
 		return units.remove(o);
 	}
 
 	public void setActionsProvider(PlayerActionsProvider actionsProvider) {
 		this.actionsProvider = actionsProvider;
 	}
-	
+
 	public void setColor(String name) {
-		this.color = name;
+		color = name;
 	}
 
 	public void setEnemy(Player enemy) {
@@ -259,14 +260,14 @@ public abstract class Player implements Comparable<Player> {
 	}
 
 	void stepManageResources(long delta, int incRatePerSec) {
-		//System.out.println("metalAcc " + metalAcc);
+		// System.out.println("metalAcc " + metalAcc);
 		metalAcc += delta * incRatePerSec * metalMultiplier;
 		int amount = (int) (metalAcc / Constants.NANO);
-		//System.out.println("metalAcc " + metalAcc);
+		// System.out.println("metalAcc " + metalAcc);
 		metalAcc -= amount * Constants.NANO;
-		//System.out.println("metalAcc " + metalAcc);
-		//System.out.println("---");
-		
+		// System.out.println("metalAcc " + metalAcc);
+		// System.out.println("---");
+
 		addMetal(amount);
 	}
 

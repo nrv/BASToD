@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,7 +31,7 @@ public abstract class AbstractClickableComponent extends AbstractComponent {
 
 	public AbstractClickableComponent(String name, int x, int y, int w, int h) {
 		super(name, x, y, w, h);
-		listeners = new ArrayList<GUIButtonListener>();
+		listeners = new ArrayList<>();
 	}
 
 	public abstract void activated(int button, boolean hotkey);
@@ -43,19 +43,12 @@ public abstract class AbstractClickableComponent extends AbstractComponent {
 	public abstract int getHotKey();
 
 	private boolean isClicked(int x, int y) {
-		return (getX() <= x) && (getY() <= y) && (x < getX() + getWidth()) && (y < (getY() + getHeight()));
-	}
-	
-	private void warnListeners() {
-		GUIEvent event = new GUIEvent(this);
-		for (GUIButtonListener l : listeners) {
-			l.buttonActivated(event);
-		}
+		return (getX() <= x) && (getY() <= y) && (x < (getX() + getWidth())) && (y < (getY() + getHeight()));
 	}
 
 	@Override
 	public boolean keyDown(int k) {
-		if (isEnabled() && k == getHotKey()) {
+		if (isEnabled() && (k == getHotKey())) {
 			activated(-1, true);
 			warnListeners();
 			return true;
@@ -77,5 +70,12 @@ public abstract class AbstractClickableComponent extends AbstractComponent {
 		}
 
 		return false;
+	}
+
+	private void warnListeners() {
+		GUIEvent event = new GUIEvent(this);
+		for (GUIButtonListener l : listeners) {
+			l.buttonActivated(event);
+		}
 	}
 }

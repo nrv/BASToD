@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,17 +67,17 @@ public class PathFinder {
 
 		switch (algo) {
 		case DIJKSTRA:
-			dijkstraCache = new HashMap<Long, Dijkstra>();
+			dijkstraCache = new HashMap<>();
 			initGraph(gridDimension, allowDiagonal);
 			break;
 		case ASTAR:
 		case ASTAR2:
-			astarCache = new HashMap<Long, Path>();
+			astarCache = new HashMap<>();
 			initGraph(gridDimension, allowDiagonal);
 			break;
 		case ASTAR3:
 		case THETASTAR:
-			astarCache = new HashMap<Long, Path>();
+			astarCache = new HashMap<>();
 			initGraph2(gridDimension, allowDiagonal);
 			break;
 		}
@@ -220,27 +220,27 @@ public class PathFinder {
 			}
 		}
 
-		for (int i = 0; i < gridDimension.getW() - 1; i++) {
+		for (int i = 0; i < (gridDimension.getW() - 1); i++) {
 			for (int j = 0; j < gridDimension.getH(); j++) {
 				graph.addEdge(grid[i][j], grid[i + 1][j], 1f);
 			}
 		}
 
 		for (int i = 0; i < gridDimension.getW(); i++) {
-			for (int j = 0; j < gridDimension.getH() - 1; j++) {
+			for (int j = 0; j < (gridDimension.getH() - 1); j++) {
 				graph.addEdge(grid[i][j], grid[i][j + 1], 1f);
 			}
 		}
 
 		if (allowDiagonal) {
 			float sqrt2 = (float) Math.sqrt(2);
-			for (int i = 0; i < gridDimension.getW() - 1; i++) {
-				for (int j = 0; j < gridDimension.getH() - 1; j++) {
+			for (int i = 0; i < (gridDimension.getW() - 1); i++) {
+				for (int j = 0; j < (gridDimension.getH() - 1); j++) {
 					graph.addEdge(grid[i][j], grid[i + 1][j + 1], sqrt2);
 				}
 			}
 			for (int i = 1; i < gridDimension.getW(); i++) {
-				for (int j = 0; j < gridDimension.getH() - 1; j++) {
+				for (int j = 0; j < (gridDimension.getH() - 1); j++) {
 					graph.addEdge(grid[i][j], grid[i - 1][j + 1], sqrt2);
 				}
 			}
@@ -249,7 +249,7 @@ public class PathFinder {
 					graph.addEdge(grid[i][j], grid[i - 1][j - 1], sqrt2);
 				}
 			}
-			for (int i = 0; i < gridDimension.getW() - 1; i++) {
+			for (int i = 0; i < (gridDimension.getW() - 1); i++) {
 				for (int j = 1; j < gridDimension.getH(); j++) {
 					graph.addEdge(grid[i][j], grid[i + 1][j - 1], sqrt2);
 				}
@@ -328,7 +328,7 @@ public class PathFinder {
 		Node en = getNode(e);
 
 		if (useCache) {
-			Long cacheKey = (long) sn.getId() * (long) graph.size() + (long) en.getId();
+			Long cacheKey = ((long) sn.getId() * (long) graph.size()) + en.getId();
 			if (astarCache.containsKey(cacheKey)) {
 				path = astarCache.get(cacheKey);
 			} else {
@@ -352,7 +352,7 @@ public class PathFinder {
 		int en = nograph.getNode(e);
 
 		if (useCache) {
-			Long cacheKey = (long) sn * (long) nograph.size() + (long) en;
+			Long cacheKey = ((long) sn * (long) nograph.size()) + en;
 			if (astarCache.containsKey(cacheKey)) {
 				path = astarCache.get(cacheKey);
 			} else {
@@ -422,20 +422,11 @@ public class PathFinder {
 	//
 	// npn.add(currentPoint);
 	//
-	// // System.out.println("After  : " + sn.getPosition().toString() +
+	// // System.out.println("After : " + sn.getPosition().toString() +
 	// // " ---> " + toString(npn));
 	//
 	// return npn;
 	// }
-
-	public Path smoothOnBoard(Vector sn, Path path, float r, int nbstep) {
-		for (int i = nbstep; i > 0; i--) {
-			path = smoothOnBoard(sn, path, r);
-			r /= 2;
-		}
-
-		return path;
-	}
 
 	private Path smoothOnBoard(Vector sn, Path path, float r) {
 		if (path.size() < 2) {
@@ -456,9 +447,9 @@ public class PathFinder {
 			Vector v2 = p3.copy().remove(p2).normalize();
 
 			float a = (float) (v1.angleRad(v2) / Math.PI);
-						
+
 			if (a > 0.1) {
-				//Vector tgt = v1.copy().add(v2.copy()).normalize().multiply(r * a * a);
+				// Vector tgt = v1.copy().add(v2.copy()).normalize().multiply(r * a * a);
 				Vector tgt = v1.copy().add(v2.copy()).normalize().multiply(0.5f * r);
 
 				Vector p2a = p2.copy().add(tgt);
@@ -477,6 +468,15 @@ public class PathFinder {
 		return np;
 	}
 
+	public Path smoothOnBoard(Vector sn, Path path, float r, int nbstep) {
+		for (int i = nbstep; i > 0; i--) {
+			path = smoothOnBoard(sn, path, r);
+			r /= 2;
+		}
+
+		return path;
+	}
+
 	private boolean walkable(Vector n1, Vector n2) {
 		Vector p1 = Board.g2b(n1, squareSize);
 		Vector p2 = Board.g2b(n2, squareSize);
@@ -488,7 +488,7 @@ public class PathFinder {
 			return true;
 		}
 
-		float checkStep = ((float) squareSize) / 5f;
+		float checkStep = (squareSize) / 5f;
 		float currentStep = 0f;
 
 		// System.out.println(p1 + " -> " + p2 + " : lineLength " +

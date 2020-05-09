@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,7 +51,7 @@ public class NoGraph {
 		g_nbnb = new int[sz];
 		g_nb = new int[sz * 8];
 		g_c = new float[sz * 8];
-		los = new Boolean[sz * (sz + 1) / 2];
+		los = new Boolean[(sz * (sz + 1)) / 2];
 
 		Arrays.fill(g_a, true);
 		Arrays.fill(g_nbnb, 0);
@@ -69,27 +69,27 @@ public class NoGraph {
 			}
 		}
 
-		for (int i = 0; i < w - 1; i++) {
+		for (int i = 0; i < (w - 1); i++) {
 			for (int j = 0; j < h; j++) {
 				addBidirectionalEdge(getNode(i, j), getNode(i + 1, j), 1f);
 			}
 		}
 
 		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h - 1; j++) {
+			for (int j = 0; j < (h - 1); j++) {
 				addBidirectionalEdge(getNode(i, j), getNode(i, j + 1), 1f);
 			}
 		}
 
 		if (allowDiagonal) {
 			float sqrt2 = (float) Math.sqrt(2);
-			for (int i = 0; i < w - 1; i++) {
-				for (int j = 0; j < h - 1; j++) {
+			for (int i = 0; i < (w - 1); i++) {
+				for (int j = 0; j < (h - 1); j++) {
 					addEdge(getNode(i, j), getNode(i + 1, j + 1), sqrt2);
 				}
 			}
 			for (int i = 1; i < w; i++) {
-				for (int j = 0; j < h - 1; j++) {
+				for (int j = 0; j < (h - 1); j++) {
 					addEdge(getNode(i, j), getNode(i - 1, j + 1), sqrt2);
 				}
 			}
@@ -98,7 +98,7 @@ public class NoGraph {
 					addEdge(getNode(i, j), getNode(i - 1, j - 1), sqrt2);
 				}
 			}
-			for (int i = 0; i < w - 1; i++) {
+			for (int i = 0; i < (w - 1); i++) {
 				for (int j = 1; j < h; j++) {
 					addEdge(getNode(i, j), getNode(i + 1, j - 1), sqrt2);
 				}
@@ -112,7 +112,7 @@ public class NoGraph {
 	}
 
 	private void addEdge(int node1, int node2, float c) {
-		int idx = node1 * 8 + g_nbnb[node1];
+		int idx = (node1 * 8) + g_nbnb[node1];
 		g_nb[idx] = node2;
 		g_c[idx] = c;
 		g_nbnb[node1]++;
@@ -123,8 +123,8 @@ public class NoGraph {
 	}
 
 	public int getNode(int x, int y) {
-		if (x >= 0 && y >= 0 && x < w && y < h) {
-			return x * h + y;
+		if ((x >= 0) && (y >= 0) && (x < w) && (y < h)) {
+			return (x * h) + y;
 		}
 
 		return -1;
@@ -139,7 +139,7 @@ public class NoGraph {
 	}
 
 	public boolean isAvailable(int n) {
-		if (n >= 0 && n < sz) {
+		if ((n >= 0) && (n < sz)) {
 			return g_a[n];
 		}
 		return false;
@@ -149,10 +149,6 @@ public class NoGraph {
 		return isAvailable(getNode(x, y));
 	}
 
-	public boolean lineOfSight(Vector s, Vector sp) {
-		return lineOfSight(getNode(s), getNode(sp));
-	}
-
 	// see http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 	public boolean lineOfSight(int s, int sp) {
 		if (s > sp) {
@@ -160,18 +156,18 @@ public class NoGraph {
 			sp = s;
 			s = t;
 		}
-		
-		int idx = sp + (s * sz) - (s * (1 + s) / 2);
-		
+
+		int idx = (sp + (s * sz)) - ((s * (1 + s)) / 2);
+
 		if (los[idx] != null) {
 			return los[idx];
 		}
-		
+
 		if (!isAvailable(s) || !isAvailable(sp)) {
 			los[idx] = false;
 			return false;
 		}
-		
+
 		int x0 = g_x[s];
 		int y0 = g_y[s];
 		int x1 = g_x[sp];
@@ -214,9 +210,13 @@ public class NoGraph {
 				y0 = y0 + sy;
 			}
 		}
-		
+
 		los[idx] = true;
 		return true;
+	}
+
+	public boolean lineOfSight(Vector s, Vector sp) {
+		return lineOfSight(getNode(s), getNode(sp));
 	}
 
 	public void open(int x, int y) {

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,37 +37,6 @@ public class Dijkstra extends GraphPathFinderAlgorithm {
 
 	public Dijkstra(Graph g) {
 		super(g);
-	}
-
-	@Override
-	public List<Node> getPathNodes(Node start, Node end) {
-		compute(start, end);
-		return getPathNodes(end);
-	}
-
-	public List<Node> getPathNodes(Node end) {
-		return getPathNodes(end, true);
-	}
-
-	public Path getPath(Node end, boolean reverse) {
-		return asPath(getPathNodes(end, reverse));
-	}
-	
-	public List<Node> getPathNodes(Node end, boolean reverse) {
-		List<Node> path = new ArrayList<Node>();
-
-		int u = graph.indexOf(end);
-
-		while (previous[u] >= 0) {
-			path.add(graph.get(u));
-			u = previous[u];
-		}
-
-		if (reverse) {
-			Collections.reverse(path);
-		}
-
-		return path;
 	}
 
 	public void compute(Node start) {
@@ -131,5 +100,36 @@ public class Dijkstra extends GraphPathFinderAlgorithm {
 	@Override
 	public Node getNode(int id) {
 		return graph.get(id);
+	}
+
+	public Path getPath(Node end, boolean reverse) {
+		return asPath(getPathNodes(end, reverse));
+	}
+
+	public List<Node> getPathNodes(Node end) {
+		return getPathNodes(end, true);
+	}
+
+	public List<Node> getPathNodes(Node end, boolean reverse) {
+		List<Node> path = new ArrayList<>();
+
+		int u = graph.indexOf(end);
+
+		while (previous[u] >= 0) {
+			path.add(graph.get(u));
+			u = previous[u];
+		}
+
+		if (reverse) {
+			Collections.reverse(path);
+		}
+
+		return path;
+	}
+
+	@Override
+	public List<Node> getPathNodes(Node start, Node end) {
+		compute(start, end);
+		return getPathNodes(end);
 	}
 }

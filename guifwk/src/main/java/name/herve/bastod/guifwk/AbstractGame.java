@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,11 +21,11 @@ package name.herve.bastod.guifwk;
 import java.util.HashMap;
 import java.util.Map;
 
-import name.herve.bastod.tools.conf.Configuration;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+
+import name.herve.bastod.tools.conf.Configuration;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -40,7 +40,7 @@ public abstract class AbstractGame extends Game {
 		super();
 		this.h = h;
 		this.w = w;
-		screensCache = new HashMap<String, AbstractScreen>();
+		screensCache = new HashMap<>();
 	}
 
 	public Configuration getGameConf() {
@@ -67,17 +67,17 @@ public abstract class AbstractGame extends Game {
 		if (screen.isCached()) {
 			screensCache.put(screen.getCacheName(), screen);
 		}
-		
+
 		if (!screen.isStarted()) {
 			screen.start();
 		}
 
 		Gdx.input.setInputProcessor(screen);
-		
+
 		Screen current = getScreen();
-		
+
 		super.setScreen(screen);
-		
+
 		if (current != null) {
 			AbstractScreen currentScreen = (AbstractScreen) current;
 			if (!currentScreen.isCached()) {

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,7 +56,7 @@ public class XMLConfiguration extends Configuration {
 	// Nasty but it works !
 	@Override
 	protected void load() throws GameException {
-		props = new HashMap<String, String>();
+		props = new HashMap<>();
 
 		BufferedReader r = null;
 		try {
@@ -67,13 +67,13 @@ public class XMLConfiguration extends Configuration {
 			while ((line = r.readLine()) != null) {
 				sb.append(line);
 			}
-			//System.out.println(sb.toString());
+			// System.out.println(sb.toString());
 
 			boolean insideComment = false;
 			boolean insideHeader = false;
 			boolean insideOpeningTag = false;
 			boolean insideClosingTag = false;
-			LinkedList<String> currentKey = new LinkedList<String>();
+			LinkedList<String> currentKey = new LinkedList<>();
 			StringBuilder currentValue = new StringBuilder();
 			StringBuilder currentTag = null;
 
@@ -85,7 +85,7 @@ public class XMLConfiguration extends Configuration {
 						throw new GameException("Invalid XML, found a '<' inside a tag");
 					}
 					if (!insideComment && !insideHeader) {
-						if (idx + 1 < sb.length()) {
+						if ((idx + 1) < sb.length()) {
 							c = sb.charAt(idx + 1);
 							if (c == '?') {
 								insideHeader = true;
@@ -95,8 +95,8 @@ public class XMLConfiguration extends Configuration {
 								idx++;
 								currentTag = new StringBuilder();
 							} else if (c == '!') {
-								if (idx + 3 < sb.length()) {
-									if (sb.charAt(idx + 2) == '-' && sb.charAt(idx + 3) == '-') {
+								if ((idx + 3) < sb.length()) {
+									if ((sb.charAt(idx + 2) == '-') && (sb.charAt(idx + 3) == '-')) {
 										insideComment = true;
 										idx += 3;
 									}
@@ -144,7 +144,7 @@ public class XMLConfiguration extends Configuration {
 						currentValue = new StringBuilder();
 					} else if (insideComment) {
 						if (sb.charAt(idx - 1) == '-') {
-							if (idx - 2 >= 0 && sb.charAt(idx - 2) == '-') {
+							if (((idx - 2) >= 0) && (sb.charAt(idx - 2) == '-')) {
 								insideComment = false;
 							}
 						}
@@ -166,7 +166,7 @@ public class XMLConfiguration extends Configuration {
 				idx++;
 			}
 
-			if (insideOpeningTag || insideClosingTag || insideComment || insideHeader || currentKey.size() > 0) {
+			if (insideOpeningTag || insideClosingTag || insideComment || insideHeader || (currentKey.size() > 0)) {
 				throw new GameException("Invalid XML, everything is not closed properly");
 			}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
+ * Copyright 2012, 2020 Nicolas HERVE
  *
  * This file is part of BASToD.
  *
@@ -144,8 +144,8 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 
 	@Override
 	public void resize(int w, int h) {
-		this.screenWidth = w;
-		this.screenHeight = h;
+		screenWidth = w;
+		screenHeight = h;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, screenWidth, screenHeight);
@@ -165,15 +165,15 @@ public abstract class AbstractScreen extends AbstractDisplay implements Screen, 
 	}
 
 	public void setChangeScreenOnNextRender(AbstractScreen nextScreen) {
-		this.changeScreenOnNextRender = true;
-		this.nextScreenInCache = null;
+		changeScreenOnNextRender = true;
+		nextScreenInCache = null;
 		this.nextScreen = nextScreen;
 	}
 
 	public void setChangeScreenOnNextRender(String nextScreenInCache) {
-		this.changeScreenOnNextRender = true;
+		changeScreenOnNextRender = true;
 		this.nextScreenInCache = nextScreenInCache;
-		this.nextScreen = null;
+		nextScreen = null;
 	}
 
 	@Override

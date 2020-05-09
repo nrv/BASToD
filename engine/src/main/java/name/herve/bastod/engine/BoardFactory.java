@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -79,7 +79,7 @@ public class BoardFactory {
 			throw new GameException("Unable to find maps directory '" + MAP_DIR + "'");
 		}
 
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		if (full) {
 			ret.add("* Random");
 			ret.add("* Custom");
@@ -107,15 +107,15 @@ public class BoardFactory {
 		int bw = board.getGridDimension().getW();
 		int ofbw = bw / 4;
 		int ofbw3 = bw / 3;
-		int ofbw4 = 2 * bw / 3;
-		int ofbw5 = 5 * bw / 12;
+		int ofbw4 = (2 * bw) / 3;
+		int ofbw5 = (5 * bw) / 12;
 		int mbw = bw / 2;
 		int ofbw2 = bw - ofbw;
 		int by = board.getGridDimension().getH();
 		int ofby = by / 6;
 		int ofby2 = by - ofby;
 		int of2by = 2 * ofby;
-		int of2by2 = by - 2 * ofby;
+		int of2by2 = by - (2 * ofby);
 
 		for (int y = ofby; y < ofby2; y++) {
 			addWall(board, ofbw, y);
@@ -162,7 +162,7 @@ public class BoardFactory {
 		bw -= 2 * ofbw;
 		int by = board.getGridDimension().getH();
 
-		int nbTrees = (int) (by * bw / 5);
+		int nbTrees = (by * bw) / 5;
 
 		for (int i = 0; i < nbTrees; i++) {
 			addWall(board, ofbw + rd.nextInt(bw), rd.nextInt(by));
@@ -332,7 +332,7 @@ public class BoardFactory {
 			}
 		}
 
-		for (int x = xOffset; x < xOffset + mw; x++) {
+		for (int x = xOffset; x < (xOffset + mw); x++) {
 			for (int y = 0; y < yOffset; y++) {
 				board.closeOnGrid(x, y);
 			}
@@ -346,6 +346,16 @@ public class BoardFactory {
 
 	}
 
+	private void setDefaultBuildPositions(Board board) {
+		for (int i = 0; i < 2; i++) {
+			for (int dx = -10; dx <= 10; dx++) {
+				for (int dy = -19; dy <= 19; dy++) {
+					board.addBuildPosition(i, board.getStartPosition(i).copy().add(new Vector((1 - (2 * i)) * (15 + dx), dy)));
+				}
+			}
+		}
+	}
+
 	private void setDefaultEndPositions(Board board) {
 		int gh = board.getGridDimension().getH();
 
@@ -355,7 +365,7 @@ public class BoardFactory {
 			int ey = enemy.getYInt();
 			int dy = gh / 3;
 
-			for (int y = (int) Math.max(0, ey - dy); y < (int) Math.min(gh, ey + dy); y++) {
+			for (int y = Math.max(0, ey - dy); y < Math.min(gh, ey + dy); y++) {
 				if (y != ey) {
 					board.addEndPosition(i, new Vector(ex, y));
 				}
@@ -368,23 +378,13 @@ public class BoardFactory {
 		int gh = board.getGridDimension().getH();
 
 		for (int i = 0; i < 2; i++) {
-			board.setStartPosition(i, new Vector(1 + i * (gw - 3), gh / 2));
+			board.setStartPosition(i, new Vector(1 + (i * (gw - 3)), gh / 2));
 		}
 	}
 
 	private void setDefaultTowerPositions(Board board) {
 		for (int i = 0; i < 2; i++) {
-			board.addTowerPosition(i, board.getStartPosition(i).copy().add(new Vector((1 - 2 * i) * 10, 0)));
-		}
-	}
-
-	private void setDefaultBuildPositions(Board board) {
-		for (int i = 0; i < 2; i++) {
-			for (int dx = -10; dx <= 10; dx++) {
-				for (int dy = -19; dy <= 19; dy++) {
-					board.addBuildPosition(i, board.getStartPosition(i).copy().add(new Vector((1 - 2 * i) * (15 + dx), dy)));
-				}
-			}
+			board.addTowerPosition(i, board.getStartPosition(i).copy().add(new Vector((1 - (2 * i)) * 10, 0)));
 		}
 	}
 

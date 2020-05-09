@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,10 @@ package name.herve.bastod.gui.screen.game;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import name.herve.bastod.BASToD;
 import name.herve.bastod.engine.Engine;
@@ -38,10 +42,6 @@ import name.herve.bastod.guifwk.layout.ComponentsLineLayout;
 import name.herve.bastod.guifwk.layout.ComponentsLineLayout.Spacing;
 import name.herve.bastod.tools.Constants;
 import name.herve.bastod.tools.math.Vector;
-
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -64,7 +64,7 @@ public class GameScreen extends AbstractScreen {
 	private ComponentsLineLayout topLine;
 	private ComponentsLineLayout middleLine;
 	private ComponentsLineLayout bottomLine;
-	
+
 	private Unit selected;
 
 	public GameScreen(AbstractGame sltd, Engine engine) {
@@ -73,7 +73,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	private void initComponents() {
-		components = new ArrayList<AbstractComponent>();
+		components = new ArrayList<>();
 
 		topLine = new ComponentsLineLayout();
 		topLine.moveTo(0, getScreenHeight() - Engine._SP_TOP);
@@ -104,11 +104,11 @@ public class GameScreen extends AbstractScreen {
 			} else {
 				ptl = new ComponentsLineLayout();
 				ptl.setSpacing(Spacing.LEFT);
-				ptl.setBounds(getScreenWidth() / 2 - 100, Engine._SP_TOP);
+				ptl.setBounds((getScreenWidth() / 2) - 100, Engine._SP_TOP);
 				topLine.addComponent(ptl);
 				pml = new ComponentsLineLayout();
 				pml.setSpacing(Spacing.LEFT);
-				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - Engine._SP_BOTTOM / 2);
+				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - (Engine._SP_BOTTOM / 2));
 				middleLine.addComponent(pml);
 			}
 
@@ -139,11 +139,11 @@ public class GameScreen extends AbstractScreen {
 				pml = middleLine;
 			} else {
 				ptl = new ComponentsLineLayout();
-				ptl.setBounds(getScreenWidth() / 2 - 100, Engine._SP_TOP);
+				ptl.setBounds((getScreenWidth() / 2) - 100, Engine._SP_TOP);
 				ptl.setSpacing(Spacing.RIGHT);
 				topLine.addComponent(ptl);
 				pml = new ComponentsLineLayout();
-				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - Engine._SP_BOTTOM / 2);
+				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - (Engine._SP_BOTTOM / 2));
 				pml.setSpacing(Spacing.RIGHT);
 				middleLine.addComponent(pml);
 			}
@@ -242,6 +242,14 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	@Override
+	public boolean mouseMoved(int x, int y) {
+		cx = x;
+		cy = y;
+
+		return playerManager.mouseMoved(x, y);
+	}
+
+	@Override
 	public void renderFrame(float delta) {
 		if (!engine.isStarted()) {
 			for (Player p : engine.getPlayers()) {
@@ -280,8 +288,11 @@ public class GameScreen extends AbstractScreen {
 		}
 
 		playerManager.render();
-		
+
 		if (selected != null) {
+			if (!selected.isOnBoard()) {
+				selected = null;
+			}
 			overlayManager.renderUnitInfoBox(selected);
 		}
 
@@ -313,25 +324,6 @@ public class GameScreen extends AbstractScreen {
 			cz -= s;
 			zf = 1f + (cz / 100f);
 			cameraZoom(zf);
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int arg2) {
-		if (BASToD.ZOOM_AND_SCROLL_ACTIVATED) {
-			float dx = (cx - x) * zf;
-			float dy = (y - cy) * zf;
-
-			Vector2 tv = new Vector2(dx, dy);
-
-			camera.translate(tv);
-
-			cx = x;
-			cy = y;
-
 			return true;
 		}
 
@@ -385,7 +377,7 @@ public class GameScreen extends AbstractScreen {
 
 		cx = x;
 		cy = y;
-		
+
 		selected = null;
 
 		for (AbstractComponent c : components) {
@@ -420,11 +412,22 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	@Override
-	public boolean mouseMoved(int x, int y) {
-		cx = x;
-		cy = y;
+	public boolean touchDragged(int x, int y, int arg2) {
+		if (BASToD.ZOOM_AND_SCROLL_ACTIVATED) {
+			float dx = (cx - x) * zf;
+			float dy = (y - cy) * zf;
 
-		return playerManager.mouseMoved(x, y);
+			Vector2 tv = new Vector2(dx, dy);
+
+			camera.translate(tv);
+
+			cx = x;
+			cy = y;
+
+			return true;
+		}
+
+		return false;
 	}
 
 }

@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,12 +43,6 @@ import name.herve.bastod.tools.GameException;
  */
 public abstract class Configuration {
 
-	private static void repeatChar(Writer w, int n, char c) throws IOException {
-		char[] cs = new char[n];
-		Arrays.fill(cs, c);
-		w.write(cs);
-	}
-
 	public static void dump(Configuration c, String comment, File file) throws GameException {
 		DateFormat df = new SimpleDateFormat("EEEEE d MMMMM yyyy 'at' HH:mm:ss", Locale.US);
 		BufferedWriter w = null;
@@ -75,7 +69,7 @@ public abstract class Configuration {
 						repeatChar(w, i, '\t');
 						w.write("</" + last[i] + ">\n");
 					}
-					for (int i = common; i < current.length - 1; i++) {
+					for (int i = common; i < (current.length - 1); i++) {
 						repeatChar(w, i, '\t');
 						w.write("<" + current[i] + ">\n");
 					}
@@ -141,6 +135,12 @@ public abstract class Configuration {
 		}
 	}
 
+	private static void repeatChar(Writer w, int n, char c) throws IOException {
+		char[] cs = new char[n];
+		Arrays.fill(cs, c);
+		w.write(cs);
+	}
+
 	private File f;
 
 	public Configuration(File f) throws GameException {
@@ -184,7 +184,7 @@ public abstract class Configuration {
 	}
 
 	public SortedSet<String> getSortedKeys() {
-		return new TreeSet<String>(getKeys());
+		return new TreeSet<>(getKeys());
 	}
 
 	public abstract String getString(String key) throws GameException;

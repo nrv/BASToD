@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +20,11 @@ package name.herve.bastod.gui.screen.game;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
+import com.badlogic.gdx.graphics.Texture;
 
 import name.herve.bastod.BASToD;
 import name.herve.bastod.engine.Engine;
@@ -38,11 +43,6 @@ import name.herve.bastod.guifwk.GUIResources;
 import name.herve.bastod.tools.math.Dimension;
 import name.herve.bastod.tools.math.Vector;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Blending;
-import com.badlogic.gdx.graphics.Texture;
-
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
@@ -59,8 +59,12 @@ public class SpriteManager extends AbstractDisplayManager {
 		armorLeftStep = 32;
 
 		if (BASToD.DRAW_PATH_ACTIVATED) {
-			pathTextures = new HashMap<Mobile, Texture>();
+			pathTextures = new HashMap<>();
 		}
+	}
+
+	private void drawWithOffset(Texture texture, float x, float y) {
+		draw(texture, x - (texture.getWidth() / 2), y - (texture.getHeight() / 2));
 	}
 
 	private Texture getSprite(Unit u) {
@@ -94,9 +98,9 @@ public class SpriteManager extends AbstractDisplayManager {
 		p.setBlending(Blending.None);
 		p.setColor(c);
 
-		//p.drawRectangle(0, 0, sqs, 3);
+		// p.drawRectangle(0, 0, sqs, 3);
 
-		int w = step * sqs / armorLeftStep;
+		int w = (step * sqs) / armorLeftStep;
 		p.fillRectangle(0, 0, w, 3);
 
 		Texture t = new Texture(p);
@@ -110,6 +114,24 @@ public class SpriteManager extends AbstractDisplayManager {
 		float y = Engine._SP_BOTTOM + s.getPositionOnBoard().getY();
 
 		drawWithOffset(GUIResources.getInstance().getSprite("shot", s.getPlayer().getColor()), x, y);
+	}
+
+	private void render(Unit u) {
+		float x = Engine._SP_SIDE + u.getPositionOnBoard().getX();
+		float y = Engine._SP_BOTTOM + u.getPositionOnBoard().getY();
+
+		drawWithOffset(getSprite(u), x, y);
+
+		if (u instanceof Destructible) {
+			Destructible d = (Destructible) u;
+			int step = (d.getArmor() * armorLeftStep) / d.getMaxArmor();
+			draw(armorLeftTextures.get(u.getPlayer().getColor()).get(step), x, y);
+		}
+
+		if (BASToD.DRAW_PATH_ACTIVATED && (u instanceof Mobile)) {
+			Mobile m = (Mobile) u;
+			renderPath(m);
+		}
 	}
 
 	private void renderPath(Mobile m) {
@@ -144,28 +166,6 @@ public class SpriteManager extends AbstractDisplayManager {
 		// tPath.dispose();
 	}
 
-	private void drawWithOffset(Texture texture, float x, float y) {
-		draw(texture, x - texture.getWidth() / 2, y - texture.getHeight() / 2);
-	}
-	
-	private void render(Unit u) {
-		float x = Engine._SP_SIDE + u.getPositionOnBoard().getX();
-		float y = Engine._SP_BOTTOM + u.getPositionOnBoard().getY();
-
-		drawWithOffset(getSprite(u), x, y);
-
-		if (u instanceof Destructible) {
-			Destructible d = (Destructible) u;
-			int step = d.getArmor() * armorLeftStep / d.getMaxArmor();
-			draw(armorLeftTextures.get(u.getPlayer().getColor()).get(step), x, y);
-		}
-
-		if (BASToD.DRAW_PATH_ACTIVATED && u instanceof Mobile) {
-			Mobile m = (Mobile) u;
-			renderPath(m);
-		}
-	}
-
 	public void renderSprites(boolean showTargets) {
 		batchBegin();
 
@@ -196,11 +196,11 @@ public class SpriteManager extends AbstractDisplayManager {
 	public void start() {
 		super.start();
 
-		armorLeftTextures = new HashMap<String, Map<Integer, Texture>>();
+		armorLeftTextures = new HashMap<>();
 
 		for (Player p : engine.getPlayers()) {
 			if (!armorLeftTextures.containsKey(p.getColor())) {
-				Map<Integer, Texture> local = new HashMap<Integer, Texture>();
+				Map<Integer, Texture> local = new HashMap<>();
 				for (int i = 0; i <= armorLeftStep; i++) {
 					local.put(i, initArmorLeft(i, GUIResources.getInstance().getColor(p.getColor())));
 				}

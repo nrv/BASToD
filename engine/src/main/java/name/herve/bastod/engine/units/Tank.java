@@ -1,18 +1,18 @@
 /*
- * Copyright 2012, 2013 Nicolas HERVE
- * 
+ * Copyright 2012, 2020 Nicolas HERVE
+ *
  * This file is part of BASToD.
- * 
+ *
  * BASToD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * BASToD is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,11 +46,11 @@ public class Tank extends AbstractUnit implements Mobile, Destructible {
 		super();
 
 		this.maxArmor = maxArmor;
-		this.armor = maxArmor;
+		armor = maxArmor;
 		this.accelerationOnGrid = accelerationOnGrid;
 		this.maxSpeedOnGrid = maxSpeedOnGrid;
 		this.scoreValue = scoreValue;
-		
+
 		path = null;
 		targetOnBoard = null;
 		targetReached = false;
@@ -97,6 +97,7 @@ public class Tank extends AbstractUnit implements Mobile, Destructible {
 		return scoreValue;
 	}
 
+	@Override
 	public float getSpeedOnBoard() {
 		return speedOnBoard;
 	}
@@ -133,14 +134,12 @@ public class Tank extends AbstractUnit implements Mobile, Destructible {
 		return targetSet && targetReached;
 	}
 
-
 	@Override
 	public void move(long delta) {
 		if (pf != null) {
 			pf.move(delta);
 		}
 	}
-
 
 	@Override
 	public void removeArmor(int amount) {
@@ -156,7 +155,7 @@ public class Tank extends AbstractUnit implements Mobile, Destructible {
 			pf = null;
 		}
 	}
-	
+
 	@Override
 	public void setSpeedOnBoard(float s) {
 		speedOnBoard = s;
