@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
-package name.herve.bastod.tools;
+package name.herve.bastod.tools.network;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -25,21 +25,17 @@ import java.awt.geom.Point2D;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class Ball {
-	private int id;
+	private String uuid;
 	private Point2D position;
 	private Point2D speed;
-	private Color color;
+	private float[] color;
 
 	public Ball() {
 		super();
 	}
 
 	public Color getColor() {
-		return color;
-	}
-
-	public int getId() {
-		return id;
+		return new Color(color[0], color[1], color[2]);
 	}
 
 	public Point2D getPosition() {
@@ -50,12 +46,12 @@ public class Ball {
 		return speed;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setColor(float[] color) {
+		this.color = color;
 	}
 
 	public void setPosition(Point2D position) {
@@ -64,5 +60,14 @@ public class Ball {
 
 	public void setSpeed(Point2D speed) {
 		this.speed = speed;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public String toString() {
+		return "Ball [id=" + uuid + ", position=" + position + ", speed=" + speed + "]";
 	}
 }

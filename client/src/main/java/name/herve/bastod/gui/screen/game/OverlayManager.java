@@ -72,11 +72,11 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		p.setColor(c);
 
 		for (int dx = step; dx < sqs; dx += step) {
-			p.drawLine(x + dx, h - y, x + dx, (h - y - sqs) + 1);
+			p.drawLine(x * sqs + dx, h - y * sqs, x * sqs + dx, (h - y * sqs - sqs) + 1);
 		}
 
 		for (int dy = step; dy < sqs; dy += step) {
-			p.drawLine(x + 1, h - y - dy, (x + sqs) - 1, h - y - dy);
+			p.drawLine(x * sqs + 1, h - y * sqs - dy, (x * sqs + sqs) - 1, h - y * sqs - dy);
 		}
 	}
 
@@ -110,8 +110,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 				if (pos != null) {
 					for (Vector v : pos) {
 						if ((Engine.PRECOMPUTE_OPEN_BUILD_POSITIONS && engine.isOpenedBuildPosition(v)) || (engine.isOpenedOnGrid(v))) {
-							Vector vb = engine.fromGridToBoard(v);
-							drawTintedSquare(p, c, vb);
+							drawTintedSquare(p, c, v);
 						}
 					}
 				}
@@ -141,9 +140,9 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 			for (int y = 0; y < dimG.getH(); y++) {
 				Vector v = new Vector(x, y);
 				if (engine.lineOfSight(pos, v)) {
-					drawTintedSquare(p, ok, engine.fromGridToBoard(v));
+					drawTintedSquare(p, ok, v);
 				} else {
-					drawTintedSquare(p, nok, engine.fromGridToBoard(v));
+					drawTintedSquare(p, nok, v);
 				}
 			}
 		}

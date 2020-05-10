@@ -16,14 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
-package name.herve.bastod.tools;
+package name.herve.bastod.tools.network;
 
-import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.InetAddress;
 
 import javax.swing.JFrame;
+
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Listener.ThreadedListener;
+import com.esotericsoftware.minlog.Log;
+
+import name.herve.bastod.tools.network.FunnyGameNetworkOps.ClientConnection;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -35,30 +44,50 @@ public class StartClient extends JFrame implements WindowListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Client c = new Client();
-		//
-		// try {
-		// c.init();
-		// c.start();
-		// try {
-		// Thread.sleep(5000);
-		// } catch (InterruptedException e) {
-		// }
-		// c.stop();
-		// } catch (NetworkException e) {
-		// e.printStackTrace();
-		// }
+		try {
+			StartClient client = new StartClient();
+		} catch (HeadlessException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private class MyListener extends Listener {
 
-		StartClient client = new StartClient();
+		@Override
+		public void connected(Connection connection) {
+		}
 
+		@Override
+		public void disconnected(Connection connection) {
+		}
+
+		@Override
+		public void received(Connection connection, Object object) {
+			Log.info("received", object.toString());
+
+			if (object instanceof FunnyGameNetworkOps.SetUUIDMessage) {
+				FunnyGameNetworkOps.SetUUIDMessage msg = (FunnyGameNetworkOps.SetUUIDMessage) object;
+				game.setUuid(msg.uuid);
+			}
+		}
 	}
 
 	private FunnyGame game;
+	private Client client;
 
-	public StartClient() throws HeadlessException {
+	public StartClient() throws HeadlessException, IOException {
 		super();
-		game = new FunnyGame();
-		game.setColor(Color.RED);
+		
+		client = new Client();
+		client.start();
+
+		FunnyGameNetworkOps.register(client);
+		
+		client.addListener(new ThreadedListener(new MyListener()));
+		InetAddress address = client.discoverHost(FunnyGameNetworkOps.udpPort, 5000);
+		client.connect(5000, address, FunnyGameNetworkOps.tcpPort, FunnyGameNetworkOps.udpPort);
+		
+		game = new FunnyGame(true, client);
 		game.startInterface();
 
 		add(game);

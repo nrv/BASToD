@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
-package name.herve.bastod.tools;
+package name.herve.bastod.tools.network;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -30,42 +29,66 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.EndPoint;
+
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class FunnyGame extends JPanel implements MouseListener {
 	private static final long serialVersionUID = -8603475937834654185L;
 
-	private Color color;
+	private float[] color;
 	private List<Ball> balls;
 	private Random rd;
+	private boolean ableToCreateBalls;
+	private EndPoint network;
+	private String uuid;
 
-	public FunnyGame() {
+	public FunnyGame(boolean ableToCreateBalls, EndPoint network) {
 		super();
 
+		this.ableToCreateBalls = ableToCreateBalls;
+		this.network = network;
 		balls = new ArrayList<>();
 		rd = new Random(System.currentTimeMillis());
+		color = new float[] { rd.nextFloat() / 2, rd.nextFloat() / 2, rd.nextFloat() / 2 };
 	}
 
-	public Color getColor() {
-		return color;
+	public void addBall(Ball ball) {
+		balls.add(ball);
+
+		if (network instanceof Client) {
+			Client c = (Client) network;
+			FunnyGameNetworkOps.AddBallMessage msg = new FunnyGameNetworkOps.AddBallMessage();
+			msg.ball = ball;
+			c.sendTCP(msg);
+		} else {
+		}
+
+		repaint();
+	}
+
+	public String getUuid() {
+		return uuid;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		double x = (double) e.getX() / (double) getWidth();
-		double y = (double) e.getY() / (double) getHeight();
-		double dx = (rd.nextDouble() * 2) - 1;
-		double dy = (rd.nextDouble() * 2) - 1;
+		if (ableToCreateBalls) {
+			double x = (double) e.getX() / (double) getWidth();
+			double y = (double) e.getY() / (double) getHeight();
+			double dx = (rd.nextDouble() * 2) - 1;
+			double dy = (rd.nextDouble() * 2) - 1;
 
-		Ball ball = new Ball();
-		ball.setColor(color);
-		ball.setPosition(new Point2D.Double(x, y));
-		ball.setSpeed(new Point2D.Double(dx, dy));
+			Ball ball = new Ball();
+			ball.setUuid(uuid);
+			ball.setColor(color);
+			ball.setPosition(new Point2D.Double(x, y));
+			ball.setSpeed(new Point2D.Double(dx, dy));
 
-		balls.add(ball);
-
-		repaint();
+			addBall(ball);
+		}
 	}
 
 	@Override
@@ -100,8 +123,8 @@ public class FunnyGame extends JPanel implements MouseListener {
 		}
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public void startInterface() {

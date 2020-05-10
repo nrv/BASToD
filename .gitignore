@@ -4,3 +4,4 @@ target/
 /todo.txt
 .project
 .settings
+*.log
