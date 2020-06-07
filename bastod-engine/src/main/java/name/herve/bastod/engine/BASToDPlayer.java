@@ -32,15 +32,15 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public abstract class Player implements Comparable<Player> {
+public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 	public static final String PLAYER_BLUE = "blue";
 	public static final String PLAYER_RED = "red";
 
 	private IDGenerator idGenerator;
-	private List<PlayerAction> actions;
-	private PlayerActionsProvider actionsProvider;
+	private List<BASToDPlayerAction> actions;
+	private BASToDPlayerActionsProvider actionsProvider;
 	private String color;
-	private Player enemy;
+	private BASToDPlayer enemy;
 	private int index;
 	private int maxMetal;
 	private int maxScore;
@@ -58,7 +58,7 @@ public abstract class Player implements Comparable<Player> {
 	private Statistics stats;
 	private Set<Unit> units;
 
-	public Player(int index) {
+	public BASToDPlayer(int index) {
 		super();
 		units = new HashSet<>();
 		metalAcc = 0;
@@ -68,7 +68,7 @@ public abstract class Player implements Comparable<Player> {
 		this.index = index;
 		setSpawnEnabled(false);
 
-		actions = Collections.synchronizedList(new ArrayList<PlayerAction>());
+		actions = Collections.synchronizedList(new ArrayList<BASToDPlayerAction>());
 		idGenerator = new IDGenerator();
 	}
 
@@ -98,7 +98,7 @@ public abstract class Player implements Comparable<Player> {
 	}
 
 	@Override
-	public int compareTo(Player p) {
+	public int compareTo(BASToDPlayer p) {
 		return index - p.index;
 	}
 
@@ -109,13 +109,13 @@ public abstract class Player implements Comparable<Player> {
 	}
 
 	public void gatherActions(long now) {
-		List<PlayerAction> acts = actionsProvider.getActions(now);
+		List<BASToDPlayerAction> acts = actionsProvider.getActions(now);
 		if (acts != null) {
 			actions.addAll(acts);
 		}
 	}
 
-	public List<PlayerAction> getActions() {
+	public List<BASToDPlayerAction> getActions() {
 		return actions;
 	}
 
@@ -123,7 +123,7 @@ public abstract class Player implements Comparable<Player> {
 	// return boardXOffset;
 	// }
 
-	public PlayerActionsProvider getActionsProvider() {
+	public BASToDPlayerActionsProvider getActionsProvider() {
 		return actionsProvider;
 	}
 
@@ -131,7 +131,7 @@ public abstract class Player implements Comparable<Player> {
 		return color;
 	}
 
-	public Player getEnemy() {
+	public BASToDPlayer getEnemy() {
 		return enemy;
 	}
 
@@ -209,7 +209,7 @@ public abstract class Player implements Comparable<Player> {
 		return units.remove(o);
 	}
 
-	public void setActionsProvider(PlayerActionsProvider actionsProvider) {
+	public void setActionsProvider(BASToDPlayerActionsProvider actionsProvider) {
 		this.actionsProvider = actionsProvider;
 	}
 
@@ -217,7 +217,7 @@ public abstract class Player implements Comparable<Player> {
 		color = name;
 	}
 
-	public void setEnemy(Player enemy) {
+	public void setEnemy(BASToDPlayer enemy) {
 		this.enemy = enemy;
 	}
 

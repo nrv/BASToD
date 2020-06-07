@@ -18,7 +18,7 @@
  */
 package name.herve.bastod.engine.buildings;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Shot;
 import name.herve.bastod.engine.units.Destructible;
 import name.herve.bastod.engine.units.Firing;
@@ -30,7 +30,7 @@ import name.herve.game.tools.math.Vector;
  */
 public class TowerShot implements Shot {
 	private int damageDealt;
-	private Player player;
+	private BASToDPlayer player;
 	private Vector positionOnBoard;
 	private float speedOnBoard;
 	private float speedOnGrid;
@@ -53,7 +53,7 @@ public class TowerShot implements Shot {
 	}
 
 	@Override
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return player;
 	}
 
@@ -97,7 +97,7 @@ public class TowerShot implements Shot {
 	}
 
 	@Override
-	public void setPlayer(Player player) {
+	public void setPlayer(BASToDPlayer player) {
 		this.player = player;
 	}
 

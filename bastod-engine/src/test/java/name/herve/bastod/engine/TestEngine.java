@@ -18,7 +18,7 @@
  */
 package name.herve.bastod.engine;
 
-import name.herve.bastod.engine.Game.Type;
+import name.herve.bastod.engine.BASToDGame.Type;
 import name.herve.bastod.engine.simulator.Simulator;
 import name.herve.game.tools.GameException;
 import name.herve.game.tools.conf.Configuration;
@@ -31,7 +31,7 @@ public class TestEngine {
 		Configuration gconf = Configuration.load(Type.TWO_PLAYERS.getFile());
 		long seed = 1864750354l;
 
-		Game game = GameFactory.createGame(Type.TWO_PLAYERS, gconf, seed);
+		BASToDGame game = BASToDGameFactory.createGame(Type.TWO_PLAYERS, gconf, seed);
 
 		Simulator simul = new Simulator(seed);
 		simul.setFPS(60);

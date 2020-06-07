@@ -21,11 +21,11 @@ package name.herve.bastod.engine.towerdefense;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.Game;
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.PlayerAction;
-import name.herve.bastod.engine.PlayerAction.Action;
-import name.herve.bastod.engine.PlayerActionsProvider;
+import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDPlayer;
+import name.herve.bastod.engine.BASToDPlayerAction;
+import name.herve.bastod.engine.BASToDPlayerAction.Action;
+import name.herve.bastod.engine.BASToDPlayerActionsProvider;
 import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.game.tools.Constants;
@@ -35,11 +35,11 @@ import name.herve.game.tools.conf.Configuration;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class TowerDefenseGame implements PlayerActionsProvider {
+public class TowerDefenseGame implements BASToDPlayerActionsProvider {
 	public final static String CF_TDG_LEVEL_WAIT_TIME_I = "tdg.level.wait_time";
 
-	private Game game;
-	private Player me;
+	private BASToDGame game;
+	private BASToDPlayer me;
 
 	private long nextLevelAt;
 	private long waitBeforeLaunch;
@@ -48,7 +48,7 @@ public class TowerDefenseGame implements PlayerActionsProvider {
 	private float difficulty;
 	private int n;
 
-	public TowerDefenseGame(Player me, Game game) throws GameException {
+	public TowerDefenseGame(BASToDPlayer me, BASToDGame game) throws GameException {
 		super();
 		this.game = game;
 		this.me = me;
@@ -66,8 +66,8 @@ public class TowerDefenseGame implements PlayerActionsProvider {
 	}
 
 	@Override
-	public List<PlayerAction> getActions(long now) {
-		List<PlayerAction> acts = null;
+	public List<BASToDPlayerAction> getActions(long now) {
+		List<BASToDPlayerAction> acts = null;
 
 		if (factory == null) {
 			for (Unit u : me.getUnits()) {
@@ -81,7 +81,7 @@ public class TowerDefenseGame implements PlayerActionsProvider {
 					acts = new ArrayList<>();
 				}
 
-				PlayerAction pa = new PlayerAction(me, Action.BUY_FACTORY);
+				BASToDPlayerAction pa = new BASToDPlayerAction(me, Action.BUY_FACTORY);
 				pa.setPositionOnGrid(game.getBoard().fromBoardToGrid(me.getStartPositionOnBoard()));
 				acts.add(pa);
 			}
@@ -114,7 +114,7 @@ public class TowerDefenseGame implements PlayerActionsProvider {
 	}
 
 	@Override
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return me;
 	}
 

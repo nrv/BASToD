@@ -40,7 +40,7 @@ import name.herve.game.tools.math.Vector;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class BoardFactory {
-	private final static String MAP_DIR = "maps/" + Engine.GRID_WIDTH + "x" + Engine.GRID_HEIGHT + "/";
+	private final static String MAP_DIR = "maps/" + BASToDEngine.GRID_WIDTH + "x" + BASToDEngine.GRID_HEIGHT + "/";
 	private final static String MAP_E1 = "e1";
 	private final static String MAP_E2 = "e2";
 	private final static String MAP_EXT = ".csv";
@@ -69,11 +69,11 @@ public class BoardFactory {
 	}
 
 	private Board createBoard() throws GameException {
-		return new Board(new Dimension(Engine.GRID_WIDTH, Engine.GRID_HEIGHT), Engine._SQUARE_SIZE);
+		return new Board(new Dimension(BASToDEngine.GRID_WIDTH, BASToDEngine.GRID_HEIGHT), BASToDEngine._SQUARE_SIZE);
 	}
 
 	public List<String> getAvailableMaps(boolean full) throws GameException {
-		URL url = GameFactory.class.getClassLoader().getResource(MAP_DIR);
+		URL url = BASToDGameFactory.class.getClassLoader().getResource(MAP_DIR);
 
 		if (url == null) {
 			throw new GameException("Unable to find maps directory '" + MAP_DIR + "'");
@@ -192,10 +192,10 @@ public class BoardFactory {
 		System.out.println("    - board dim  : " + board.getBoardDimension());
 
 		String fileName = MAP_DIR + name;
-		URL url = GameFactory.class.getClassLoader().getResource(fileName);
+		URL url = BASToDGameFactory.class.getClassLoader().getResource(fileName);
 		if (url == null) {
 			fileName += MAP_EXT;
-			url = GameFactory.class.getClassLoader().getResource(fileName);
+			url = BASToDGameFactory.class.getClassLoader().getResource(fileName);
 			if (url == null) {
 				throw new GameException("Unable to find map file '" + fileName + "'");
 			}

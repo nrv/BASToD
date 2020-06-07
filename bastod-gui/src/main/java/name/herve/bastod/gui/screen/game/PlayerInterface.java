@@ -21,11 +21,11 @@ package name.herve.bastod.gui.screen.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
+import name.herve.bastod.engine.BASToDPlayerAction;
+import name.herve.bastod.engine.BASToDPlayerActionsProvider;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.PlayerAction;
-import name.herve.bastod.engine.PlayerActionsProvider;
 import name.herve.bastod.gui.components.ImprovementButton;
 import name.herve.bastod.gui.components.MetalBar;
 import name.herve.bastod.gui.components.SingleScoreBar;
@@ -36,28 +36,28 @@ import name.herve.game.gui.layout.ComponentsLineLayout;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class PlayerInterface implements PlayerActionsProvider {
-	private List<PlayerAction> actions;
+public class PlayerInterface implements BASToDPlayerActionsProvider {
+	private List<BASToDPlayerAction> actions;
 
 	private CheckBox btSpawn;
 	private List<AbstractComponent> components;
 	private List<ImprovementButton> improvements;
-	private Player p;
+	private BASToDPlayer p;
 
-	public PlayerInterface(PlayerManager playerManager, Player p, Engine engine, int screenHeight, ComponentsLineLayout ptl, ComponentsLineLayout pml, boolean doSingleScoreBar) {
+	public PlayerInterface(PlayerManager playerManager, BASToDPlayer p, BASToDEngine engine, int screenHeight, ComponentsLineLayout ptl, ComponentsLineLayout pml, boolean doSingleScoreBar) {
 		super();
 		this.p = p;
 
 		improvements = new ArrayList<>();
 		components = new ArrayList<>();
 
-		MetalBar mb = new MetalBar(engine, p, -1, -1, 200, Engine._SP_TOP);
+		MetalBar mb = new MetalBar(engine, p, -1, -1, 200, BASToDEngine._SP_TOP);
 		mb.start();
 		components.add(mb);
 		ptl.addComponent(mb);
 
 		if (doSingleScoreBar) {
-			SingleScoreBar sb = new SingleScoreBar(p, -1, -1, 200, Engine._SP_TOP);
+			SingleScoreBar sb = new SingleScoreBar(p, -1, -1, 200, BASToDEngine._SP_TOP);
 			sb.start();
 			components.add(sb);
 			ptl.addComponent(sb);
@@ -84,7 +84,7 @@ public class PlayerInterface implements PlayerActionsProvider {
 		}
 	}
 
-	public boolean addAction(PlayerAction e) {
+	public boolean addAction(BASToDPlayerAction e) {
 		if (actions == null) {
 			actions = new ArrayList<>();
 		}
@@ -92,14 +92,14 @@ public class PlayerInterface implements PlayerActionsProvider {
 	}
 
 	@Override
-	public List<PlayerAction> getActions(long now) {
-		List<PlayerAction> ret = actions;
+	public List<BASToDPlayerAction> getActions(long now) {
+		List<BASToDPlayerAction> ret = actions;
 		actions = null;
 		return ret;
 	}
 
 	@Override
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return p;
 	}
 

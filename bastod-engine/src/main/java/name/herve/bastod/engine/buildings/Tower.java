@@ -21,7 +21,7 @@ package name.herve.bastod.engine.buildings;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Shot;
 import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.units.AbstractUnit;
@@ -55,7 +55,7 @@ public class Tower extends AbstractUnit implements Firing, Blocking {
 	}
 
 	@Override
-	public void acquireTarget(Player enemy) {
+	public void acquireTarget(BASToDPlayer enemy) {
 		if ((currentTarget == null) || (!currentTarget.isAlive()) || (!currentTarget.isTargetable()) || (!isInRange(currentTarget))) {
 			currentTarget = null;
 			float sqDist;

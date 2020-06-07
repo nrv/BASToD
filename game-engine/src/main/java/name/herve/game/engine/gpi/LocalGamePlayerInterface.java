@@ -21,17 +21,20 @@ package name.herve.game.engine.gpi;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
-import name.herve.game.engine.PlayerAction;
-import name.herve.game.engine.network.GameClient;
+import name.herve.game.engine.GamePlayerAction;
+import name.herve.game.engine.network.GameNetworkClient;
 import name.herve.game.engine.network.GameNetworkOps;
 
 public class LocalGamePlayerInterface extends DefaultGamePlayerInterface {
 	private String playerUuid;
-	private GameClient localClient;
+	private GameNetworkClient localClient;
 
-	public LocalGamePlayerInterface(GameEngine localEngine, GameClient localClient) {
+	public LocalGamePlayerInterface(GameEngine localEngine, GameNetworkClient localClient) {
 		super(localEngine);
 		this.localClient = localClient;
+		if (localClient != null) {
+			localClient.setGpi(this);
+		}
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class LocalGamePlayerInterface extends DefaultGamePlayerInterface {
 	}
 
 	@Override
-	public void executePlayerAction(PlayerAction pa) {
+	public void executePlayerAction(GamePlayerAction pa) {
 		super.executePlayerAction(pa);
 
 		if (localClient.isNetworkEnabled()) {

@@ -20,29 +20,29 @@ package name.herve.bastod.engine.simulator;
 
 import java.text.DecimalFormat;
 
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Game;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.tools.Constants;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class Simulator {
-	private Engine engine;
+	private BASToDEngine engine;
 	private int FPS;
 
 	public Simulator(long seed) {
 		super();
-		engine = new Engine(seed);
+		engine = new BASToDEngine(seed);
 		setFPS(50);
 	}
 
-	public Engine getEngine() {
+	public BASToDEngine getEngine() {
 		return engine;
 	}
 
-	public void setEngine(Engine engine) {
+	public void setEngine(BASToDEngine engine) {
 		this.engine = engine;
 	}
 
@@ -54,10 +54,10 @@ public class Simulator {
 		engine.setSpeed(speed);
 	}
 
-	public void start(Game game) {
+	public void start(BASToDGame game) {
 		engine.setGame(game);
 
-		Player[] players = game.getPlayers().toArray(new Player[2]);
+		BASToDPlayer[] players = game.getPlayers().toArray(new BASToDPlayer[2]);
 
 		DecimalFormat df = new DecimalFormat("0.00");
 

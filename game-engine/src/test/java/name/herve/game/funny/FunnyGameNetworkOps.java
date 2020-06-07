@@ -18,17 +18,16 @@
  */
 package name.herve.game.funny;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.EndPoint;
-
+import name.herve.game.engine.network.GameNetworkComponent;
 import name.herve.game.engine.network.GameNetworkOps;
 
 public class FunnyGameNetworkOps extends GameNetworkOps {
 	public final static int tcpPort = 54741;
 	public final static int udpPort = 54742;
 
-	public static void register(EndPoint endPoint) {
-		Kryo kryo = endPoint.getKryo();
-		kryo.register(int[].class);
+	public static void configure(GameNetworkComponent component) {
+		component.setTCPPort(tcpPort);
+		component.setUDPPort(udpPort);
+		component.addClassToRegister(int[].class);
 	}
 }

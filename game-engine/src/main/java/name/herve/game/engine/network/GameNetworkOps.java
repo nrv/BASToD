@@ -21,8 +21,7 @@ package name.herve.game.engine.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
-import name.herve.game.engine.PlayerAction;
-import name.herve.game.engine.network.GameNetworkOps.GameNetworkMessage;
+import name.herve.game.engine.GamePlayerAction;
 
 public class GameNetworkOps {
 	public static class GameNetworkMessage {
@@ -42,7 +41,7 @@ public class GameNetworkOps {
 	}
 
 	public static class PlayerActionMessage extends GameNetworkMessage {
-		public PlayerAction action;
+		public GamePlayerAction action;
 
 		@Override
 		public String toString() {

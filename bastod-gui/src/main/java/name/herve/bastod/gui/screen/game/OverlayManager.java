@@ -27,10 +27,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.EngineEvent;
-import name.herve.bastod.engine.EngineListener;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDEngineEvent;
+import name.herve.bastod.engine.BASToDEngineListener;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.buildings.Tower;
 import name.herve.bastod.gui.components.UnitInfoBox;
@@ -42,9 +42,9 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class OverlayManager extends AbstractDisplayManager implements EngineListener {
+public class OverlayManager extends AbstractDisplayManager implements BASToDEngineListener {
 	private Texture buildPositions;
-	private Engine engine;
+	private BASToDEngine engine;
 	private Texture grid;
 	// private float halfSQS;
 
@@ -81,7 +81,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 	}
 
 	@Override
-	public void engineEvent(EngineEvent event) {
+	public void engineEvent(BASToDEngineEvent event) {
 		switch (event.getType()) {
 		case BOARD_MODIFIED:
 			clearBuildPositionsCache();
@@ -91,7 +91,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 
 	public void renderBackground() {
 		batchBegin();
-		draw(GUIResources.getInstance().getSprite("background"), Engine._SP_SIDE, Engine._SP_BOTTOM);
+		draw(GUIResources.getInstance().getSprite("background"), BASToDEngine._SP_SIDE, BASToDEngine._SP_BOTTOM);
 		batchEnd();
 	}
 
@@ -102,14 +102,14 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 			Pixmap p = new Pixmap(dimB.getW() + 1, dimB.getH() + 1, Pixmap.Format.RGBA8888);
 			p.setBlending(Blending.None);
 
-			for (Player player : engine.getPlayers()) {
+			for (BASToDPlayer player : engine.getPlayers()) {
 				Color c = GUIResources.getInstance().getColor(player.getColor()).cpy();
 				c.a = 0.2f;
 
 				List<Vector> pos = engine.getBuildPositions(player);
 				if (pos != null) {
 					for (Vector v : pos) {
-						if ((Engine.PRECOMPUTE_OPEN_BUILD_POSITIONS && engine.isOpenedBuildPosition(v)) || (engine.isOpenedOnGrid(v))) {
+						if ((BASToDEngine.PRECOMPUTE_OPEN_BUILD_POSITIONS && engine.isOpenedBuildPosition(v)) || (engine.isOpenedOnGrid(v))) {
 							drawTintedSquare(p, c, v);
 						}
 					}
@@ -121,7 +121,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		}
 
 		batchBegin();
-		draw(buildPositions, Engine._SP_SIDE, Engine._SP_BOTTOM);
+		draw(buildPositions, BASToDEngine._SP_SIDE, BASToDEngine._SP_BOTTOM);
 		batchEnd();
 	}
 
@@ -151,7 +151,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		p.dispose();
 
 		batchBegin();
-		draw(debug, Engine._SP_SIDE, Engine._SP_BOTTOM);
+		draw(debug, BASToDEngine._SP_SIDE, BASToDEngine._SP_BOTTOM);
 		batchEnd();
 
 		debug.dispose();
@@ -183,7 +183,7 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 		}
 
 		batchBegin();
-		draw(grid, Engine._SP_SIDE, Engine._SP_BOTTOM);
+		draw(grid, BASToDEngine._SP_SIDE, BASToDEngine._SP_BOTTOM);
 		batchEnd();
 	}
 
@@ -230,14 +230,14 @@ public class OverlayManager extends AbstractDisplayManager implements EngineList
 				}
 
 				batchBegin();
-				draw(towerRanges.get(k), (Engine._SP_SIDE + selected.getPositionOnBoard().getX()) - shotRange,
-						(Engine._SP_BOTTOM + selected.getPositionOnBoard().getY()) - shotRange);
+				draw(towerRanges.get(k), (BASToDEngine._SP_SIDE + selected.getPositionOnBoard().getX()) - shotRange,
+						(BASToDEngine._SP_BOTTOM + selected.getPositionOnBoard().getY()) - shotRange);
 				batchEnd();
 			}
 		}
 	}
 
-	public void setEngine(Engine engine) {
+	public void setEngine(BASToDEngine engine) {
 		this.engine = engine;
 		engine.addListener(this);
 	}

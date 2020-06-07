@@ -29,8 +29,8 @@ import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.gui.AbstractComponent;
 import name.herve.game.gui.GUIResources;
 
@@ -40,13 +40,13 @@ import name.herve.game.gui.GUIResources;
  */
 public class MetalBar extends AbstractComponent {
 	private DecimalFormat df;
-	private Player player;
+	private BASToDPlayer player;
 	private String strDeltaA;
 	private String strDeltaR;
 	private String strMetal;
-	private Engine engine;
+	private BASToDEngine engine;
 
-	public MetalBar(Engine engine, Player player, int x, int y, int w, int h) {
+	public MetalBar(BASToDEngine engine, BASToDPlayer player, int x, int y, int w, int h) {
 		super("metalbar-" + player.getColor(), x, y, w, h);
 
 		this.player = player;

@@ -18,19 +18,19 @@
  */
 package name.herve.bastod.engine.players;
 
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.PlayerActionsProvider;
+import name.herve.bastod.engine.BASToDPlayer;
+import name.herve.bastod.engine.BASToDPlayerActionsProvider;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class ComputerPlayer extends Player {
+public class ComputerPlayer extends BASToDPlayer {
 
 	public ComputerPlayer(int index) {
 		super(index);
 	}
 
-	public void initAI(PlayerActionsProvider pap) {
+	public void initAI(BASToDPlayerActionsProvider pap) {
 		setActionsProvider(pap);
 	}
 }

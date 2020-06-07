@@ -18,9 +18,9 @@
  */
 package name.herve.bastod.engine.improvements;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.buildings.Tower;
 import name.herve.bastod.engine.units.Blocking;
 import name.herve.game.tools.GameException;
@@ -40,11 +40,11 @@ public class BuyTowerImprovement extends Improvement {
 	public BuyTowerImprovement(Configuration conf) throws GameException {
 		super(conf);
 
-		towerMetalCost = conf.getInt(Engine.CF_TOWER_METAL_COST_I);
-		towerRange = conf.getFloat(Engine.CF_TOWER_SHOT_RANGE_F);
-		towerShotDamage = conf.getInt(Engine.CF_TOWER_SHOT_DAMAGE_I);
-		towerShotSpeed = conf.getFloat(Engine.CF_TOWER_SHOT_SPEED_F);
-		towerReload = conf.getInt(Engine.CF_TOWER_RELOAD_TIME_MILLI_I);
+		towerMetalCost = conf.getInt(BASToDEngine.CF_TOWER_METAL_COST_I);
+		towerRange = conf.getFloat(BASToDEngine.CF_TOWER_SHOT_RANGE_F);
+		towerShotDamage = conf.getInt(BASToDEngine.CF_TOWER_SHOT_DAMAGE_I);
+		towerShotSpeed = conf.getFloat(BASToDEngine.CF_TOWER_SHOT_SPEED_F);
+		towerReload = conf.getInt(BASToDEngine.CF_TOWER_RELOAD_TIME_MILLI_I);
 	}
 
 	public Tower createTower(Vector boardPosition) {
@@ -53,23 +53,23 @@ public class BuyTowerImprovement extends Improvement {
 		tw.setDamageDealt(towerShotDamage);
 		tw.setShotSpeedOnGrid(towerShotSpeed);
 		tw.setReloadTimeMilli(towerReload);
-		tw.init(Engine._SQUARE_SIZE);
+		tw.init(BASToDEngine._SQUARE_SIZE);
 
 		return tw;
 	}
 
 	@Override
-	public int getCost(Player p) {
+	public int getCost(BASToDPlayer p) {
 		return towerMetalCost;
 	}
 
 	@Override
 	public String getName() {
-		return Engine.IMP_BUY_TOWER;
+		return BASToDEngine.IMP_BUY_TOWER;
 	}
 
 	@Override
-	public void improve(Engine engine, Player player, Vector position) {
+	public void improve(BASToDEngine engine, BASToDPlayer player, Vector position) {
 		Tower tw = createTower(engine.fromGridToBoard(position));
 
 		player.addUnit(tw);

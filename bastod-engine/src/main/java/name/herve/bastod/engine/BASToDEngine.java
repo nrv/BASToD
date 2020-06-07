@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import name.herve.bastod.engine.EngineEvent.Type;
+import name.herve.bastod.engine.BASToDEngineEvent.Type;
 import name.herve.bastod.engine.units.Blocking;
 import name.herve.bastod.engine.units.Destructible;
 import name.herve.bastod.engine.units.Firing;
@@ -40,7 +40,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class Engine {
+public class BASToDEngine {
 	public final static String _IMPROVE = "improve.";
 
 	public final static int _VIEWPORT_WIDTH = 800;
@@ -87,8 +87,8 @@ public class Engine {
 
 	private int cacheH;
 	private Boolean[] cachePathAvailableOnGrid;
-	private Game game;
-	private List<EngineListener> listeners;
+	private BASToDGame game;
+	private List<BASToDEngineListener> listeners;
 
 	private List<Vector> openedBuildPositions;
 	private Random rd;
@@ -97,7 +97,7 @@ public class Engine {
 
 	private boolean started;
 
-	public Engine(long seed) {
+	public BASToDEngine(long seed) {
 		super();
 		rd = new Random(seed);
 		speed = 1;
@@ -109,14 +109,14 @@ public class Engine {
 		return game.getBoard().addUnit(e);
 	}
 
-	public boolean addListener(EngineListener l) {
+	public boolean addListener(BASToDEngineListener l) {
 		return listeners.add(l);
 	}
 
 	private void clearPathFinderCache() {
 		game.getBoard().clearPathFinderCache();
 
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Mobile) {
 					Mobile m = (Mobile) u;
@@ -150,11 +150,11 @@ public class Engine {
 	private void computeOpenedBuildPositions() {
 		openedBuildPositions = new ArrayList<>();
 
-		Player aPlayer = game.getPlayers().iterator().next();
+		BASToDPlayer aPlayer = game.getPlayers().iterator().next();
 		Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
 		Vector p2 = game.getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
 
-		for (Player player : game.getPlayers()) {
+		for (BASToDPlayer player : game.getPlayers()) {
 			List<Vector> bp = game.getBoard().getBuildPositions(player);
 			if (bp != null) {
 				for (Vector pos : bp) {
@@ -194,7 +194,7 @@ public class Engine {
 		return game.getBoard().getBoardUnits();
 	}
 
-	public List<Vector> getBuildPositions(Player p) {
+	public List<Vector> getBuildPositions(BASToDPlayer p) {
 		return game.getBoard().getBuildPositions(p);
 	}
 
@@ -218,15 +218,15 @@ public class Engine {
 		return game.getNow() / Constants.NANO_MILLI;
 	}
 
-	public Player getPlayer(int index) {
+	public BASToDPlayer getPlayer(int index) {
 		return game.getPlayer(index);
 	}
 
-	public Player getPlayer(String name) {
+	public BASToDPlayer getPlayer(String name) {
 		return game.getPlayer(name);
 	}
 
-	public Collection<Player> getPlayers() {
+	public Collection<BASToDPlayer> getPlayers() {
 		return game.getPlayers();
 	}
 
@@ -242,11 +242,11 @@ public class Engine {
 		return game.isOver();
 	}
 
-	public boolean isImprovementAffordableForPlayer(String imp, Player p) {
+	public boolean isImprovementAffordableForPlayer(String imp, BASToDPlayer p) {
 		return getAvailableImprovement(imp).isAffordableForPlayer(p);
 	}
 
-	public boolean isOpenedBuildPosition(Player p, Vector v) {
+	public boolean isOpenedBuildPosition(BASToDPlayer p, Vector v) {
 		return isOpenedBuildPosition(v) && game.getBoard().getBuildPositions(p).contains(v);
 	}
 
@@ -265,7 +265,7 @@ public class Engine {
 
 			int idx = (v.getXInt() * cacheH) + v.getYInt();
 			if (cachePathAvailableOnGrid[idx] == null) {
-				Player aPlayer = game.getPlayers().iterator().next();
+				BASToDPlayer aPlayer = game.getPlayers().iterator().next();
 				Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
 				Vector p2 = game.getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
 
@@ -292,18 +292,18 @@ public class Engine {
 	}
 
 	public boolean isTowerDefenseGame() {
-		return game.getType() == Game.Type.TOWER_DEFENSE;
+		return game.getType() == BASToDGame.Type.TOWER_DEFENSE;
 	}
 
 	public boolean lineOfSight(Vector s, Vector sp) {
 		return game.lineOfSight(s, sp);
 	}
 
-	public boolean removeListener(EngineListener l) {
+	public boolean removeListener(BASToDEngineListener l) {
 		return listeners.remove(l);
 	}
 
-	public void setGame(Game game) {
+	public void setGame(BASToDGame game) {
 		this.game = game;
 	}
 
@@ -311,7 +311,7 @@ public class Engine {
 		this.paused = paused;
 	}
 
-	private void setSpawn(Player p, boolean v) {
+	private void setSpawn(BASToDPlayer p, boolean v) {
 		p.setSpawnEnabled(v);
 		warnListeners(Type.SPAW_MODIFIED, p);
 	}
@@ -330,7 +330,7 @@ public class Engine {
 			}
 		}
 
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Blocking) {
 					game.getBoard().closeOnBoard(u.getPositionOnBoard());
@@ -352,7 +352,7 @@ public class Engine {
 			deltaNano *= speed;
 			game.addNow(deltaNano);
 
-			for (Player p : getPlayers()) {
+			for (BASToDPlayer p : getPlayers()) {
 				p.startNewStep(getNow());
 				p.gatherActions(game.getNow());
 			}
@@ -365,14 +365,14 @@ public class Engine {
 			stepMoveShots(deltaNano);
 			stepCheck();
 
-			for (Player p : getPlayers()) {
+			for (BASToDPlayer p : getPlayers()) {
 				p.endStep(getNow());
 			}
 		}
 	}
 
 	private void stepCheck() {
-		for (Player p : getPlayers()) {
+		for (BASToDPlayer p : getPlayers()) {
 			if (p.getScore() <= 0) {
 				game.setOver(true);
 			}
@@ -393,8 +393,8 @@ public class Engine {
 	}
 
 	private void stepDoPlayerActions() {
-		for (Player p : getPlayers()) {
-			for (PlayerAction action : p.getActions()) {
+		for (BASToDPlayer p : getPlayers()) {
+			for (BASToDPlayerAction action : p.getActions()) {
 				switch (action.getAction()) {
 				case START_SPAWN:
 					setSpawn(action.getPlayer(), true);
@@ -430,7 +430,7 @@ public class Engine {
 	}
 
 	private void stepFireUnits() {
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Firing) {
 					Firing f = (Firing) u;
@@ -450,7 +450,7 @@ public class Engine {
 	}
 
 	private void stepManageResources(long delta) {
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			p.stepManageResources(delta, game.getMetalIncreaseRatePerSec());
 		}
 	}
@@ -470,7 +470,7 @@ public class Engine {
 	}
 
 	private void stepMoveUnits(long delta) {
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			List<Mobile> unitWithTargetReached = new ArrayList<>();
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Mobile) {
@@ -508,7 +508,7 @@ public class Engine {
 	}
 
 	private void stepSpawnUnits() {
-		for (Player p : game.getPlayers()) {
+		for (BASToDPlayer p : game.getPlayers()) {
 			if (p.isSpawnEnabled()) {
 				Set<Unit> newUnits = new HashSet<>();
 				for (Unit u : p.getUnits()) {
@@ -536,14 +536,14 @@ public class Engine {
 		}
 	}
 
-	private void warnListeners(EngineEvent.Type type) {
+	private void warnListeners(BASToDEngineEvent.Type type) {
 		warnListeners(type, null);
 	}
 
-	private void warnListeners(EngineEvent.Type type, Player p) {
-		EngineEvent event = new EngineEvent(type);
+	private void warnListeners(BASToDEngineEvent.Type type, BASToDPlayer p) {
+		BASToDEngineEvent event = new BASToDEngineEvent(type);
 		event.setPlayer(p);
-		for (EngineListener l : listeners) {
+		for (BASToDEngineListener l : listeners) {
 			l.engineEvent(event);
 		}
 	}

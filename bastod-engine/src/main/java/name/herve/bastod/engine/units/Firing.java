@@ -18,7 +18,7 @@
  */
 package name.herve.bastod.engine.units;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Shot;
 import name.herve.bastod.engine.Unit;
 
@@ -26,7 +26,7 @@ import name.herve.bastod.engine.Unit;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public interface Firing extends Unit {
-	void acquireTarget(Player enemy);
+	void acquireTarget(BASToDPlayer enemy);
 
 	void addDamageDone(int amount);
 

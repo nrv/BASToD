@@ -25,9 +25,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import name.herve.bastod.BASToD;
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.BASToDGUI;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.buildings.Tower;
 import name.herve.bastod.engine.players.HumanPlayer;
@@ -52,7 +52,7 @@ public class GameScreen extends AbstractScreen {
 	private int cx;
 	private int cy;
 	private int cz;
-	private Engine engine;
+	private BASToDEngine engine;
 	private OverlayManager overlayManager;
 	private CheckBox showBuildPositions;
 	private CheckBox showGrid;
@@ -67,7 +67,7 @@ public class GameScreen extends AbstractScreen {
 
 	private Unit selected;
 
-	public GameScreen(AbstractGame sltd, Engine engine) {
+	public GameScreen(AbstractGame sltd, BASToDEngine engine) {
 		super(sltd);
 		this.engine = engine;
 	}
@@ -76,19 +76,19 @@ public class GameScreen extends AbstractScreen {
 		components = new ArrayList<>();
 
 		topLine = new ComponentsLineLayout();
-		topLine.moveTo(0, getScreenHeight() - Engine._SP_TOP);
-		topLine.setBounds(getScreenWidth(), Engine._SP_TOP);
+		topLine.moveTo(0, getScreenHeight() - BASToDEngine._SP_TOP);
+		topLine.setBounds(getScreenWidth(), BASToDEngine._SP_TOP);
 
 		bottomLine = new ComponentsLineLayout();
 		bottomLine.moveTo(0, 0);
-		bottomLine.setBounds(getScreenWidth(), Engine._SP_BOTTOM / 2);
+		bottomLine.setBounds(getScreenWidth(), BASToDEngine._SP_BOTTOM / 2);
 
 		middleLine = new ComponentsLineLayout();
 		middleLine.moveTo(0, bottomLine.getHeight());
-		middleLine.setBounds(getScreenWidth(), Engine._SP_BOTTOM - bottomLine.getHeight());
+		middleLine.setBounds(getScreenWidth(), BASToDEngine._SP_BOTTOM - bottomLine.getHeight());
 
 		int nbHuman = 0;
-		for (Player p : engine.getPlayers()) {
+		for (BASToDPlayer p : engine.getPlayers()) {
 			if (p instanceof HumanPlayer) {
 				nbHuman++;
 			}
@@ -104,11 +104,11 @@ public class GameScreen extends AbstractScreen {
 			} else {
 				ptl = new ComponentsLineLayout();
 				ptl.setSpacing(Spacing.LEFT);
-				ptl.setBounds((getScreenWidth() / 2) - 100, Engine._SP_TOP);
+				ptl.setBounds((getScreenWidth() / 2) - 100, BASToDEngine._SP_TOP);
 				topLine.addComponent(ptl);
 				pml = new ComponentsLineLayout();
 				pml.setSpacing(Spacing.LEFT);
-				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - (Engine._SP_BOTTOM / 2));
+				pml.setBounds(getScreenWidth() / 2, BASToDEngine._SP_BOTTOM - (BASToDEngine._SP_BOTTOM / 2));
 				middleLine.addComponent(pml);
 			}
 
@@ -117,7 +117,7 @@ public class GameScreen extends AbstractScreen {
 
 		if (!engine.isTowerDefenseGame()) {
 			DualScoreBar db = null;
-			db = new DualScoreBar(engine.getPlayer(0), engine.getPlayer(1), -1, -1, 200, Engine._SP_TOP);
+			db = new DualScoreBar(engine.getPlayer(0), engine.getPlayer(1), -1, -1, 200, BASToDEngine._SP_TOP);
 			db.start();
 			components.add(db);
 			topLine.addComponent(db);
@@ -139,11 +139,11 @@ public class GameScreen extends AbstractScreen {
 				pml = middleLine;
 			} else {
 				ptl = new ComponentsLineLayout();
-				ptl.setBounds((getScreenWidth() / 2) - 100, Engine._SP_TOP);
+				ptl.setBounds((getScreenWidth() / 2) - 100, BASToDEngine._SP_TOP);
 				ptl.setSpacing(Spacing.RIGHT);
 				topLine.addComponent(ptl);
 				pml = new ComponentsLineLayout();
-				pml.setBounds(getScreenWidth() / 2, Engine._SP_BOTTOM - (Engine._SP_BOTTOM / 2));
+				pml.setBounds(getScreenWidth() / 2, BASToDEngine._SP_BOTTOM - (BASToDEngine._SP_BOTTOM / 2));
 				pml.setSpacing(Spacing.RIGHT);
 				middleLine.addComponent(pml);
 			}
@@ -252,7 +252,7 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void renderFrame(float delta) {
 		if (!engine.isStarted()) {
-			for (Player p : engine.getPlayers()) {
+			for (BASToDPlayer p : engine.getPlayers()) {
 				p.setSpawnEnabled(false);
 			}
 			engine.start();
@@ -270,7 +270,7 @@ public class GameScreen extends AbstractScreen {
 		}
 
 		if (showRanges.isChecked()) {
-			for (Player p : engine.getPlayers()) {
+			for (BASToDPlayer p : engine.getPlayers()) {
 				for (Unit u : p.getUnits()) {
 					if (u instanceof Tower) {
 						overlayManager.renderUnitOverlay(u);
@@ -299,7 +299,7 @@ public class GameScreen extends AbstractScreen {
 		engine.step((long) (delta * Constants.NANO));
 
 		if (engine.isGameOver()) {
-			for (Player p : engine.getPlayers()) {
+			for (BASToDPlayer p : engine.getPlayers()) {
 				System.out.println(p + " : " + p.getStats());
 			}
 			setChangeScreenOnNextRender(MenuScreen.CACHE_NAME);
@@ -320,7 +320,7 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public boolean scrolled(int s) {
-		if (BASToD.ZOOM_AND_SCROLL_ACTIVATED) {
+		if (BASToDGUI.ZOOM_AND_SCROLL_ACTIVATED) {
 			cz -= s;
 			zf = 1f + (cz / 100f);
 			cameraZoom(zf);
@@ -390,12 +390,12 @@ public class GameScreen extends AbstractScreen {
 		touchPos.set(x, y, 0);
 		cameraUnproject(touchPos);
 
-		Vector vm = new Vector(touchPos.x - Engine._SP_SIDE, touchPos.y - Engine._SP_BOTTOM);
+		Vector vm = new Vector(touchPos.x - BASToDEngine._SP_SIDE, touchPos.y - BASToDEngine._SP_BOTTOM);
 
 		vm = engine.fromBoardToGrid(vm);
 
 		if (vm != null) {
-			for (Player p : engine.getPlayers()) {
+			for (BASToDPlayer p : engine.getPlayers()) {
 				for (Unit u : p.getUnits()) {
 					Vector vu = engine.fromBoardToGrid(u.getPositionOnBoard());
 					if (vm.equals(vu)) {
@@ -413,7 +413,7 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public boolean touchDragged(int x, int y, int arg2) {
-		if (BASToD.ZOOM_AND_SCROLL_ACTIVATED) {
+		if (BASToDGUI.ZOOM_AND_SCROLL_ACTIVATED) {
 			float dx = (cx - x) * zf;
 			float dy = (y - cy) * zf;
 

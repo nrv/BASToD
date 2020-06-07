@@ -25,13 +25,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
 
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDGame.Type;
+import name.herve.bastod.engine.BASToDGameFactory;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Board;
 import name.herve.bastod.engine.BoardFactory;
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Game;
-import name.herve.bastod.engine.Game.Type;
-import name.herve.bastod.engine.GameFactory;
-import name.herve.bastod.engine.Player;
 import name.herve.bastod.engine.players.ComputerPlayer;
 import name.herve.bastod.engine.players.HumanPlayer;
 import name.herve.bastod.gui.screen.game.GameScreen;
@@ -53,7 +53,6 @@ import name.herve.game.tools.conf.Configuration;
  */
 public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 	public static final String CACHE_NAME = "menu";
-
 	private static final String START_NAME = "start";
 	private static final String GAME_TYPE_NAME = "gametype";
 
@@ -78,7 +77,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 				long seed = System.currentTimeMillis();
 				boardFactory.setSeed(seed);
 
-				Player[] players = new Player[2];
+				BASToDPlayer[] players = new BASToDPlayer[2];
 
 				if (p1.isHuman()) {
 					players[0] = new HumanPlayer(0);
@@ -94,8 +93,8 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 
 				Board board = boardFactory.loadMap(msb.getText());
 
-				Game game = GameFactory.createGame(gt.getSelected(), getGameApplication().getGameConf(), players, board);
-				Engine engine = new Engine(seed);
+				BASToDGame game = BASToDGameFactory.createGame(gt.getSelected(), getGameApplication().getGameConf(), players, board);
+				BASToDEngine engine = new BASToDEngine(seed);
 				engine.setGame(game);
 				GameScreen gs = new GameScreen(getGameApplication(), engine);
 				setChangeScreenOnNextRender(gs);
@@ -125,17 +124,17 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 
 		components = new ArrayList<>();
 
-		gt = new SelectorButton<>(GAME_TYPE_NAME, "Choose a game type : ", Game.Type.values(), (w - 160) / 2, (h / 2) + 100);
+		gt = new SelectorButton<>(GAME_TYPE_NAME, "Choose a game type : ", BASToDGame.Type.values(), (w - 160) / 2, (h / 2) + 100);
 		gt.start();
 		gt.addListener(this);
 		components.add(gt);
 
-		p1 = new HumanOrComputerButton(Player.PLAYER_RED, Engine._SP_SIDE + 50, h / 2);
+		p1 = new HumanOrComputerButton(BASToDPlayer.PLAYER_RED, BASToDEngine._SP_SIDE + 50, h / 2);
 		p1.setHuman();
 		p1.start();
 		components.add(p1);
 
-		p2 = new HumanOrComputerButton(Player.PLAYER_BLUE, w - Engine._SP_SIDE - 210, h / 2);
+		p2 = new HumanOrComputerButton(BASToDPlayer.PLAYER_BLUE, w - BASToDEngine._SP_SIDE - 210, h / 2);
 		p2.setComputer();
 		p2.start();
 		components.add(p2);

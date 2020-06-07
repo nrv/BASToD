@@ -27,7 +27,6 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
-import name.herve.game.engine.GameState;
 import name.herve.game.engine.gpi.RemoteGamePlayerInterface;
 import name.herve.game.engine.network.GameNetworkOps.ClientConnection;
 import name.herve.game.engine.network.GameNetworkOps.GameNetworkMessage;
@@ -35,11 +34,14 @@ import name.herve.game.engine.network.GameNetworkOps.GameNetworkMessage;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public abstract class GameServer<S extends GameState, E extends GameEngine<S>> extends GameNetworkApplication<S, E> {
+public class GameNetworkServer extends GameNetworkComponent {
 	private Server networkServer;
+	private GameEngine localEngine;
 
-	public GameServer() {
+	public GameNetworkServer(GameEngine localEngine) {
 		super();
+
+		this.localEngine = localEngine;
 	}
 
 	@Override
@@ -64,6 +66,11 @@ public abstract class GameServer<S extends GameState, E extends GameEngine<S>> e
 	}
 
 	@Override
+	protected GameEngine getEngine() {
+		return localEngine;
+	}
+
+	@Override
 	protected EndPoint getNetworkEndPoint() {
 		return networkServer;
 	}
@@ -83,14 +90,8 @@ public abstract class GameServer<S extends GameState, E extends GameEngine<S>> e
 		}
 	}
 
-	public void startServer() throws IOException {
-		networkServer.addListener(this);
-		networkServer.bind(getTCPPort(), getUDPPort());
-		networkServer.start();
-	}
-
 	@Override
-	protected GameServer<S, E> startNetwork() {
+	protected GameNetworkServer startNetwork() {
 		setNetworkEnabled(true);
 
 		networkServer = new Server() {
@@ -101,5 +102,11 @@ public abstract class GameServer<S extends GameState, E extends GameEngine<S>> e
 			}
 		};
 		return this;
+	}
+
+	public void startServer() throws IOException {
+		networkServer.addListener(this);
+		networkServer.bind(getTCPPort(), getUDPPort());
+		networkServer.start();
 	}
 }

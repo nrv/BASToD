@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.gui.AbstractComponent;
 import name.herve.game.gui.GUIResources;
 
@@ -31,10 +31,10 @@ import name.herve.game.gui.GUIResources;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class SingleScoreBar extends AbstractComponent {
-	private Player player;
+	private BASToDPlayer player;
 	private String str;
 
-	public SingleScoreBar(Player player, int x, int y, int w, int h) {
+	public SingleScoreBar(BASToDPlayer player, int x, int y, int w, int h) {
 		super("singlescorebar-" + player.getColor(), x, y, w, h);
 		this.player = player;
 		str = null;

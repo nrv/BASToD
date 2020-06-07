@@ -18,12 +18,12 @@
  */
 package name.herve.bastod.engine.players;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class NetworkPlayer extends Player {
+public class NetworkPlayer extends BASToDPlayer {
 
 	public NetworkPlayer(int index) {
 		super(index);

@@ -143,7 +143,7 @@ public class Board {
 		return buildPositions.get(index);
 	}
 
-	public List<Vector> getBuildPositions(Player p) {
+	public List<Vector> getBuildPositions(BASToDPlayer p) {
 		return buildPositions.get(p.getIndex());
 	}
 
@@ -151,7 +151,7 @@ public class Board {
 		return endPositions.get(index);
 	}
 
-	public List<Vector> getEndPositions(Player p) {
+	public List<Vector> getEndPositions(BASToDPlayer p) {
 		return endPositions.get(p.getIndex());
 	}
 
@@ -175,7 +175,7 @@ public class Board {
 		return towerPositions.get(index);
 	}
 
-	public List<Vector> getTowerPositions(Player p) {
+	public List<Vector> getTowerPositions(BASToDPlayer p) {
 		return towerPositions.get(p.getIndex());
 	}
 

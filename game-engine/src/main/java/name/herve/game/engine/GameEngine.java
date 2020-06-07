@@ -60,13 +60,13 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 		}
 	}
 
-	public PlayerAction executePlayerAction(PlayerAction pa) {
+	public GamePlayerAction executePlayerAction(GamePlayerAction pa) {
 		pa.setTick(getCurrentTick());
 		pa = executeSpecificPlayerAction(pa);
 		return pa;
 	}
 
-	public abstract PlayerAction executeSpecificPlayerAction(PlayerAction pa);
+	public abstract GamePlayerAction executeSpecificPlayerAction(GamePlayerAction pa);
 
 	public long getCurrentTick() {
 		return state.getCurrentTick();
@@ -104,7 +104,7 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 
 	@Override
 	public void step(long tick, long deltaNano) {
-		Log.debug("engine", "step " + tick);
+		Log.trace("engine", "step " + tick);
 		state.setCurrentTick(tick);
 		step(deltaNano);
 		for (GameEngineListener l : players.values()) {

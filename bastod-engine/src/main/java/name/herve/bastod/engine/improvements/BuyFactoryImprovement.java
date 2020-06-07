@@ -18,9 +18,9 @@
  */
 package name.herve.bastod.engine.improvements;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.bastod.engine.players.ComputerPlayer;
 import name.herve.bastod.engine.units.Blocking;
@@ -42,12 +42,12 @@ public class BuyFactoryImprovement extends Improvement {
 	public BuyFactoryImprovement(Configuration conf) throws GameException {
 		super(conf);
 
-		tankBuildTimeMilli = conf.getInt(Engine.CF_TANK_BUILD_TIME_MILLI_I);
-		tankMetalCost = conf.getInt(Engine.CF_TANK_METAL_COST_I);
-		tankMaxArmor = conf.getInt(Engine.CF_TANK_MAX_ARMOR_I);
-		tankSpeedOnGrid = conf.getFloat(Engine.CF_TANK_SPEED_F);
-		tankAccelerationOnGrid = conf.getFloat(Engine.CF_TANK_ACCELERATION_F);
-		tankScoreValue = conf.getInt(Engine.CF_TANK_SCORE_VALUE_I);
+		tankBuildTimeMilli = conf.getInt(BASToDEngine.CF_TANK_BUILD_TIME_MILLI_I);
+		tankMetalCost = conf.getInt(BASToDEngine.CF_TANK_METAL_COST_I);
+		tankMaxArmor = conf.getInt(BASToDEngine.CF_TANK_MAX_ARMOR_I);
+		tankSpeedOnGrid = conf.getFloat(BASToDEngine.CF_TANK_SPEED_F);
+		tankAccelerationOnGrid = conf.getFloat(BASToDEngine.CF_TANK_ACCELERATION_F);
+		tankScoreValue = conf.getInt(BASToDEngine.CF_TANK_SCORE_VALUE_I);
 	}
 
 	public Factory createFactory(Vector boardPosition) {
@@ -59,7 +59,7 @@ public class BuyFactoryImprovement extends Improvement {
 		f.setTankAccelerationOnGrid(tankAccelerationOnGrid);
 		f.setTankScoreValue(tankScoreValue);
 		f.setSpawnEnabled(true);
-		f.init(Engine._SQUARE_SIZE);
+		f.init(BASToDEngine._SQUARE_SIZE);
 
 		f.setPositionOnBoard(boardPosition);
 
@@ -67,17 +67,17 @@ public class BuyFactoryImprovement extends Improvement {
 	}
 
 	@Override
-	public int getCost(Player p) {
+	public int getCost(BASToDPlayer p) {
 		return 0;
 	}
 
 	@Override
 	public String getName() {
-		return Engine.IMP_BUY_FACTORY;
+		return BASToDEngine.IMP_BUY_FACTORY;
 	}
 
 	@Override
-	public void improve(Engine engine, Player player, Vector position) {
+	public void improve(BASToDEngine engine, BASToDPlayer player, Vector position) {
 		Factory f = createFactory(engine.fromGridToBoard(position));
 
 		player.addUnit(f);
@@ -89,7 +89,7 @@ public class BuyFactoryImprovement extends Improvement {
 	}
 
 	@Override
-	public boolean isAvailableForPlayer(Player p) {
+	public boolean isAvailableForPlayer(BASToDPlayer p) {
 		return p instanceof ComputerPlayer;
 	}
 

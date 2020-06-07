@@ -23,8 +23,8 @@ import java.util.List;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public interface PlayerActionsProvider {
-	public List<PlayerAction> getActions(long now);
+public interface BASToDPlayerActionsProvider {
+	public List<BASToDPlayerAction> getActions(long now);
 
-	public Player getPlayer();
+	public BASToDPlayer getPlayer();
 }

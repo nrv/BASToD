@@ -18,9 +18,9 @@
  */
 package name.herve.bastod.engine.improvements;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.tools.GameException;
 import name.herve.game.tools.conf.Configuration;
 import name.herve.game.tools.math.Vector;
@@ -35,22 +35,22 @@ public class MoreMetalImprovement extends Improvement {
 	public MoreMetalImprovement(Configuration conf) throws GameException {
 		super(conf);
 
-		cost = conf.getInt(Engine.CF_IMP_MORE_METAL_COST_I);
-		factor = conf.getFloat(Engine.CF_IMP_MORE_METAL_FACTOR_F);
+		cost = conf.getInt(BASToDEngine.CF_IMP_MORE_METAL_COST_I);
+		factor = conf.getFloat(BASToDEngine.CF_IMP_MORE_METAL_FACTOR_F);
 	}
 
 	@Override
-	public int getCost(Player p) {
+	public int getCost(BASToDPlayer p) {
 		return cost;
 	}
 
 	@Override
 	public String getName() {
-		return Engine.IMP_MORE_METAL;
+		return BASToDEngine.IMP_MORE_METAL;
 	}
 
 	@Override
-	public void improve(Engine engine, Player player, Vector position) {
+	public void improve(BASToDEngine engine, BASToDPlayer player, Vector position) {
 		player.setMetalMultiplier(player.getMetalMultiplier() + factor);
 	}
 

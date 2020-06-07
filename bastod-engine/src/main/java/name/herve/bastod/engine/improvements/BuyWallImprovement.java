@@ -18,9 +18,9 @@
  */
 package name.herve.bastod.engine.improvements;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.buildings.Wall;
 import name.herve.bastod.engine.units.Blocking;
 import name.herve.game.tools.GameException;
@@ -36,21 +36,21 @@ public class BuyWallImprovement extends Improvement {
 	public BuyWallImprovement(Configuration conf) throws GameException {
 		super(conf);
 
-		cost = conf.getInt(Engine.CF_WALL_METAL_COST_I);
+		cost = conf.getInt(BASToDEngine.CF_WALL_METAL_COST_I);
 	}
 
 	@Override
-	public int getCost(Player p) {
+	public int getCost(BASToDPlayer p) {
 		return cost;
 	}
 
 	@Override
 	public String getName() {
-		return Engine.IMP_BUY_WALL;
+		return BASToDEngine.IMP_BUY_WALL;
 	}
 
 	@Override
-	public void improve(Engine engine, Player player, Vector position) {
+	public void improve(BASToDEngine engine, BASToDPlayer player, Vector position) {
 		Wall w = new Wall();
 		w.setPositionOnBoard(engine.fromGridToBoard(position));
 		engine.addBoardUnit(w);

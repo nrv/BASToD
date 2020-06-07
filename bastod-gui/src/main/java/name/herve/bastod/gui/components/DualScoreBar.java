@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.gui.AbstractComponent;
 import name.herve.game.gui.GUIResources;
 
@@ -31,12 +31,12 @@ import name.herve.game.gui.GUIResources;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class DualScoreBar extends AbstractComponent {
-	private Player player1;
-	private Player player2;
+	private BASToDPlayer player1;
+	private BASToDPlayer player2;
 	private String str1;
 	private String str2;
 
-	public DualScoreBar(Player player1, Player player2, int x, int y, int w, int h) {
+	public DualScoreBar(BASToDPlayer player1, BASToDPlayer player2, int x, int y, int w, int h) {
 		super("dualscorebar", x, y, w, h);
 		this.player1 = player1;
 		this.player2 = player2;

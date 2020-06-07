@@ -26,8 +26,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.gui.components.ImprovementButton;
 import name.herve.bastod.gui.components.UnitInfoBox;
 import name.herve.bastod.gui.screen.title.TitleScreen;
@@ -37,18 +37,18 @@ import name.herve.game.gui.GUIResources;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class BASToD extends AbstractGame {
+public class BASToDGUI extends AbstractGame {
 	public final static boolean ZOOM_AND_SCROLL_ACTIVATED = false;
 	public final static boolean DRAW_PATH_ACTIVATED = false;
 
 	public static void main(String[] args) {
-		BASToD sltd = new BASToD(Engine._VIEWPORT_WIDTH, Engine._VIEWPORT_HEIGHT);
+		BASToDGUI bastod = new BASToDGUI(BASToDEngine._VIEWPORT_WIDTH, BASToDEngine._VIEWPORT_HEIGHT);
 
 		Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-		cfg.setWindowedMode(sltd.getW(), sltd.getH());
+		cfg.setWindowedMode(bastod.getW(), bastod.getH());
 		cfg.setDecorated(true);
 		cfg.useVsync(true);
-		cfg.setTitle("SLTD");
+		cfg.setTitle("BASToD");
 		cfg.setResizable(false);
 		// cfg.resizable = false;
 		// cfg.title = "SLTD";
@@ -56,16 +56,16 @@ public class BASToD extends AbstractGame {
 		// cfg.width = sltd.getW();
 		// cfg.height = sltd.getH();
 
-		new Lwjgl3Application(sltd, cfg);
+		new Lwjgl3Application(bastod, cfg);
 	}
 
-	public BASToD(int w, int h) {
+	public BASToDGUI(int w, int h) {
 		super(w, h);
 	}
 
 	@Override
 	public void create() {
-		initGUIResources(Engine._SQUARE_SIZE);
+		initGUIResources(BASToDEngine._SQUARE_SIZE);
 		setScreen(new TitleScreen(this));
 	}
 
@@ -106,11 +106,11 @@ public class BASToD extends AbstractGame {
 		r.addTexture("title", new Texture(Gdx.files.internal("title.png")));
 		r.addTexture("background", new Texture(Gdx.files.internal("background.png")));
 
-		r.addColor(Player.PLAYER_RED, Color.RED);
-		r.addColor(Player.PLAYER_BLUE, Color.BLUE);
+		r.addColor(BASToDPlayer.PLAYER_RED, Color.RED);
+		r.addColor(BASToDPlayer.PLAYER_BLUE, Color.BLUE);
 
-		r.addFont(Player.PLAYER_RED, GUIResources.createFont(GUIResources.DEFAULT_FONT, GUIResources.DEFAULT_FONT_SIZE, GUIResources.getInstance().getColor(Player.PLAYER_RED)));
-		r.addFont(Player.PLAYER_BLUE, GUIResources.createFont(GUIResources.DEFAULT_FONT, GUIResources.DEFAULT_FONT_SIZE, GUIResources.getInstance().getColor(Player.PLAYER_BLUE)));
+		r.addFont(BASToDPlayer.PLAYER_RED, GUIResources.createFont(GUIResources.DEFAULT_FONT, GUIResources.DEFAULT_FONT_SIZE, GUIResources.getInstance().getColor(BASToDPlayer.PLAYER_RED)));
+		r.addFont(BASToDPlayer.PLAYER_BLUE, GUIResources.createFont(GUIResources.DEFAULT_FONT, GUIResources.DEFAULT_FONT_SIZE, GUIResources.getInstance().getColor(BASToDPlayer.PLAYER_BLUE)));
 		r.addFont(UnitInfoBox.INFOBOX_FONT, GUIResources.createFont(GUIResources.DEFAULT_FONT, GUIResources.SMALL_FONT_SIZE, Color.YELLOW));
 	}
 

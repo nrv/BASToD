@@ -21,7 +21,7 @@ package name.herve.game.funny;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
-import name.herve.game.engine.PlayerAction;
+import name.herve.game.engine.GamePlayerAction;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
@@ -36,7 +36,7 @@ public class FunnyGameEngine extends GameEngine<FunnyGameState> {
 	}
 
 	@Override
-	public PlayerAction executeSpecificPlayerAction(PlayerAction pa) {
+	public GamePlayerAction executeSpecificPlayerAction(GamePlayerAction pa) {
 		if (ADD_BALL_ACTION.equals(pa.getAction())) {
 			Ball b = Ball.fromParams(pa.getParams());
 			Log.debug("engine", "adding a ball " + b);
@@ -55,12 +55,13 @@ public class FunnyGameEngine extends GameEngine<FunnyGameState> {
 			for (Ball b : getState().getBalls()) {
 				b.setX(b.getX() + b.getVx());
 				b.setY(b.getY() + b.getVy());
-				if (b.getX() < 10 || b.getX() > getState().getWidth() - 10) {
+				if (b.getX() < 12 || b.getX() > getState().getWidth() - 12) {
 					b.setVx(-b.getVx());
 				}
-				if (b.getY() < 10 || b.getY() > getState().getHeight() - 10) {
+				if (b.getY() < 12 || b.getY() > getState().getHeight() - 12) {
 					b.setVy(-b.getVy());
 				}
+				Log.info(b.toString());
 			}
 		}
 	}

@@ -26,13 +26,13 @@ import name.herve.game.tools.math.Vector;
 public interface OnBoard {
 	float getAngle();
 
-	Player getPlayer();
+	BASToDPlayer getPlayer();
 
 	Vector getPositionOnBoard();
 
 	void init(int boardSquareSize);
 
-	void setPlayer(Player player);
+	void setPlayer(BASToDPlayer player);
 
 	void setPositionOnBoard(Vector position);
 }

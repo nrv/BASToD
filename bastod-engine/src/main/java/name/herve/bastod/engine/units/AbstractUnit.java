@@ -20,7 +20,7 @@ package name.herve.bastod.engine.units;
 
 import java.util.List;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Unit;
 import name.herve.game.tools.math.Vector;
 
@@ -29,7 +29,7 @@ import name.herve.game.tools.math.Vector;
  */
 public abstract class AbstractUnit implements Unit {
 	private int id;
-	private Player player;
+	private BASToDPlayer player;
 	private Vector positionOnBoard;
 	private boolean onBoard;
 
@@ -60,7 +60,7 @@ public abstract class AbstractUnit implements Unit {
 	}
 
 	@Override
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return player;
 	}
 
@@ -88,7 +88,7 @@ public abstract class AbstractUnit implements Unit {
 	}
 
 	@Override
-	public void setPlayer(Player player) {
+	public void setPlayer(BASToDPlayer player) {
 		this.player = player;
 	}
 

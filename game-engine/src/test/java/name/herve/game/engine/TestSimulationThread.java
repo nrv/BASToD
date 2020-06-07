@@ -51,7 +51,7 @@ public class TestSimulationThread {
 		}
 
 		@Override
-		public PlayerAction executeSpecificPlayerAction(PlayerAction pa) {
+		public GamePlayerAction executeSpecificPlayerAction(GamePlayerAction pa) {
 			return pa;
 		}
 	}

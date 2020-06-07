@@ -23,18 +23,18 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class PlayerAction {
+public class BASToDPlayerAction {
 	public enum Action {
 		BUY_TOWER, BUY_WALL, BUY_FACTORY, IMPROVE, START_SPAWN, STOP_SPAWN
 	}
 
 	private Action action;
 	private String param;
-	private Player player;
+	private BASToDPlayer player;
 	private Vector positionOnGrid;
 	private long time;
 
-	public PlayerAction(Player player, Action action) {
+	public BASToDPlayerAction(BASToDPlayer player, Action action) {
 		super();
 		this.player = player;
 		this.action = action;
@@ -48,7 +48,7 @@ public class PlayerAction {
 		return param;
 	}
 
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return player;
 	}
 

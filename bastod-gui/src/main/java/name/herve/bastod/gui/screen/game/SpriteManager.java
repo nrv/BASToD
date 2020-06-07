@@ -26,9 +26,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.Texture;
 
-import name.herve.bastod.BASToD;
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.BASToDGUI;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Shot;
 import name.herve.bastod.engine.Unit;
 import name.herve.bastod.engine.buildings.Factory;
@@ -51,14 +51,14 @@ public class SpriteManager extends AbstractDisplayManager {
 	private Map<String, Map<Integer, Texture>> armorLeftTextures;
 	private Map<Mobile, Texture> pathTextures;
 
-	private Engine engine;
+	private BASToDEngine engine;
 
 	public SpriteManager() {
 		super();
 
 		armorLeftStep = 32;
 
-		if (BASToD.DRAW_PATH_ACTIVATED) {
+		if (BASToDGUI.DRAW_PATH_ACTIVATED) {
 			pathTextures = new HashMap<>();
 		}
 	}
@@ -110,15 +110,15 @@ public class SpriteManager extends AbstractDisplayManager {
 	}
 
 	private void render(Shot s) {
-		float x = Engine._SP_SIDE + s.getPositionOnBoard().getX();
-		float y = Engine._SP_BOTTOM + s.getPositionOnBoard().getY();
+		float x = BASToDEngine._SP_SIDE + s.getPositionOnBoard().getX();
+		float y = BASToDEngine._SP_BOTTOM + s.getPositionOnBoard().getY();
 
 		drawWithOffset(GUIResources.getInstance().getSprite("shot", s.getPlayer().getColor()), x, y);
 	}
 
 	private void render(Unit u) {
-		float x = Engine._SP_SIDE + u.getPositionOnBoard().getX();
-		float y = Engine._SP_BOTTOM + u.getPositionOnBoard().getY();
+		float x = BASToDEngine._SP_SIDE + u.getPositionOnBoard().getX();
+		float y = BASToDEngine._SP_BOTTOM + u.getPositionOnBoard().getY();
 
 		drawWithOffset(getSprite(u), x, y);
 
@@ -128,7 +128,7 @@ public class SpriteManager extends AbstractDisplayManager {
 			draw(armorLeftTextures.get(u.getPlayer().getColor()).get(step), x, y);
 		}
 
-		if (BASToD.DRAW_PATH_ACTIVATED && (u instanceof Mobile)) {
+		if (BASToDGUI.DRAW_PATH_ACTIVATED && (u instanceof Mobile)) {
 			Mobile m = (Mobile) u;
 			renderPath(m);
 		}
@@ -161,7 +161,7 @@ public class SpriteManager extends AbstractDisplayManager {
 			p.dispose();
 		}
 
-		draw(pathTextures.get(m), Engine._SP_SIDE, Engine._SP_BOTTOM);
+		draw(pathTextures.get(m), BASToDEngine._SP_SIDE, BASToDEngine._SP_BOTTOM);
 
 		// tPath.dispose();
 	}
@@ -173,7 +173,7 @@ public class SpriteManager extends AbstractDisplayManager {
 			render(u);
 		}
 
-		for (Player p : engine.getPlayers()) {
+		for (BASToDPlayer p : engine.getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (showTargets || !(u instanceof Target)) {
 					render(u);
@@ -188,7 +188,7 @@ public class SpriteManager extends AbstractDisplayManager {
 		batchEnd();
 	}
 
-	public void setEngine(Engine engine) {
+	public void setEngine(BASToDEngine engine) {
 		this.engine = engine;
 	}
 
@@ -198,7 +198,7 @@ public class SpriteManager extends AbstractDisplayManager {
 
 		armorLeftTextures = new HashMap<>();
 
-		for (Player p : engine.getPlayers()) {
+		for (BASToDPlayer p : engine.getPlayers()) {
 			if (!armorLeftTextures.containsKey(p.getColor())) {
 				Map<Integer, Texture> local = new HashMap<>();
 				for (int i = 0; i <= armorLeftStep; i++) {

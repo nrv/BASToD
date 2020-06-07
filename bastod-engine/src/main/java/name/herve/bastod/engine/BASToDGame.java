@@ -32,7 +32,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class Game {
+public class BASToDGame {
 	public enum Type {
 		TOWER_DEFENSE("conf/tower_defense.conf"), TWO_PLAYERS("conf/two_players.conf");
 
@@ -53,11 +53,11 @@ public class Game {
 	private int metalIncreaseRatePerSec;
 	private long now;
 	private boolean over;
-	private List<Player> players;
+	private List<BASToDPlayer> players;
 	private List<Shot> shots;
 	private Type type;
 
-	public Game(Type type, Configuration conf) throws GameException {
+	public BASToDGame(Type type, Configuration conf) throws GameException {
 		super();
 
 		this.conf = conf;
@@ -68,7 +68,7 @@ public class Game {
 
 		availableImprovements = new HashMap<>();
 
-		metalIncreaseRatePerSec = conf.getInt(Engine.CF_GAME_METAL_INCREASE_RATE_PER_SEC_I);
+		metalIncreaseRatePerSec = conf.getInt(BASToDEngine.CF_GAME_METAL_INCREASE_RATE_PER_SEC_I);
 		this.type = type;
 	}
 
@@ -80,7 +80,7 @@ public class Game {
 		now += delta;
 	}
 
-	public void addPlayer(Player p) {
+	public void addPlayer(BASToDPlayer p) {
 		players.add(p.getIndex(), p);
 	}
 
@@ -116,12 +116,12 @@ public class Game {
 		return now;
 	}
 
-	public Player getPlayer(int index) {
+	public BASToDPlayer getPlayer(int index) {
 		return players.get(index);
 	}
 
-	public Player getPlayer(String name) {
-		for (Player p : players) {
+	public BASToDPlayer getPlayer(String name) {
+		for (BASToDPlayer p : players) {
 			if (name.equals(p.getColor())) {
 				return p;
 			}
@@ -130,7 +130,7 @@ public class Game {
 		return null;
 	}
 
-	public Collection<Player> getPlayers() {
+	public Collection<BASToDPlayer> getPlayers() {
 		return players;
 	}
 

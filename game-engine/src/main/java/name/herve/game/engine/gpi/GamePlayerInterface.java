@@ -19,11 +19,11 @@
 package name.herve.game.engine.gpi;
 
 import name.herve.game.engine.GameState;
-import name.herve.game.engine.PlayerAction;
+import name.herve.game.engine.GamePlayerAction;
 
 public interface GamePlayerInterface {
 
-	void executePlayerAction(PlayerAction pa);
+	void executePlayerAction(GamePlayerAction pa);
 
 	long getCurrentTick();
 

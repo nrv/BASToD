@@ -21,7 +21,7 @@ package name.herve.game.engine.gpi;
 import name.herve.game.engine.GameEngine;
 import name.herve.game.engine.GameEngineListener;
 import name.herve.game.engine.GameState;
-import name.herve.game.engine.PlayerAction;
+import name.herve.game.engine.GamePlayerAction;
 
 public abstract class DefaultGamePlayerInterface implements GamePlayerInterface, GameEngineListener {
 	private boolean playerReady;
@@ -33,7 +33,7 @@ public abstract class DefaultGamePlayerInterface implements GamePlayerInterface,
 	}
 
 	@Override
-	public void executePlayerAction(PlayerAction pa) {
+	public void executePlayerAction(GamePlayerAction pa) {
 		pa.setPlayerUuid(getPlayerUuid());
 		pa = localEngine.executePlayerAction(pa);
 	}
@@ -43,7 +43,7 @@ public abstract class DefaultGamePlayerInterface implements GamePlayerInterface,
 		return localEngine.getCurrentTick();
 	}
 
-	protected GameEngine getEngine() {
+	public GameEngine getEngine() {
 		return localEngine;
 	}
 

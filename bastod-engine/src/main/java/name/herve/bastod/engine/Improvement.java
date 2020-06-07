@@ -29,26 +29,26 @@ public abstract class Improvement {
 		super();
 	}
 
-	public void buy(Engine engine, Player player) {
+	public void buy(BASToDEngine engine, BASToDPlayer player) {
 		buy(engine, player, null);
 	}
 
-	public void buy(Engine engine, Player player, Vector position) {
+	public void buy(BASToDEngine engine, BASToDPlayer player, Vector position) {
 		player.removeMetal(getCost(player));
 		improve(engine, player, position);
 	}
 
-	public abstract int getCost(Player p);
+	public abstract int getCost(BASToDPlayer p);
 
 	public abstract String getName();
 
-	public abstract void improve(Engine engine, Player player, Vector position);
+	public abstract void improve(BASToDEngine engine, BASToDPlayer player, Vector position);
 
-	public boolean isAffordableForPlayer(Player p) {
+	public boolean isAffordableForPlayer(BASToDPlayer p) {
 		return getCost(p) <= p.getMetal();
 	}
 
-	public boolean isAvailableForPlayer(Player p) {
+	public boolean isAvailableForPlayer(BASToDPlayer p) {
 		return true;
 	}
 

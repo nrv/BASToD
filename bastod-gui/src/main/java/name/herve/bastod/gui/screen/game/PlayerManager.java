@@ -23,10 +23,10 @@ import java.util.Map;
 
 import com.badlogic.gdx.math.Vector3;
 
-import name.herve.bastod.engine.Engine;
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.PlayerAction;
-import name.herve.bastod.engine.PlayerAction.Action;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
+import name.herve.bastod.engine.BASToDPlayerAction;
+import name.herve.bastod.engine.BASToDPlayerAction.Action;
 import name.herve.bastod.engine.players.HumanPlayer;
 import name.herve.game.gui.AbstractDisplayManager;
 import name.herve.game.gui.GUIEvent;
@@ -49,9 +49,9 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 	private String actingPlayer;
 	private int cx;
 	private int cy;
-	private Engine engine;
+	private BASToDEngine engine;
 	private float halfSQS;
-	private Map<Player, PlayerInterface> interfaces;
+	private Map<BASToDPlayer, PlayerInterface> interfaces;
 	private boolean snapToGrid;
 	private State state;
 
@@ -71,18 +71,18 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		String[] params = event.getSource().getName().split(NAME_SEPARATOR);
 
 		if (params[0].equals(NAME_START_STOP_SPAWN)) {
-			Player player = engine.getPlayer(params[1]);
-			PlayerAction pa = new PlayerAction(player, player.isSpawnEnabled() ? Action.STOP_SPAWN : Action.START_SPAWN);
+			BASToDPlayer player = engine.getPlayer(params[1]);
+			BASToDPlayerAction pa = new BASToDPlayerAction(player, player.isSpawnEnabled() ? Action.STOP_SPAWN : Action.START_SPAWN);
 			interfaces.get(pa.getPlayer()).addAction(pa);
-		} else if (params[0].equals(Engine.IMP_BUY_TOWER)) {
+		} else if (params[0].equals(BASToDEngine.IMP_BUY_TOWER)) {
 			actingPlayer = params[1];
 			state = State.BUY_TOWER;
-		} else if (params[0].equals(Engine.IMP_BUY_WALL)) {
+		} else if (params[0].equals(BASToDEngine.IMP_BUY_WALL)) {
 			actingPlayer = params[1];
 			state = State.BUY_WALL;
-		} else if (params[0].startsWith(Engine._IMPROVE)) {
-			Player player = engine.getPlayer(params[1]);
-			PlayerAction pa = new PlayerAction(player, Action.IMPROVE);
+		} else if (params[0].startsWith(BASToDEngine._IMPROVE)) {
+			BASToDPlayer player = engine.getPlayer(params[1]);
+			BASToDPlayerAction pa = new BASToDPlayerAction(player, Action.IMPROVE);
 			pa.setParam(params[0]);
 			interfaces.get(pa.getPlayer()).addAction(pa);
 		}
@@ -112,7 +112,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		Vector3 touchPos = new Vector3();
 		touchPos.set(x, y, 0);
 		cameraUnproject(touchPos);
-		Vector vm = new Vector(touchPos.x - Engine._SP_SIDE, touchPos.y - Engine._SP_BOTTOM);
+		Vector vm = new Vector(touchPos.x - BASToDEngine._SP_SIDE, touchPos.y - BASToDEngine._SP_BOTTOM);
 
 		// if (vm.getX() < 0 || vm.getY() < 0) {
 		// return null;
@@ -146,7 +146,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		if ((pos != null) && engine.isOpenedBuildPosition(engine.getPlayer(player), pos)) {
 			if (snapToGrid) {
 				Vector v = engine.fromGridToBoard(pos);
-				draw(GUIResources.getInstance().getSprite(sprite, player), (Engine._SP_SIDE + v.getXInt()) - halfSQS, (Engine._SP_BOTTOM + v.getYInt()) - halfSQS);
+				draw(GUIResources.getInstance().getSprite(sprite, player), (BASToDEngine._SP_SIDE + v.getXInt()) - halfSQS, (BASToDEngine._SP_BOTTOM + v.getYInt()) - halfSQS);
 			} else {
 				draw(GUIResources.getInstance().getSprite(sprite, player), x - halfSQS, getScreenHeight() - y - halfSQS);
 			}
@@ -165,7 +165,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		renderBuy(x, y, pos, "wall", p);
 	}
 
-	public void setEngine(Engine engine) {
+	public void setEngine(BASToDEngine engine) {
 		this.engine = engine;
 	}
 
@@ -205,7 +205,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 			if (button == 0) {
 				Vector pog = positionOnGrid(cx, cy);
 				if (pog != null) {
-					PlayerAction pa = new PlayerAction(engine.getPlayer(actingPlayer), Action.BUY_TOWER);
+					BASToDPlayerAction pa = new BASToDPlayerAction(engine.getPlayer(actingPlayer), Action.BUY_TOWER);
 					pa.setPositionOnGrid(pog);
 					interfaces.get(pa.getPlayer()).addAction(pa);
 				}
@@ -217,7 +217,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 			if (button == 0) {
 				Vector pog = positionOnGrid(cx, cy);
 				if (pog != null) {
-					PlayerAction pa = new PlayerAction(engine.getPlayer(actingPlayer), Action.BUY_WALL);
+					BASToDPlayerAction pa = new BASToDPlayerAction(engine.getPlayer(actingPlayer), Action.BUY_WALL);
 					pa.setPositionOnGrid(pog);
 					interfaces.get(pa.getPlayer()).addAction(pa);
 				}

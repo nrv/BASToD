@@ -26,7 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
 import name.herve.game.gui.AbstractComponent;
 import name.herve.game.gui.GUIResources;
 
@@ -34,12 +34,12 @@ import name.herve.game.gui.GUIResources;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class SpeedTimeFPS extends AbstractComponent {
-	private Engine engine;
+	private BASToDEngine engine;
 	private DecimalFormat speedDf;
 	private DecimalFormat timeDf;
 	private BitmapFont font;
 
-	public SpeedTimeFPS(Engine engine, int x, int y, int w, int h) {
+	public SpeedTimeFPS(BASToDEngine engine, int x, int y, int w, int h) {
 		super("speedtimefps", x, y, w, h);
 
 		this.engine = engine;

@@ -23,9 +23,9 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import name.herve.bastod.engine.Engine;
+import name.herve.bastod.engine.BASToDEngine;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Improvement;
-import name.herve.bastod.engine.Player;
 import name.herve.bastod.gui.screen.game.PlayerManager;
 import name.herve.game.gui.GUIResources;
 import name.herve.game.gui.buttons.ImageButton;
@@ -40,17 +40,17 @@ public class ImprovementButton extends ImageButton {
 
 	static {
 		IMP_TEXTURE = new HashMap<>();
-		IMP_TEXTURE.put(Engine.IMP_BUY_TOWER, "tower");
-		IMP_TEXTURE.put(Engine.IMP_BUY_WALL, "wall");
-		IMP_TEXTURE.put(Engine.IMP_MORE_METAL, "more_metal");
-		IMP_TEXTURE.put(Engine.IMP_INCREASE_SPEED, "increase_speed");
+		IMP_TEXTURE.put(BASToDEngine.IMP_BUY_TOWER, "tower");
+		IMP_TEXTURE.put(BASToDEngine.IMP_BUY_WALL, "wall");
+		IMP_TEXTURE.put(BASToDEngine.IMP_MORE_METAL, "more_metal");
+		IMP_TEXTURE.put(BASToDEngine.IMP_INCREASE_SPEED, "increase_speed");
 	}
 
 	private Improvement improvement;
-	private Player player;
+	private BASToDPlayer player;
 	private BitmapFont font;
 
-	public ImprovementButton(Improvement imp, Player p, int x, int y) {
+	public ImprovementButton(Improvement imp, BASToDPlayer p, int x, int y) {
 		super(imp.getName() + PlayerManager.NAME_SEPARATOR + p.getColor(), GUIResources.getInstance().getSprite(IMP_TEXTURE.get(imp.getName()), p.getColor()), -1, x, y, -1, -1,
 				GUIResources.getInstance().getSprite(IMPROVEMENT_BORDER));
 
@@ -77,7 +77,7 @@ public class ImprovementButton extends ImageButton {
 		return improvement;
 	}
 
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return player;
 	}
 

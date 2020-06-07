@@ -19,9 +19,12 @@
 package name.herve.game.funny;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
@@ -29,10 +32,11 @@ import java.util.Random;
 import java.util.UUID;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.esotericsoftware.minlog.Log;
 
-import name.herve.game.engine.PlayerAction;
+import name.herve.game.engine.GamePlayerAction;
 import name.herve.game.engine.gpi.GamePlayerInterface;
 
 /**
@@ -51,7 +55,7 @@ public class FunnyGameDisplay extends JPanel implements MouseListener {
 	// for server
 	private FunnyGameEngine engine;
 
-	// private Timer timer;
+	private Timer timer;
 
 	public FunnyGameDisplay(GamePlayerInterface gpi) {
 		super();
@@ -70,11 +74,11 @@ public class FunnyGameDisplay extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (gpi != null) {
 			if (!gpi.isPlayerReady()) {
-				PlayerAction pa = new PlayerAction();
+				GamePlayerAction pa = new GamePlayerAction();
 				pa.setAction(FunnyGameEngine.READY_ACTION);
 				gpi.executePlayerAction(pa);
 			} else if (gpi.isGameStarted()) {
-				PlayerAction pa = new PlayerAction();
+				GamePlayerAction pa = new GamePlayerAction();
 				Ball ball = new Ball();
 				ball.setUuid(UUID.randomUUID().toString());
 				ball.setColor(color);
@@ -111,7 +115,7 @@ public class FunnyGameDisplay extends JPanel implements MouseListener {
 		super.paint(g);
 
 		long d = 0;
-		if (Log.DEBUG) {
+		if (Log.TRACE) {
 			d = System.nanoTime();
 		}
 
@@ -123,17 +127,18 @@ public class FunnyGameDisplay extends JPanel implements MouseListener {
 
 		FunnyGameState state = null;
 
+		g2.setColor(Color.BLACK);
 		if (gpi != null) {
 			// player display
 			state = (FunnyGameState) gpi.getState();
-			g2.setColor(Color.BLACK);
 			g2.drawString("Ready : " + gpi.isPlayerReady() + " - Step : " + gpi.getCurrentTick(), 10, 20);
 		} else {
 			// server display
 			state = (FunnyGameState) engine.getState();
-			g2.setColor(Color.BLACK);
 			g2.drawString("Started : " + engine.isGameStarted() + " - Step : " + engine.getCurrentTick(), 10, 20);
 		}
+
+		g2.drawRect(0, 0, w - 1, h - 1);
 
 		synchronized (state) {
 			for (Ball ball : state.getBalls()) {
@@ -144,26 +149,42 @@ public class FunnyGameDisplay extends JPanel implements MouseListener {
 
 		Toolkit.getDefaultToolkit().sync();
 
-		if (Log.DEBUG) {
+		if (Log.TRACE) {
 			d = System.nanoTime() - d;
-			Log.debug("paint", decf.format(d / 1000000.) + " ms");
+			Log.trace("paint", w + "x" + h + " - " + decf.format(d / 1000000.) + " ms");
 		}
 	}
 
 	public void startInterface() {
+		FunnyGameState state = null;
+		if (gpi != null) {
+			// player display
+			state = (FunnyGameState) gpi.getState();
+		} else {
+			// server display
+			state = (FunnyGameState) engine.getState();
+		}
+
+		Dimension s = new Dimension(state.getWidth(), state.getHeight());
+		setPreferredSize(s);
+		setMinimumSize(s);
+		setMaximumSize(s);
 		addMouseListener(this);
-		// timer = new Timer(15, new ActionListener() {
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// repaint();
-		// }
-		// });
-		// timer.start();
+
+		timer = new Timer(15, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				repaint();
+			}
+		});
+
+		timer.start();
 	}
 
 	public void stopInterface() {
-		// if (timer != null) {
-		// timer.stop();
-		// }
+		if (timer != null) {
+			timer.stop();
+		}
 	}
 }

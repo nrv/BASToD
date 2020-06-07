@@ -18,7 +18,7 @@
  */
 package name.herve.bastod.engine.towerdefense;
 
-import name.herve.bastod.engine.Player;
+import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.buildings.Factory;
 
 /**
@@ -32,7 +32,7 @@ public class TowerDefenseLevel {
 	float speed;
 	boolean started;
 
-	public void start(Player p, Factory f) {
+	public void start(BASToDPlayer p, Factory f) {
 		f.setTankBuildTimeMilli(waitBetweenSpawnMilli);
 		f.setTankSpeedOnGrid(speed);
 		f.setTankMaxArmor(tankArmor);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
-package name.herve.bastod.guifwk;
+package name.herve.bastod.gui;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

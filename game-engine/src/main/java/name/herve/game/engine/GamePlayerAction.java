@@ -20,13 +20,13 @@ package name.herve.game.engine;
 
 import java.util.Arrays;
 
-public class PlayerAction {
+public class GamePlayerAction {
 	private long tick;
 	private String playerUuid;
 	private String action;
 	private String[] params;
 
-	public PlayerAction() {
+	public GamePlayerAction() {
 		super();
 	}
 
@@ -46,22 +46,22 @@ public class PlayerAction {
 		return tick;
 	}
 
-	public PlayerAction setAction(String action) {
+	public GamePlayerAction setAction(String action) {
 		this.action = action;
 		return this;
 	}
 
-	public PlayerAction setParams(String[] params) {
+	public GamePlayerAction setParams(String[] params) {
 		this.params = params;
 		return this;
 	}
 
-	public PlayerAction setPlayerUuid(String uuid) {
+	public GamePlayerAction setPlayerUuid(String uuid) {
 		playerUuid = uuid;
 		return this;
 	}
 
-	public PlayerAction setTick(long tick) {
+	public GamePlayerAction setTick(long tick) {
 		this.tick = tick;
 		return this;
 	}

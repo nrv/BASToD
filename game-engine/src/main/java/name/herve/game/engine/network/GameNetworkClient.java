@@ -27,18 +27,17 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
-import name.herve.game.engine.GameState;
 import name.herve.game.engine.gpi.LocalGamePlayerInterface;
 import name.herve.game.engine.network.GameNetworkOps.GameNetworkMessage;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public abstract class GameClient<S extends GameState, E extends GameEngine<S>> extends GameNetworkApplication<S, E> {
+public class GameNetworkClient extends GameNetworkComponent {
 	private Client serverConnection;
 	private LocalGamePlayerInterface gpi;
 
-	public GameClient() {
+	public GameNetworkClient() {
 		super();
 	}
 
@@ -63,6 +62,11 @@ public abstract class GameClient<S extends GameState, E extends GameEngine<S>> e
 		if (isNetworkEnabled()) {
 			connectToServer(timeout, InetAddress.getByName(host));
 		}
+	}
+
+	@Override
+	protected GameEngine getEngine() {
+		return getGpi().getEngine();
 	}
 
 	protected LocalGamePlayerInterface getGpi() {
@@ -110,19 +114,18 @@ public abstract class GameClient<S extends GameState, E extends GameEngine<S>> e
 		return serverConnection.sendUDP(object);
 	}
 
-	protected void setGpi(LocalGamePlayerInterface gpi) {
+	public void setGpi(LocalGamePlayerInterface gpi) {
 		this.gpi = gpi;
-		getEngine().registerPlayer(gpi);
 	}
 
 	@Override
-	protected GameClient<S, E> startNetwork() {
+	protected GameNetworkClient startNetwork() {
 		serverConnection = new Client();
 		serverConnection.start();
 		return this;
 	}
 
 	public void stepSimulatedEvent() {
-		Log.debug("simulation", "step");
+		Log.trace("simulation", "step");
 	}
 }

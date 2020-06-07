@@ -21,39 +21,39 @@ package name.herve.bastod.engine.ai;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.Game;
-import name.herve.bastod.engine.Player;
-import name.herve.bastod.engine.PlayerAction;
-import name.herve.bastod.engine.PlayerAction.Action;
-import name.herve.bastod.engine.PlayerActionsProvider;
+import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDPlayer;
+import name.herve.bastod.engine.BASToDPlayerAction;
+import name.herve.bastod.engine.BASToDPlayerAction.Action;
+import name.herve.bastod.engine.BASToDPlayerActionsProvider;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class ArtificialIntelligence implements PlayerActionsProvider {
-	private Player me;
-	private Game game;
+public class ArtificialIntelligence implements BASToDPlayerActionsProvider {
+	private BASToDPlayer me;
+	private BASToDGame game;
 
-	public ArtificialIntelligence(Player me, Game game) {
+	public ArtificialIntelligence(BASToDPlayer me, BASToDGame game) {
 		super();
 		this.game = game;
 		this.me = me;
 	}
 
 	@Override
-	public List<PlayerAction> getActions(long now) {
-		List<PlayerAction> ret = null;
+	public List<BASToDPlayerAction> getActions(long now) {
+		List<BASToDPlayerAction> ret = null;
 
 		if (!me.isSpawnEnabled()) {
 			ret = new ArrayList<>();
-			ret.add(new PlayerAction(me, Action.START_SPAWN));
+			ret.add(new BASToDPlayerAction(me, Action.START_SPAWN));
 		}
 
 		return ret;
 	}
 
 	@Override
-	public Player getPlayer() {
+	public BASToDPlayer getPlayer() {
 		return me;
 	}
 

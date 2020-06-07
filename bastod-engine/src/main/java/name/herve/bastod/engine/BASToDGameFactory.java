@@ -20,7 +20,7 @@ package name.herve.bastod.engine;
 
 import java.util.List;
 
-import name.herve.bastod.engine.Game.Type;
+import name.herve.bastod.engine.BASToDGame.Type;
 import name.herve.bastod.engine.ai.ArtificialIntelligence;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.bastod.engine.buildings.Target;
@@ -39,9 +39,9 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class GameFactory {
-	public static Game createGame(Type type, Configuration conf, long seed) throws GameException {
-		Player[] players = new Player[2];
+public class BASToDGameFactory {
+	public static BASToDGame createGame(Type type, Configuration conf, long seed) throws GameException {
+		BASToDPlayer[] players = new BASToDPlayer[2];
 
 		for (int i = 0; i < 2; i++) {
 			players[i] = new ComputerPlayer(i);
@@ -58,30 +58,30 @@ public class GameFactory {
 		return createGame(type, conf, players, board);
 	}
 
-	public static Game createGame(Type type, Configuration conf, Player[] players, Board board) throws GameException {
-		Game game = new Game(type, conf);
+	public static BASToDGame createGame(Type type, Configuration conf, BASToDPlayer[] players, Board board) throws GameException {
+		BASToDGame game = new BASToDGame(type, conf);
 
 		initImprovements(game);
 
 		game.setBoard(board);
 
 		for (int i = 0; i < players.length; i++) {
-			players[i].setMetal(conf.getInt(Engine.CF_GAME_METAL_INITIAL_I));
-			players[i].setMaxMetal(conf.getInt(Engine.CF_GAME_METAL_MAX_I));
-			players[i].setMaxScore(conf.getInt(Engine.CF_GAME_INITIAL_SCORE_I));
+			players[i].setMetal(conf.getInt(BASToDEngine.CF_GAME_METAL_INITIAL_I));
+			players[i].setMaxMetal(conf.getInt(BASToDEngine.CF_GAME_METAL_MAX_I));
+			players[i].setMaxScore(conf.getInt(BASToDEngine.CF_GAME_INITIAL_SCORE_I));
 
 			players[i].setStartPositionOnBoard(board.fromGridToBoard(board.getStartPosition(i)));
 
-			if (conf.getBoolean(Engine.CF_GAME_INITIAL_FACTORY_B)) {
-				Factory f = ((BuyFactoryImprovement) game.getAvailableImprovement(Engine.IMP_BUY_FACTORY)).createFactory(players[i].getStartPositionOnBoard().copy());
+			if (conf.getBoolean(BASToDEngine.CF_GAME_INITIAL_FACTORY_B)) {
+				Factory f = ((BuyFactoryImprovement) game.getAvailableImprovement(BASToDEngine.IMP_BUY_FACTORY)).createFactory(players[i].getStartPositionOnBoard().copy());
 				players[i].addUnit(f);
 			}
 
-			if (conf.getBoolean(Engine.CF_GAME_INITIAL_TOWER_B)) {
+			if (conf.getBoolean(BASToDEngine.CF_GAME_INITIAL_TOWER_B)) {
 				List<Vector> towers = game.getBoard().getTowerPositions(players[i]);
 				if (towers != null) {
 					for (Vector t : towers) {
-						Tower tw = ((BuyTowerImprovement) game.getAvailableImprovement(Engine.IMP_BUY_TOWER)).createTower(board.fromGridToBoard(t));
+						Tower tw = ((BuyTowerImprovement) game.getAvailableImprovement(BASToDEngine.IMP_BUY_TOWER)).createTower(board.fromGridToBoard(t));
 						players[i].addUnit(tw);
 					}
 				}
@@ -100,8 +100,8 @@ public class GameFactory {
 		players[0].setEnemy(players[1]);
 		players[1].setEnemy(players[0]);
 
-		players[0].setColor(Player.PLAYER_RED);
-		players[1].setColor(Player.PLAYER_BLUE);
+		players[0].setColor(BASToDPlayer.PLAYER_RED);
+		players[1].setColor(BASToDPlayer.PLAYER_BLUE);
 
 		// players[0].setMetalMultiplier(3f);
 		// System.out.println("TEST - " + players[0] + " has metal bonus " +
@@ -110,9 +110,9 @@ public class GameFactory {
 		// players[1].setMetal(0);
 		// System.out.println("TEST - " + players[1] + " has no metal");
 
-		for (Player p : players) {
+		for (BASToDPlayer p : players) {
 			if (p instanceof ComputerPlayer) {
-				PlayerActionsProvider pap = null;
+				BASToDPlayerActionsProvider pap = null;
 				if (game.getType() == Type.TOWER_DEFENSE) {
 					pap = new TowerDefenseGame(p, game);
 				} else {
@@ -126,7 +126,7 @@ public class GameFactory {
 		return game;
 	}
 
-	private static void initImprovements(Game game) throws GameException {
+	private static void initImprovements(BASToDGame game) throws GameException {
 		game.addAvailableImprovement(new BuyTowerImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyWallImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyFactoryImprovement(game.getConf()));

@@ -21,28 +21,6 @@ package name.herve.bastod.engine;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class EngineEvent {
-	public enum Type {
-		BOARD_MODIFIED, SPAW_MODIFIED
-	}
-
-	private Type type;
-	private Player player;
-
-	public EngineEvent(Type type) {
-		super();
-		this.type = type;
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+public interface BASToDEngineListener {
+	void engineEvent(BASToDEngineEvent event);
 }
