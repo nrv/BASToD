@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import name.herve.game.engine.GameState;
 import name.herve.game.tools.GameException;
 import name.herve.game.tools.conf.Configuration;
 import name.herve.game.tools.math.Dimension;
@@ -32,7 +33,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class BASToDGame {
+public class BASToDGame extends GameState {
 	public enum Type {
 		TOWER_DEFENSE("conf/tower_defense.conf"), TWO_PLAYERS("conf/two_players.conf");
 
@@ -53,7 +54,8 @@ public class BASToDGame {
 	private int metalIncreaseRatePerSec;
 	private long now;
 	private boolean over;
-	private List<BASToDPlayer> players;
+	utiliser les DefaultGamePlayerInterface gérées par l'Engine
+//	private List<BASToDPlayer> players;
 	private List<Shot> shots;
 	private Type type;
 

@@ -32,9 +32,9 @@ public class Simulator {
 	private BASToDEngine engine;
 	private int FPS;
 
-	public Simulator(long seed) {
+	public Simulator(long seed, BASToDGame game) {
 		super();
-		engine = new BASToDEngine(seed);
+		engine = new BASToDEngine(seed, game, true);
 		setFPS(50);
 	}
 
@@ -54,10 +54,8 @@ public class Simulator {
 		engine.setSpeed(speed);
 	}
 
-	public void start(BASToDGame game) {
-		engine.setGame(game);
-
-		BASToDPlayer[] players = game.getPlayers().toArray(new BASToDPlayer[2]);
+	public void start() {
+		BASToDPlayer[] players = engine.getPlayers().toArray(new BASToDPlayer[2]);
 
 		DecimalFormat df = new DecimalFormat("0.00");
 
@@ -72,7 +70,7 @@ public class Simulator {
 		long accSleep = 0;
 		int f = 0;
 		currentTime = System.nanoTime();
-		while (!game.isOver()) {
+		while (!engine.isGameOver()) {
 			previousTime = System.nanoTime();
 			engine.step(previousTime - currentTime);
 			currentTime = System.nanoTime();

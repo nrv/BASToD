@@ -33,9 +33,9 @@ public class TestEngine {
 
 		BASToDGame game = BASToDGameFactory.createGame(Type.TWO_PLAYERS, gconf, seed);
 
-		Simulator simul = new Simulator(seed);
+		Simulator simul = new Simulator(seed, game);
 		simul.setFPS(60);
 		simul.setSpeed(10);
-		simul.start(game);
+		simul.start();
 	}
 }

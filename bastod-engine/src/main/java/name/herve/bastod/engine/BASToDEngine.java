@@ -32,6 +32,8 @@ import name.herve.bastod.engine.units.Destructible;
 import name.herve.bastod.engine.units.Firing;
 import name.herve.bastod.engine.units.Mobile;
 import name.herve.bastod.engine.units.Spawning;
+import name.herve.game.engine.GameEngine;
+import name.herve.game.engine.GamePlayerAction;
 import name.herve.game.tools.Constants;
 import name.herve.game.tools.graph.Path;
 import name.herve.game.tools.math.Dimension;
@@ -40,7 +42,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class BASToDEngine {
+public class BASToDEngine extends GameEngine<BASToDGame> {
 	public final static String _IMPROVE = "improve.";
 
 	public final static int _VIEWPORT_WIDTH = 800;
@@ -87,18 +89,15 @@ public class BASToDEngine {
 
 	private int cacheH;
 	private Boolean[] cachePathAvailableOnGrid;
-	private BASToDGame game;
 	private List<BASToDEngineListener> listeners;
-
 	private List<Vector> openedBuildPositions;
 	private Random rd;
 	private float speed;
 	private boolean paused;
-
 	private boolean started;
 
-	public BASToDEngine(long seed) {
-		super();
+	public BASToDEngine(long seed, BASToDGame game, boolean master) {
+		super(master, game);
 		rd = new Random(seed);
 		speed = 1;
 		started = false;
@@ -106,7 +105,7 @@ public class BASToDEngine {
 	}
 
 	public boolean addBoardUnit(Unit e) {
-		return game.getBoard().addUnit(e);
+		return getState().getBoard().addUnit(e);
 	}
 
 	public boolean addListener(BASToDEngineListener l) {
@@ -114,9 +113,9 @@ public class BASToDEngine {
 	}
 
 	private void clearPathFinderCache() {
-		game.getBoard().clearPathFinderCache();
+		getState().getBoard().clearPathFinderCache();
 
-		for (BASToDPlayer p : game.getPlayers()) {
+		for (BASToDPlayer p : getState().getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Mobile) {
 					Mobile m = (Mobile) u;
@@ -137,7 +136,7 @@ public class BASToDEngine {
 	}
 
 	public void closeOnBoard(Vector p, boolean clearCacheAndWarn) {
-		game.getBoard().closeOnBoard(p);
+		getState().getBoard().closeOnBoard(p);
 		if (clearCacheAndWarn) {
 			clearPathFinderCache();
 			if (PRECOMPUTE_OPEN_BUILD_POSITIONS) {
@@ -150,15 +149,15 @@ public class BASToDEngine {
 	private void computeOpenedBuildPositions() {
 		openedBuildPositions = new ArrayList<>();
 
-		BASToDPlayer aPlayer = game.getPlayers().iterator().next();
-		Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
-		Vector p2 = game.getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
+		BASToDPlayer aPlayer = getState().getPlayers().iterator().next();
+		Vector p1 = getState().getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
+		Vector p2 = getState().getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
 
-		for (BASToDPlayer player : game.getPlayers()) {
-			List<Vector> bp = game.getBoard().getBuildPositions(player);
+		for (BASToDPlayer player : getState().getPlayers()) {
+			List<Vector> bp = getState().getBoard().getBuildPositions(player);
 			if (bp != null) {
 				for (Vector pos : bp) {
-					if (game.getBoard().isOpened(pos) && game.getBoard().isPathAvailableOnGrid(p1, p2, pos)) {
+					if (getState().getBoard().isOpened(pos) && getState().getBoard().isPathAvailableOnGrid(p1, p2, pos)) {
 						openedBuildPositions.add(pos);
 					}
 				}
@@ -166,72 +165,78 @@ public class BASToDEngine {
 		}
 	}
 
+	@Override
+	public GamePlayerAction executeSpecificPlayerAction(GamePlayerAction pa) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Vector fromBoardToGrid(Vector p) {
-		return game.getBoard().fromBoardToGrid(p);
+		return getState().getBoard().fromBoardToGrid(p);
 	}
 
 	public Path fromGridToBoard(Path p) {
-		return game.getBoard().fromGridToBoard(p);
+		return getState().getBoard().fromGridToBoard(p);
 	}
 
 	public Vector fromGridToBoard(Vector p) {
-		return game.getBoard().fromGridToBoard(p);
+		return getState().getBoard().fromGridToBoard(p);
 	}
 
 	public Improvement getAvailableImprovement(String name) {
-		return game.getAvailableImprovement(name);
+		return getState().getAvailableImprovement(name);
 	}
 
 	public Collection<Improvement> getAvailableImprovements() {
-		return game.getAvailableImprovements().values();
+		return getState().getAvailableImprovements().values();
 	}
 
 	public Dimension getBoardDimension() {
-		return game.getBoardDimension();
+		return getState().getBoardDimension();
 	}
 
 	public Collection<Unit> getBoardUnits() {
-		return game.getBoard().getBoardUnits();
+		return getState().getBoard().getBoardUnits();
 	}
 
 	public List<Vector> getBuildPositions(BASToDPlayer p) {
-		return game.getBoard().getBuildPositions(p);
+		return getState().getBoard().getBuildPositions(p);
 	}
 
 	public float getElapsedTimeSec() {
-		return (float) game.getNow() / (float) Constants.NANO;
+		return (float) getState().getNow() / (float) Constants.NANO;
 	}
 
 	public Dimension getGridDimension() {
-		return game.getBoard().getGridDimension();
+		return getState().getBoard().getGridDimension();
 	}
 
 	public int getGridSquareSize() {
-		return game.getGridSquareSize();
+		return getState().getGridSquareSize();
 	}
 
 	public long getNow() {
-		return game.getNow();
+		return getState().getNow();
 	}
+
+	// public BASToDPlayer getPlayer(int index) {
+	// return getState().getPlayer(index);
+	// }
+	//
+	// public BASToDPlayer getPlayer(String name) {
+	// return getState().getPlayer(name);
+	// }
 
 	public long getNowMilli() {
-		return game.getNow() / Constants.NANO_MILLI;
-	}
-
-	public BASToDPlayer getPlayer(int index) {
-		return game.getPlayer(index);
-	}
-
-	public BASToDPlayer getPlayer(String name) {
-		return game.getPlayer(name);
+		return getState().getNow() / Constants.NANO_MILLI;
 	}
 
 	public Collection<BASToDPlayer> getPlayers() {
-		return game.getPlayers();
+		return getState().getPlayers();
 	}
 
 	public Collection<Shot> getShots() {
-		return game.getShots();
+		return getState().getShots();
 	}
 
 	public float getSpeed() {
@@ -239,7 +244,7 @@ public class BASToDEngine {
 	}
 
 	public boolean isGameOver() {
-		return game.isOver();
+		return getState().isOver();
 	}
 
 	public boolean isImprovementAffordableForPlayer(String imp, BASToDPlayer p) {
@@ -247,7 +252,7 @@ public class BASToDEngine {
 	}
 
 	public boolean isOpenedBuildPosition(BASToDPlayer p, Vector v) {
-		return isOpenedBuildPosition(v) && game.getBoard().getBuildPositions(p).contains(v);
+		return isOpenedBuildPosition(v) && getState().getBoard().getBuildPositions(p).contains(v);
 	}
 
 	public boolean isOpenedBuildPosition(Vector v) {
@@ -265,11 +270,11 @@ public class BASToDEngine {
 
 			int idx = (v.getXInt() * cacheH) + v.getYInt();
 			if (cachePathAvailableOnGrid[idx] == null) {
-				BASToDPlayer aPlayer = game.getPlayers().iterator().next();
-				Vector p1 = game.getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
-				Vector p2 = game.getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
+				BASToDPlayer aPlayer = getState().getPlayers().iterator().next();
+				Vector p1 = getState().getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
+				Vector p2 = getState().getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
 
-				cachePathAvailableOnGrid[idx] = game.getBoard().isPathAvailableOnGrid(p1, p2, v);
+				cachePathAvailableOnGrid[idx] = getState().getBoard().isPathAvailableOnGrid(p1, p2, v);
 
 				// System.out.println("cachePathAvailableOnGrid["+v+"] = " +
 				// cachePathAvailableOnGrid[idx]);
@@ -280,7 +285,7 @@ public class BASToDEngine {
 	}
 
 	public boolean isOpenedOnGrid(Vector p) {
-		return game.getBoard().isOpened(p);
+		return getState().getBoard().isOpened(p);
 	}
 
 	public boolean isPaused() {
@@ -292,19 +297,15 @@ public class BASToDEngine {
 	}
 
 	public boolean isTowerDefenseGame() {
-		return game.getType() == BASToDGame.Type.TOWER_DEFENSE;
+		return getState().getType() == BASToDGame.Type.TOWER_DEFENSE;
 	}
 
 	public boolean lineOfSight(Vector s, Vector sp) {
-		return game.lineOfSight(s, sp);
+		return getState().lineOfSight(s, sp);
 	}
 
 	public boolean removeListener(BASToDEngineListener l) {
 		return listeners.remove(l);
-	}
-
-	public void setGame(BASToDGame game) {
-		this.game = game;
 	}
 
 	public void setPaused(boolean paused) {
@@ -321,19 +322,19 @@ public class BASToDEngine {
 	}
 
 	public void start() {
-		game.setNow(0);
+		getState().setNow(0);
 		paused = false;
 
-		for (Unit u : game.getBoard().getBoardUnits()) {
+		for (Unit u : getState().getBoard().getBoardUnits()) {
 			if (u instanceof Blocking) {
-				game.getBoard().closeOnBoard(u.getPositionOnBoard());
+				getState().getBoard().closeOnBoard(u.getPositionOnBoard());
 			}
 		}
 
-		for (BASToDPlayer p : game.getPlayers()) {
+		for (BASToDPlayer p : getState().getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Blocking) {
-					game.getBoard().closeOnBoard(u.getPositionOnBoard());
+					getState().getBoard().closeOnBoard(u.getPositionOnBoard());
 				}
 			}
 		}
@@ -347,14 +348,15 @@ public class BASToDEngine {
 		started = true;
 	}
 
+	@Override
 	public void step(long deltaNano) {
 		if (!isPaused()) {
 			deltaNano *= speed;
-			game.addNow(deltaNano);
+			getState().addNow(deltaNano);
 
 			for (BASToDPlayer p : getPlayers()) {
 				p.startNewStep(getNow());
-				p.gatherActions(game.getNow());
+				p.gatherActions(getState().getNow());
 			}
 
 			stepDoPlayerActions();
@@ -374,7 +376,7 @@ public class BASToDEngine {
 	private void stepCheck() {
 		for (BASToDPlayer p : getPlayers()) {
 			if (p.getScore() <= 0) {
-				game.setOver(true);
+				getState().setOver(true);
 			}
 			List<Destructible> destroyedUnits = new ArrayList<>();
 			for (Unit u : p.getUnits()) {
@@ -430,18 +432,18 @@ public class BASToDEngine {
 	}
 
 	private void stepFireUnits() {
-		for (BASToDPlayer p : game.getPlayers()) {
+		for (BASToDPlayer p : getState().getPlayers()) {
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Firing) {
 					Firing f = (Firing) u;
 					f.updateWeapons();
-					if (f.isAbleToFire(game.getNow())) {
+					if (f.isAbleToFire(getState().getNow())) {
 						f.acquireTarget(p.getEnemy());
 						if (f.hasTarget()) {
-							Shot shot = f.fire(game.getNow());
-							shot.init(game.getGridSquareSize());
+							Shot shot = f.fire(getState().getNow());
+							shot.init(getState().getGridSquareSize());
 							shot.setPlayer(p);
-							game.getShots().add(shot);
+							getState().getShots().add(shot);
 						}
 					}
 				}
@@ -450,14 +452,14 @@ public class BASToDEngine {
 	}
 
 	private void stepManageResources(long delta) {
-		for (BASToDPlayer p : game.getPlayers()) {
-			p.stepManageResources(delta, game.getMetalIncreaseRatePerSec());
+		for (BASToDPlayer p : getState().getPlayers()) {
+			p.stepManageResources(delta, getState().getMetalIncreaseRatePerSec());
 		}
 	}
 
 	private void stepMoveShots(long delta) {
 		List<Shot> shotsWithTargetReached = new ArrayList<>();
-		for (Shot s : game.getShots()) {
+		for (Shot s : getState().getShots()) {
 			if (s.isTargetReached()) {
 				shotsWithTargetReached.add(s);
 			} else {
@@ -465,21 +467,21 @@ public class BASToDEngine {
 			}
 		}
 		for (Shot s : shotsWithTargetReached) {
-			game.getShots().remove(s);
+			getState().getShots().remove(s);
 		}
 	}
 
 	private void stepMoveUnits(long delta) {
-		for (BASToDPlayer p : game.getPlayers()) {
+		for (BASToDPlayer p : getState().getPlayers()) {
 			List<Mobile> unitWithTargetReached = new ArrayList<>();
 			for (Unit u : p.getUnits()) {
 				if (u instanceof Mobile) {
 					Mobile m = (Mobile) u;
 					if (m.getTargetOnBoard() != null) {
 						if (m.getPath() == null) {
-							Path path = game.getBoard().shortestPathOnBoard(m.getPositionOnBoard(), m.getTargetOnBoard());
+							Path path = getState().getBoard().shortestPathOnBoard(m.getPositionOnBoard(), m.getTargetOnBoard());
 							if (path != null) {
-								Path smoothed = game.getBoard().smoothPath(m.getPositionOnBoard(), path, getGridSquareSize(), 3);
+								Path smoothed = getState().getBoard().smoothPath(m.getPositionOnBoard(), path, getGridSquareSize(), 3);
 
 								m.setPath(smoothed);
 								m.setUnsmoothedPath(path);
@@ -508,20 +510,20 @@ public class BASToDEngine {
 	}
 
 	private void stepSpawnUnits() {
-		for (BASToDPlayer p : game.getPlayers()) {
+		for (BASToDPlayer p : getState().getPlayers()) {
 			if (p.isSpawnEnabled()) {
 				Set<Unit> newUnits = new HashSet<>();
 				for (Unit u : p.getUnits()) {
 					if (u instanceof Spawning) {
 						Spawning spu = (Spawning) u;
-						if (spu.isSpawnEnabled() && spu.isAbleToSpawn(game.getNow())) {
-							Mobile s = spu.spawn(game.getNow());
-							s.init(game.getGridSquareSize());
+						if (spu.isSpawnEnabled() && spu.isAbleToSpawn(getState().getNow())) {
+							Mobile s = spu.spawn(getState().getNow());
+							s.init(getState().getGridSquareSize());
 							if (s != null) {
 
-								List<Vector> potentialTargets = game.getBoard().getEndPositions(p);
+								List<Vector> potentialTargets = getState().getBoard().getEndPositions(p);
 								Vector target = potentialTargets.get(rd.nextInt(potentialTargets.size()));
-								s.setTargetOnBoard(game.getBoard().fromGridToBoard(target));
+								s.setTargetOnBoard(getState().getBoard().fromGridToBoard(target));
 
 								newUnits.add(s);
 								p.getStats().incNbUnitsSpawn();
