@@ -35,7 +35,7 @@ public class SingleScoreBar extends AbstractComponent {
 	private String str;
 
 	public SingleScoreBar(BASToDPlayer player, int x, int y, int w, int h) {
-		super("singlescorebar-" + player.getColor(), x, y, w, h);
+		super("singlescorebar-" + player.getBoardIndex(), x, y, w, h);
 		this.player = player;
 		str = null;
 	}

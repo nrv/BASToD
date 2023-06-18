@@ -46,7 +46,7 @@ public class BASToDGameState extends GameState {
 		public String getFile() {
 			return file;
 		}
-	};
+	}
 
 	private Map<String, Improvement> availableImprovements;
 	private Board board;
@@ -54,8 +54,7 @@ public class BASToDGameState extends GameState {
 	private int metalIncreaseRatePerSec;
 	private long now;
 	private boolean over;
-//	utiliser les DefaultGamePlayerInterface gérées par l'Engine
-//	private List<BASToDPlayer> players;
+	private Map<String, BASToDPlayer> players;
 	private List<Shot> shots;
 	private Type type;
 
@@ -64,7 +63,7 @@ public class BASToDGameState extends GameState {
 
 		this.conf = conf;
 
-		players = new ArrayList<>();
+		players = new HashMap<>();
 		shots = new ArrayList<>();
 		over = false;
 
@@ -83,7 +82,7 @@ public class BASToDGameState extends GameState {
 	}
 
 	public void addPlayer(BASToDPlayer p) {
-		players.add(p.getIndex(), p);
+		players.put(p.getUuid(), p);
 	}
 
 	public Improvement getAvailableImprovement(String name) {
@@ -106,6 +105,16 @@ public class BASToDGameState extends GameState {
 		return conf;
 	}
 
+	public BASToDPlayer getEnemy(BASToDPlayer p) {
+		for (BASToDPlayer e : players.values()) {
+			if (!e.getUuid().equals(p.getUuid())) {
+				return e;
+			}
+		}
+
+		return null;
+	}
+
 	public int getGridSquareSize() {
 		return board.getSquareSize();
 	}
@@ -118,12 +127,8 @@ public class BASToDGameState extends GameState {
 		return now;
 	}
 
-	public BASToDPlayer getPlayer(int index) {
-		return players.get(index);
-	}
-
-	public BASToDPlayer getPlayer(String name) {
-		for (BASToDPlayer p : players) {
+	public BASToDPlayer getPlayerByName(String name) {
+		for (BASToDPlayer p : players.values()) {
 			if (name.equals(p.getColor())) {
 				return p;
 			}
@@ -132,8 +137,12 @@ public class BASToDGameState extends GameState {
 		return null;
 	}
 
+	public BASToDPlayer getPlayerByUUID(String uuid) {
+		return players.get(uuid);
+	}
+
 	public Collection<BASToDPlayer> getPlayers() {
-		return players;
+		return players.values();
 	}
 
 	public Collection<Shot> getShots() {

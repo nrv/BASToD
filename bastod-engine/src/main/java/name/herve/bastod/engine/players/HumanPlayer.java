@@ -25,8 +25,8 @@ import name.herve.bastod.engine.BASToDPlayer;
  */
 public class HumanPlayer extends BASToDPlayer {
 
-	public HumanPlayer(int index) {
-		super(index);
+	public HumanPlayer() {
+		super();
 	}
 
 }

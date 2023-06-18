@@ -40,8 +40,6 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 	private List<BASToDPlayerAction> actions;
 	private BASToDPlayerActionsProvider actionsProvider;
 	private String color;
-	private BASToDPlayer enemy;
-	private int index;
 	private int maxMetal;
 	private int maxScore;
 	private int metal;
@@ -57,15 +55,17 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 
 	private Statistics stats;
 	private Set<Unit> units;
+	
+	private String uuid;
+	private int boardIndex;
 
-	public BASToDPlayer(int index) {
+	public BASToDPlayer() {
 		super();
 		units = new HashSet<>();
 		metalAcc = 0;
 		metalMultiplier = 1f;
 		speedMultiplier = 1f;
 		stats = new Statistics();
-		this.index = index;
 		setSpawnEnabled(false);
 
 		actions = Collections.synchronizedList(new ArrayList<BASToDPlayerAction>());
@@ -99,7 +99,7 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 
 	@Override
 	public int compareTo(BASToDPlayer p) {
-		return index - p.index;
+		return uuid.compareTo(p.uuid);
 	}
 
 	public void endStep(long now) {
@@ -129,18 +129,6 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 
 	public String getColor() {
 		return color;
-	}
-
-	public BASToDPlayer getEnemy() {
-		return enemy;
-	}
-
-	public Vector getEnemyPositionOnBoard() {
-		return getEnemy().getStartPositionOnBoard();
-	}
-
-	public int getIndex() {
-		return index;
 	}
 
 	public int getMaxMetal() {
@@ -217,10 +205,6 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 		color = name;
 	}
 
-	public void setEnemy(BASToDPlayer enemy) {
-		this.enemy = enemy;
-	}
-
 	public void setMaxMetal(int maxMetal) {
 		this.maxMetal = maxMetal;
 	}
@@ -273,6 +257,22 @@ public abstract class BASToDPlayer implements Comparable<BASToDPlayer> {
 
 	@Override
 	public String toString() {
-		return getColor() + " (" + getScore() + "/" + getMetal() + ")" + getStats();
+		return "p" + getBoardIndex() + " (" + getScore() + "/" + getMetal() + ")" + getStats();
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public int getBoardIndex() {
+		return boardIndex;
+	}
+
+	public void setBoardIndex(int boardIndex) {
+		this.boardIndex = boardIndex;
 	}
 }

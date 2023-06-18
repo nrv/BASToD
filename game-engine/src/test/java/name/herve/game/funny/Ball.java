@@ -27,7 +27,7 @@ public class Ball {
 	public static Ball fromParams(String[] p) {
 		Ball b = new Ball();
 		int s = 8;
-		b.uuid = p[--s];
+		b.playerUUID = p[--s];
 		b.x = Integer.parseInt(p[--s]);
 		b.y = Integer.parseInt(p[--s]);
 		b.vx = Integer.parseInt(p[--s]);
@@ -39,7 +39,7 @@ public class Ball {
 		return b;
 	}
 
-	private String uuid;
+	private String playerUUID;
 	private int x;
 	private int y;
 	private int vx;
@@ -53,7 +53,7 @@ public class Ball {
 	public String[] asParams() {
 		int s = 8;
 		String[] p = new String[s];
-		p[--s] = uuid;
+		p[--s] = playerUUID;
 		p[--s] = Integer.toString(x);
 		p[--s] = Integer.toString(y);
 		p[--s] = Integer.toString(vx);
@@ -68,8 +68,8 @@ public class Ball {
 		return new Color(color[0], color[1], color[2]);
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getPlayerUUID() {
+		return playerUUID;
 	}
 
 	public int getVx() {
@@ -92,8 +92,8 @@ public class Ball {
 		this.color = color;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setPlayerUUID(String uuid) {
+		this.playerUUID = uuid;
 	}
 
 	public void setVx(int vx) {
@@ -114,7 +114,7 @@ public class Ball {
 
 	@Override
 	public String toString() {
-		return "Ball [uuid=" + uuid + ", x=" + x + ", y=" + y + ", vx=" + vx + ", vy=" + vy + "]";
+		return "Ball [uuid=" + playerUUID + ", x=" + x + ", y=" + y + ", vx=" + vx + ", vy=" + vy + "]";
 	}
 
 }

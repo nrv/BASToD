@@ -19,6 +19,7 @@
 package name.herve.bastod.engine;
 
 import java.util.List;
+import java.util.UUID;
 
 import name.herve.bastod.engine.BASToDGameState.Type;
 import name.herve.bastod.engine.ai.ArtificialIntelligence;
@@ -44,7 +45,8 @@ public class BASToDGameFactory {
 		BASToDPlayer[] players = new BASToDPlayer[2];
 
 		for (int i = 0; i < 2; i++) {
-			players[i] = new ComputerPlayer(i);
+			players[i] = new ComputerPlayer();
+			players[i].setBoardIndex(i);
 		}
 
 		BoardFactory boardFactory = new BoardFactory();
@@ -94,11 +96,9 @@ public class BASToDGameFactory {
 				players[i].addUnit(target);
 			}
 
+			players[i].setUuid(UUID.randomUUID().toString());
 			game.addPlayer(players[i]);
 		}
-
-		players[0].setEnemy(players[1]);
-		players[1].setEnemy(players[0]);
 
 		players[0].setColor(BASToDPlayer.PLAYER_RED);
 		players[1].setColor(BASToDPlayer.PLAYER_BLUE);

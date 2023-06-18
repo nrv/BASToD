@@ -19,6 +19,7 @@
 package name.herve.game.engine;
 
 public interface GameEngineListener {
+	public void gameStateEvent(GameState state);
 	public void gameEngineEvent(String event);
 	public void stepSimulatedEvent();
 }

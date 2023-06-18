@@ -22,6 +22,7 @@ import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
 import name.herve.game.engine.GamePlayerAction;
+import name.herve.game.engine.GameState;
 import name.herve.game.engine.network.GameNetworkClient;
 import name.herve.game.engine.network.GameNetworkOps;
 
@@ -38,15 +39,6 @@ public class LocalGamePlayerInterface extends DefaultGamePlayerInterface {
 	}
 
 	@Override
-	public String getPlayerUuid() {
-		return playerUuid;
-	}
-
-	public void setPlayerUuid(String uuid) {
-		playerUuid = uuid;
-	}
-
-	@Override
 	public void executePlayerAction(GamePlayerAction pa) {
 		super.executePlayerAction(pa);
 
@@ -58,6 +50,23 @@ public class LocalGamePlayerInterface extends DefaultGamePlayerInterface {
 	}
 
 	@Override
+	public void gameEngineEvent(String event) {
+		Log.debug("lgpi - engine event", event);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void gameStateEvent(GameState state) {
+		Log.debug("lgpi - state event", state.toString());
+		getEngine().setState(state);
+	}
+
+	@Override
+	public String getPlayerUuid() {
+		return playerUuid;
+	}
+
+	@Override
 	public void setPlayerReady() {
 		setPlayerReady(true);
 
@@ -66,9 +75,8 @@ public class LocalGamePlayerInterface extends DefaultGamePlayerInterface {
 		}
 	}
 
-	@Override
-	public void gameEngineEvent(String event) {
-		Log.debug("lgpi - engine event", event);
+	public void setPlayerUuid(String uuid) {
+		playerUuid = uuid;
 	}
 
 	@Override

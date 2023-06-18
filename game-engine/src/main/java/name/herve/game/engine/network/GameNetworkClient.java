@@ -86,6 +86,7 @@ public class GameNetworkClient extends GameNetworkComponent {
 		return (getGpi() != null) && getGpi().isPlayerReady();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void received(Connection connection, Object object) {
 		super.received(connection, object);
@@ -99,7 +100,10 @@ public class GameNetworkClient extends GameNetworkComponent {
 				getEngine().registerPlayer(gpi);
 			} else if (object instanceof GameNetworkOps.GameEngineMessage) {
 				GameNetworkOps.GameEngineMessage msg = (GameNetworkOps.GameEngineMessage) object;
-				getEngine().event(msg.event);
+				getEngine().genericEvent(msg.event);
+			} else if (object instanceof GameNetworkOps.GameStateMessage) {
+				GameNetworkOps.GameStateMessage msg = (GameNetworkOps.GameStateMessage) object;
+				getEngine().stateEvent(msg.state);
 			}
 		}
 	}

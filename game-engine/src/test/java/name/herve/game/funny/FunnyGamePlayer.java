@@ -16,21 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with BASToD. If not, see <http://www.gnu.org/licenses/>.
  */
-package name.herve.bastod.engine.players;
-
-import name.herve.bastod.engine.BASToDPlayer;
-import name.herve.bastod.engine.BASToDPlayerActionsProvider;
+package name.herve.game.funny;
 
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class ComputerPlayer extends BASToDPlayer {
+public class FunnyGamePlayer {
+	private String name;
 
-	public ComputerPlayer() {
+	public FunnyGamePlayer() {
 		super();
 	}
 
-	public void initAI(BASToDPlayerActionsProvider pap) {
-		setActionsProvider(pap);
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "FunnyGamePlayer [name=" + name + "]";
 	}
 }

@@ -19,7 +19,9 @@
 package name.herve.game.funny;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import name.herve.game.engine.GameState;
 
@@ -27,15 +29,21 @@ import name.herve.game.engine.GameState;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class FunnyGameState extends GameState {
+	private Map<String, FunnyGamePlayer> players;
 	private List<Ball> balls;
 	private int width;
 	private int height;
 
+	public FunnyGameState() {
+		super();
+	}
+
 	public FunnyGameState(int w, int h) {
 		super();
-		this.width = w;
-		this.height = h;
-		this.balls = new ArrayList<>();
+		width = w;
+		height = h;
+		balls = new ArrayList<>();
+		players = new HashMap<>();
 	}
 
 	public List<Ball> getBalls() {
@@ -46,8 +54,17 @@ public class FunnyGameState extends GameState {
 		return height;
 	}
 
+	public Map<String, FunnyGamePlayer> getPlayers() {
+		return players;
+	}
+
 	public int getWidth() {
 		return width;
+	}
+
+	@Override
+	public String toString() {
+		return "FunnyGameState [players=" + players.size() + ", balls=" + balls.size() + ", width=" + width + ", height=" + height + "]";
 	}
 
 }

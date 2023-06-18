@@ -144,7 +144,7 @@ public class Board {
 	}
 
 	public List<Vector> getBuildPositions(BASToDPlayer p) {
-		return buildPositions.get(p.getIndex());
+		return buildPositions.get(p.getBoardIndex());
 	}
 
 	public List<Vector> getEndPositions(int index) {
@@ -152,7 +152,7 @@ public class Board {
 	}
 
 	public List<Vector> getEndPositions(BASToDPlayer p) {
-		return endPositions.get(p.getIndex());
+		return endPositions.get(p.getBoardIndex());
 	}
 
 	public Dimension getGridDimension() {
@@ -176,7 +176,7 @@ public class Board {
 	}
 
 	public List<Vector> getTowerPositions(BASToDPlayer p) {
-		return towerPositions.get(p.getIndex());
+		return towerPositions.get(p.getBoardIndex());
 	}
 
 	public boolean isOpened(Vector p) {

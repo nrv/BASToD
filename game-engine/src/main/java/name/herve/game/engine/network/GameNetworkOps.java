@@ -22,6 +22,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GamePlayerAction;
+import name.herve.game.engine.GameState;
 
 public class GameNetworkOps {
 	public static class GameNetworkMessage {
@@ -55,6 +56,16 @@ public class GameNetworkOps {
 		@Override
 		public String toString() {
 			return "GameEngineMessage [event=" + event + "]";
+		}
+
+	}
+	
+	public static class GameStateMessage extends GameNetworkMessage {
+		public GameState state;
+
+		@Override
+		public String toString() {
+			return "GameStateMessage [state=" + state + "]";
 		}
 
 	}

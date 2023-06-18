@@ -18,6 +18,9 @@
  */
 package name.herve.game.funny;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import name.herve.game.engine.network.GameNetworkComponent;
 import name.herve.game.engine.network.GameNetworkOps;
 
@@ -29,5 +32,9 @@ public class FunnyGameNetworkOps extends GameNetworkOps {
 		component.setTCPPort(tcpPort);
 		component.setUDPPort(udpPort);
 		component.addClassToRegister(int[].class);
+		component.addClassToRegister(FunnyGameState.class);
+		component.addClassToRegister(ArrayList.class);
+		component.addClassToRegister(HashMap.class);
+		component.addClassToRegister(FunnyGamePlayer.class);
 	}
 }

@@ -46,7 +46,7 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 	public final static String NAME_SEPARATOR = "!";
 	public final static String NAME_START_STOP_SPAWN = "spawn";
 
-	private String actingPlayer;
+	private int actingPlayer;
 	private int cx;
 	private int cy;
 	private BASToDEngine engine;
@@ -71,17 +71,17 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		String[] params = event.getSource().getName().split(NAME_SEPARATOR);
 
 		if (params[0].equals(NAME_START_STOP_SPAWN)) {
-			BASToDPlayer player = engine.getPlayer(params[1]);
+			BASToDPlayer player = engine.getPlayer(Integer.parseInt(params[1]));
 			BASToDPlayerAction pa = new BASToDPlayerAction(player, player.isSpawnEnabled() ? Action.STOP_SPAWN : Action.START_SPAWN);
 			interfaces.get(pa.getPlayer()).addAction(pa);
 		} else if (params[0].equals(BASToDEngine.IMP_BUY_TOWER)) {
-			actingPlayer = params[1];
+			actingPlayer = Integer.parseInt(params[1]);
 			state = State.BUY_TOWER;
 		} else if (params[0].equals(BASToDEngine.IMP_BUY_WALL)) {
-			actingPlayer = params[1];
+			actingPlayer = Integer.parseInt(params[1]);
 			state = State.BUY_WALL;
 		} else if (params[0].startsWith(BASToDEngine._IMPROVE)) {
-			BASToDPlayer player = engine.getPlayer(params[1]);
+			BASToDPlayer player = engine.getPlayer(Integer.parseInt(params[1]));
 			BASToDPlayerAction pa = new BASToDPlayerAction(player, Action.IMPROVE);
 			pa.setParam(params[0]);
 			interfaces.get(pa.getPlayer()).addAction(pa);
@@ -139,16 +139,16 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		}
 	}
 
-	private void renderBuy(int x, int y, Vector pos, String sprite, String player) {
+	private void renderBuy(int x, int y, Vector pos, String sprite, int player) {
 		// System.out.println("renderBuy " + pos);
 		batchBegin();
 
 		if ((pos != null) && engine.isOpenedBuildPosition(engine.getPlayer(player), pos)) {
 			if (snapToGrid) {
 				Vector v = engine.fromGridToBoard(pos);
-				draw(GUIResources.getInstance().getSprite(sprite, player), (BASToDEngine._SP_SIDE + v.getXInt()) - halfSQS, (BASToDEngine._SP_BOTTOM + v.getYInt()) - halfSQS);
+				draw(GUIResources.getInstance().getSprite(sprite, engine.getPlayer(player).getColor()), (BASToDEngine._SP_SIDE + v.getXInt()) - halfSQS, (BASToDEngine._SP_BOTTOM + v.getYInt()) - halfSQS);
 			} else {
-				draw(GUIResources.getInstance().getSprite(sprite, player), x - halfSQS, getScreenHeight() - y - halfSQS);
+				draw(GUIResources.getInstance().getSprite(sprite, engine.getPlayer(player).getColor()), x - halfSQS, getScreenHeight() - y - halfSQS);
 			}
 		} else {
 			draw(GUIResources.getInstance().getSprite("noway"), x - halfSQS, getScreenHeight() - y - halfSQS);
@@ -157,11 +157,11 @@ public class PlayerManager extends AbstractDisplayManager implements GUIButtonLi
 		batchEnd();
 	}
 
-	public void renderBuyTower(int x, int y, Vector pos, String p) {
+	public void renderBuyTower(int x, int y, Vector pos, int p) {
 		renderBuy(x, y, pos, "tower", p);
 	}
 
-	public void renderBuyWall(int x, int y, Vector pos, String p) {
+	public void renderBuyWall(int x, int y, Vector pos, int p) {
 		renderBuy(x, y, pos, "wall", p);
 	}
 

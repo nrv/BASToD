@@ -37,6 +37,7 @@ import name.herve.game.engine.network.GameNetworkServer;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class FunnyGame implements WindowListener {
+
 	public static void main(String[] args) {
 		try {
 			Log.set(Log.LEVEL_DEBUG);
@@ -130,7 +131,7 @@ public class FunnyGame implements WindowListener {
 		c.weightx = 1;
 		c.weighty = 1;
 		frame.getContentPane().add(display, c);
-		
+
 		frame.addWindowListener(this);
 		frame.setVisible(true);
 		frame.setMinimumSize(frame.getMinimumSize());

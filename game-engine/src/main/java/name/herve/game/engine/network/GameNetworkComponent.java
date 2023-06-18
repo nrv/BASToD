@@ -41,12 +41,13 @@ public abstract class GameNetworkComponent extends Listener {
 		super();
 
 		classesToRegister = new ArrayList<>();
-		classesToRegister.add(GameNetworkOps.GameNetworkMessage.class);
-		classesToRegister.add(GameNetworkOps.SetUUIDMessage.class);
-		classesToRegister.add(GameNetworkOps.GameEngineMessage.class);
-		classesToRegister.add(String[].class);
-		classesToRegister.add(GamePlayerAction.class);
-		classesToRegister.add(GameNetworkOps.PlayerActionMessage.class);
+		addClassToRegister(GameNetworkOps.GameNetworkMessage.class);
+		addClassToRegister(GameNetworkOps.SetUUIDMessage.class);
+		addClassToRegister(GameNetworkOps.GameEngineMessage.class);
+		addClassToRegister(GameNetworkOps.GameStateMessage.class);
+		addClassToRegister(String[].class);
+		addClassToRegister(GamePlayerAction.class);
+		addClassToRegister(GameNetworkOps.PlayerActionMessage.class);
 	}
 
 	public GameNetworkComponent addClassToRegister(Class<?> e) {

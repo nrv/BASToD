@@ -80,22 +80,24 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 				BASToDPlayer[] players = new BASToDPlayer[2];
 
 				if (p1.isHuman()) {
-					players[0] = new HumanPlayer(0);
+					players[0] = new HumanPlayer();
 				} else {
-					players[0] = new ComputerPlayer(0);
+					players[0] = new ComputerPlayer();
 				}
 
 				if (p2.isHuman()) {
-					players[1] = new HumanPlayer(1);
+					players[1] = new HumanPlayer();
 				} else {
-					players[1] = new ComputerPlayer(1);
+					players[1] = new ComputerPlayer();
 				}
+				
+				players[0].setBoardIndex(0);
+				players[1].setBoardIndex(1);
 
 				Board board = boardFactory.loadMap(msb.getText());
 
 				BASToDGameState game = BASToDGameFactory.createGame(gt.getSelected(), getGameApplication().getGameConf(), players, board);
-				BASToDEngine engine = new BASToDEngine(seed);
-				engine.setGame(game);
+				BASToDEngine engine = new BASToDEngine(seed, game, true);
 				GameScreen gs = new GameScreen(getGameApplication(), engine);
 				setChangeScreenOnNextRender(gs);
 			} catch (GameException e) {

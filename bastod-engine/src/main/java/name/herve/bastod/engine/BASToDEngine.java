@@ -151,7 +151,7 @@ public class BASToDEngine extends GameEngine<BASToDGameState> {
 
 		BASToDPlayer aPlayer = getState().getPlayers().iterator().next();
 		Vector p1 = getState().getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
-		Vector p2 = getState().getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
+		Vector p2 = getState().getBoard().fromBoardToGrid(getState().getEnemy(aPlayer).getStartPositionOnBoard());
 
 		for (BASToDPlayer player : getState().getPlayers()) {
 			List<Vector> bp = getState().getBoard().getBuildPositions(player);
@@ -234,6 +234,15 @@ public class BASToDEngine extends GameEngine<BASToDGameState> {
 	public Collection<BASToDPlayer> getPlayers() {
 		return getState().getPlayers();
 	}
+	
+	public BASToDPlayer getPlayer(int boardIndex) {
+		for (BASToDPlayer p : getPlayers()) {
+			if (p.getBoardIndex() == boardIndex) {
+				return p;
+			}
+		}
+		return null;
+	}
 
 	public Collection<Shot> getShots() {
 		return getState().getShots();
@@ -272,7 +281,7 @@ public class BASToDEngine extends GameEngine<BASToDGameState> {
 			if (cachePathAvailableOnGrid[idx] == null) {
 				BASToDPlayer aPlayer = getState().getPlayers().iterator().next();
 				Vector p1 = getState().getBoard().fromBoardToGrid(aPlayer.getStartPositionOnBoard());
-				Vector p2 = getState().getBoard().fromBoardToGrid(aPlayer.getEnemyPositionOnBoard());
+				Vector p2 = getState().getBoard().fromBoardToGrid(getState().getEnemy(aPlayer).getStartPositionOnBoard());
 
 				cachePathAvailableOnGrid[idx] = getState().getBoard().isPathAvailableOnGrid(p1, p2, v);
 
@@ -438,7 +447,7 @@ public class BASToDEngine extends GameEngine<BASToDGameState> {
 					Firing f = (Firing) u;
 					f.updateWeapons();
 					if (f.isAbleToFire(getState().getNow())) {
-						f.acquireTarget(p.getEnemy());
+						f.acquireTarget(getState().getEnemy(p));
 						if (f.hasTarget()) {
 							Shot shot = f.fire(getState().getNow());
 							shot.init(getState().getGridSquareSize());
@@ -503,7 +512,7 @@ public class BASToDEngine extends GameEngine<BASToDGameState> {
 				}
 				p.removeUnit(m);
 				p.addScore(m.getScoreValue());
-				p.getEnemy().removeScore(m.getScoreValue());
+				getState().getEnemy(p).removeScore(m.getScoreValue());
 				p.getStats().incNbUnitsCrossed();
 			}
 		}

@@ -51,7 +51,7 @@ public class ImprovementButton extends ImageButton {
 	private BitmapFont font;
 
 	public ImprovementButton(Improvement imp, BASToDPlayer p, int x, int y) {
-		super(imp.getName() + PlayerManager.NAME_SEPARATOR + p.getColor(), GUIResources.getInstance().getSprite(IMP_TEXTURE.get(imp.getName()), p.getColor()), -1, x, y, -1, -1,
+		super(imp.getName() + PlayerManager.NAME_SEPARATOR + p.getBoardIndex(), GUIResources.getInstance().getSprite(IMP_TEXTURE.get(imp.getName()), p.getColor()), -1, x, y, -1, -1,
 				GUIResources.getInstance().getSprite(IMPROVEMENT_BORDER));
 
 		player = p;

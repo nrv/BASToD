@@ -47,7 +47,7 @@ public class MetalBar extends AbstractComponent {
 	private BASToDEngine engine;
 
 	public MetalBar(BASToDEngine engine, BASToDPlayer player, int x, int y, int w, int h) {
-		super("metalbar-" + player.getColor(), x, y, w, h);
+		super("metalbar-" + player.getBoardIndex(), x, y, w, h);
 
 		this.player = player;
 		this.engine = engine;

@@ -21,6 +21,7 @@ package name.herve.game.engine.gpi;
 import com.esotericsoftware.minlog.Log;
 
 import name.herve.game.engine.GameEngine;
+import name.herve.game.engine.GameState;
 import name.herve.game.engine.network.GameNetworkOps;
 import name.herve.game.engine.network.GameNetworkOps.ClientConnection;
 
@@ -33,6 +34,22 @@ public class RemoteGamePlayerInterface extends DefaultGamePlayerInterface {
 	}
 
 	@Override
+	public void gameEngineEvent(String event) {
+		Log.debug("rgpi - engine event", event);
+		GameNetworkOps.GameEngineMessage msg = new GameNetworkOps.GameEngineMessage();
+		msg.event = event;
+		c.sendTCP(msg);
+	}
+
+	@Override
+	public void gameStateEvent(GameState state) {
+		Log.debug("rgpi - state event", state.toString());
+		GameNetworkOps.GameStateMessage msg = new GameNetworkOps.GameStateMessage();
+		msg.state = state;
+		c.sendTCP(msg);
+	}
+
+	@Override
 	public String getPlayerUuid() {
 		return c.getPlayerUuid();
 	}
@@ -41,14 +58,6 @@ public class RemoteGamePlayerInterface extends DefaultGamePlayerInterface {
 	public void setPlayerReady() {
 		setPlayerReady(true);
 		getEngine().tryToStartGame();
-	}
-
-	@Override
-	public void gameEngineEvent(String event) {
-		Log.debug("rgpi - engine event", event);
-		GameNetworkOps.GameEngineMessage msg = new GameNetworkOps.GameEngineMessage();
-		msg.event = event;
-		c.sendTCP(msg);
 	}
 
 	@Override

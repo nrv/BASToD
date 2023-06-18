@@ -38,26 +38,14 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 
 	private S state;
 	private boolean master;
-	private Map<String, DefaultGamePlayerInterface> players;
+	private Map<String, DefaultGamePlayerInterface> playerInterfaces;
 	private SimulationThread t;
 
 	public GameEngine(boolean master, S state) {
 		super();
 		this.master = master;
 		this.state = state;
-		this.players = new HashMap<>();
-	}
-
-	public void event(String event) {
-		Log.debug("engine event", event);
-		for (GameEngineListener l : players.values()) {
-			l.gameEngineEvent(event);
-		}
-		if (START_GAME_EVENT.equals(event)) {
-			startGame();
-		} else if (STOP_GAME_EVENT.equals(event)) {
-			stopGame();
-		}
+		playerInterfaces = new HashMap<>();
 	}
 
 	public GamePlayerAction executePlayerAction(GamePlayerAction pa) {
@@ -68,12 +56,24 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 
 	public abstract GamePlayerAction executeSpecificPlayerAction(GamePlayerAction pa);
 
+	public void genericEvent(String event) {
+		Log.debug("engine event", event);
+		for (GameEngineListener l : playerInterfaces.values()) {
+			l.gameEngineEvent(event);
+		}
+		if (START_GAME_EVENT.equals(event)) {
+			startGame();
+		} else if (STOP_GAME_EVENT.equals(event)) {
+			stopGame();
+		}
+	}
+
 	public long getCurrentTick() {
 		return state.getCurrentTick();
 	}
 
-	public DefaultGamePlayerInterface getPlayer(String uuid) {
-		return players.get(uuid);
+	public DefaultGamePlayerInterface getPlayerInterface(String uuid) {
+		return playerInterfaces.get(uuid);
 	}
 
 	public S getState() {
@@ -90,14 +90,25 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 	}
 
 	public void registerPlayer(DefaultGamePlayerInterface gpi) {
-		players.put(gpi.getPlayerUuid(), gpi);
+		playerInterfaces.put(gpi.getPlayerUuid(), gpi);
+	}
+
+	public void setState(S state) {
+		this.state = state;
 	}
 
 	private void startGame() {
-		Log.debug("engine", "starting game");
+		Log.debug("engine", "starting game with state : " + state);
 		state.setGameStarted(true);
 		t = new SimulationThread(10, this);
 		t.start();
+	}
+
+	public void stateEvent(S state) {
+		Log.debug("engine state", state.toString());
+		for (GameEngineListener l : playerInterfaces.values()) {
+			l.gameStateEvent(state);
+		}
 	}
 
 	public abstract void step(long deltaNano);
@@ -107,7 +118,7 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 		Log.trace("engine", "step " + tick);
 		state.setCurrentTick(tick);
 		step(deltaNano);
-		for (GameEngineListener l : players.values()) {
+		for (GameEngineListener l : playerInterfaces.values()) {
 			l.stepSimulatedEvent();
 		}
 	}
@@ -124,7 +135,7 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 		}
 
 		boolean allPlayersReady = true;
-		for (DefaultGamePlayerInterface gpi : players.values()) {
+		for (DefaultGamePlayerInterface gpi : playerInterfaces.values()) {
 			if (!gpi.isPlayerReady()) {
 				allPlayersReady = false;
 				break;
@@ -132,7 +143,8 @@ public abstract class GameEngine<S extends GameState> implements Simulated {
 		}
 
 		if (allPlayersReady) {
-			event(START_GAME_EVENT);
+			stateEvent(state);
+			genericEvent(START_GAME_EVENT);
 		}
 	}
 }

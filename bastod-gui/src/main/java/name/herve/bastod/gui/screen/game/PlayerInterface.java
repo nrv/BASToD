@@ -64,7 +64,7 @@ public class PlayerInterface implements BASToDPlayerActionsProvider {
 		}
 
 		if (!engine.isTowerDefenseGame()) {
-			btSpawn = new CheckBox(PlayerManager.NAME_START_STOP_SPAWN + PlayerManager.NAME_SEPARATOR + p.getColor(), "Spawning", -1, -1);
+			btSpawn = new CheckBox(PlayerManager.NAME_START_STOP_SPAWN + PlayerManager.NAME_SEPARATOR + p.getBoardIndex(), "Spawning", -1, -1);
 			btSpawn.addListener(playerManager);
 			btSpawn.start();
 			btSpawn.setChecked(p.isSpawnEnabled());

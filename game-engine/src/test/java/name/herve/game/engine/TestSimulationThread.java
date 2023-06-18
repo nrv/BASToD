@@ -46,7 +46,7 @@ public class TestSimulationThread {
 			}
 			todo -= done;
 			if (todo <= 0) {
-				event(GameEngine.STOP_GAME_EVENT);
+				genericEvent(GameEngine.STOP_GAME_EVENT);
 			}
 		}
 
@@ -73,7 +73,7 @@ public class TestSimulationThread {
 		SimulationThread t = new SimulationThread(10, dummy);
 		t.start();
 		sleep(2000);
-		dummy.event(GameEngine.START_GAME_EVENT);
+		dummy.genericEvent(GameEngine.START_GAME_EVENT);
 	}
 
 }

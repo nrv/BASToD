@@ -25,8 +25,8 @@ import name.herve.bastod.engine.BASToDPlayer;
  */
 public class NetworkPlayer extends BASToDPlayer {
 
-	public NetworkPlayer(int index) {
-		super(index);
+	public NetworkPlayer() {
+		super();
 	}
 
 }
