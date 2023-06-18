@@ -26,8 +26,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
 
 import name.herve.bastod.engine.BASToDEngine;
-import name.herve.bastod.engine.BASToDGame;
-import name.herve.bastod.engine.BASToDGame.Type;
+import name.herve.bastod.engine.BASToDGameState;
+import name.herve.bastod.engine.BASToDGameState.Type;
 import name.herve.bastod.engine.BASToDGameFactory;
 import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.Board;
@@ -93,7 +93,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 
 				Board board = boardFactory.loadMap(msb.getText());
 
-				BASToDGame game = BASToDGameFactory.createGame(gt.getSelected(), getGameApplication().getGameConf(), players, board);
+				BASToDGameState game = BASToDGameFactory.createGame(gt.getSelected(), getGameApplication().getGameConf(), players, board);
 				BASToDEngine engine = new BASToDEngine(seed);
 				engine.setGame(game);
 				GameScreen gs = new GameScreen(getGameApplication(), engine);
@@ -124,7 +124,7 @@ public class MenuScreen extends AbstractScreen implements GUIButtonListener {
 
 		components = new ArrayList<>();
 
-		gt = new SelectorButton<>(GAME_TYPE_NAME, "Choose a game type : ", BASToDGame.Type.values(), (w - 160) / 2, (h / 2) + 100);
+		gt = new SelectorButton<>(GAME_TYPE_NAME, "Choose a game type : ", BASToDGameState.Type.values(), (w - 160) / 2, (h / 2) + 100);
 		gt.start();
 		gt.addListener(this);
 		components.add(gt);

@@ -21,7 +21,7 @@ package name.herve.bastod.engine.towerdefense;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDGameState;
 import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.BASToDPlayerAction;
 import name.herve.bastod.engine.BASToDPlayerAction.Action;
@@ -38,7 +38,7 @@ import name.herve.game.tools.conf.Configuration;
 public class TowerDefenseGame implements BASToDPlayerActionsProvider {
 	public final static String CF_TDG_LEVEL_WAIT_TIME_I = "tdg.level.wait_time";
 
-	private BASToDGame game;
+	private BASToDGameState game;
 	private BASToDPlayer me;
 
 	private long nextLevelAt;
@@ -48,7 +48,7 @@ public class TowerDefenseGame implements BASToDPlayerActionsProvider {
 	private float difficulty;
 	private int n;
 
-	public TowerDefenseGame(BASToDPlayer me, BASToDGame game) throws GameException {
+	public TowerDefenseGame(BASToDPlayer me, BASToDGameState game) throws GameException {
 		super();
 		this.game = game;
 		this.me = me;

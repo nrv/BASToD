@@ -20,7 +20,7 @@ package name.herve.bastod.engine;
 
 import java.util.List;
 
-import name.herve.bastod.engine.BASToDGame.Type;
+import name.herve.bastod.engine.BASToDGameState.Type;
 import name.herve.bastod.engine.ai.ArtificialIntelligence;
 import name.herve.bastod.engine.buildings.Factory;
 import name.herve.bastod.engine.buildings.Target;
@@ -40,7 +40,7 @@ import name.herve.game.tools.math.Vector;
  * @author Nicolas HERVE - n.herve@laposte.net
  */
 public class BASToDGameFactory {
-	public static BASToDGame createGame(Type type, Configuration conf, long seed) throws GameException {
+	public static BASToDGameState createGame(Type type, Configuration conf, long seed) throws GameException {
 		BASToDPlayer[] players = new BASToDPlayer[2];
 
 		for (int i = 0; i < 2; i++) {
@@ -58,8 +58,8 @@ public class BASToDGameFactory {
 		return createGame(type, conf, players, board);
 	}
 
-	public static BASToDGame createGame(Type type, Configuration conf, BASToDPlayer[] players, Board board) throws GameException {
-		BASToDGame game = new BASToDGame(type, conf);
+	public static BASToDGameState createGame(Type type, Configuration conf, BASToDPlayer[] players, Board board) throws GameException {
+		BASToDGameState game = new BASToDGameState(type, conf);
 
 		initImprovements(game);
 
@@ -126,7 +126,7 @@ public class BASToDGameFactory {
 		return game;
 	}
 
-	private static void initImprovements(BASToDGame game) throws GameException {
+	private static void initImprovements(BASToDGameState game) throws GameException {
 		game.addAvailableImprovement(new BuyTowerImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyWallImprovement(game.getConf()));
 		game.addAvailableImprovement(new BuyFactoryImprovement(game.getConf()));

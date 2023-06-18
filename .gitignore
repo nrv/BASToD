@@ -4,4 +4,5 @@ target/
 /todo.txt
 .project
 .settings
+**/.classpath
 *.log

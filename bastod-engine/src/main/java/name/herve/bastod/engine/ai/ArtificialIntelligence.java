@@ -21,7 +21,7 @@ package name.herve.bastod.engine.ai;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDGameState;
 import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.bastod.engine.BASToDPlayerAction;
 import name.herve.bastod.engine.BASToDPlayerAction.Action;
@@ -32,9 +32,9 @@ import name.herve.bastod.engine.BASToDPlayerActionsProvider;
  */
 public class ArtificialIntelligence implements BASToDPlayerActionsProvider {
 	private BASToDPlayer me;
-	private BASToDGame game;
+	private BASToDGameState game;
 
-	public ArtificialIntelligence(BASToDPlayer me, BASToDGame game) {
+	public ArtificialIntelligence(BASToDPlayer me, BASToDGameState game) {
 		super();
 		this.game = game;
 		this.me = me;

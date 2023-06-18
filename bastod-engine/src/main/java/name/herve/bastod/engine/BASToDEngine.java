@@ -42,7 +42,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class BASToDEngine extends GameEngine<BASToDGame> {
+public class BASToDEngine extends GameEngine<BASToDGameState> {
 	public final static String _IMPROVE = "improve.";
 
 	public final static int _VIEWPORT_WIDTH = 800;
@@ -96,7 +96,7 @@ public class BASToDEngine extends GameEngine<BASToDGame> {
 	private boolean paused;
 	private boolean started;
 
-	public BASToDEngine(long seed, BASToDGame game, boolean master) {
+	public BASToDEngine(long seed, BASToDGameState game, boolean master) {
 		super(master, game);
 		rd = new Random(seed);
 		speed = 1;
@@ -297,7 +297,7 @@ public class BASToDEngine extends GameEngine<BASToDGame> {
 	}
 
 	public boolean isTowerDefenseGame() {
-		return getState().getType() == BASToDGame.Type.TOWER_DEFENSE;
+		return getState().getType() == BASToDGameState.Type.TOWER_DEFENSE;
 	}
 
 	public boolean lineOfSight(Vector s, Vector sp) {

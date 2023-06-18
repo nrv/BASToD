@@ -33,7 +33,7 @@ import name.herve.game.tools.math.Vector;
 /**
  * @author Nicolas HERVE - n.herve@laposte.net
  */
-public class BASToDGame extends GameState {
+public class BASToDGameState extends GameState {
 	public enum Type {
 		TOWER_DEFENSE("conf/tower_defense.conf"), TWO_PLAYERS("conf/two_players.conf");
 
@@ -54,12 +54,12 @@ public class BASToDGame extends GameState {
 	private int metalIncreaseRatePerSec;
 	private long now;
 	private boolean over;
-	utiliser les DefaultGamePlayerInterface gérées par l'Engine
+//	utiliser les DefaultGamePlayerInterface gérées par l'Engine
 //	private List<BASToDPlayer> players;
 	private List<Shot> shots;
 	private Type type;
 
-	public BASToDGame(Type type, Configuration conf) throws GameException {
+	public BASToDGameState(Type type, Configuration conf) throws GameException {
 		super();
 
 		this.conf = conf;

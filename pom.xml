@@ -43,7 +43,7 @@
 	<modules>
 		<module>game-engine</module>
 		<module>game-gui</module>
-<!-- 		<module>bastod-engine</module> -->
-<!-- 		<module>bastod-gui</module> -->
+ 		<module>bastod-engine</module> 
+ 		<module>bastod-gui</module> 
 	</modules>
 </project>

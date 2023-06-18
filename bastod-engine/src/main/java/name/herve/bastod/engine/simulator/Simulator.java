@@ -21,7 +21,7 @@ package name.herve.bastod.engine.simulator;
 import java.text.DecimalFormat;
 
 import name.herve.bastod.engine.BASToDEngine;
-import name.herve.bastod.engine.BASToDGame;
+import name.herve.bastod.engine.BASToDGameState;
 import name.herve.bastod.engine.BASToDPlayer;
 import name.herve.game.tools.Constants;
 
@@ -32,7 +32,7 @@ public class Simulator {
 	private BASToDEngine engine;
 	private int FPS;
 
-	public Simulator(long seed, BASToDGame game) {
+	public Simulator(long seed, BASToDGameState game) {
 		super();
 		engine = new BASToDEngine(seed, game, true);
 		setFPS(50);

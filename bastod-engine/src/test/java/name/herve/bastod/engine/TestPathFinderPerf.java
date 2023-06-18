@@ -21,7 +21,7 @@ package name.herve.bastod.engine;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
-import name.herve.bastod.engine.BASToDGame.Type;
+import name.herve.bastod.engine.BASToDGameState.Type;
 import name.herve.bastod.engine.pathfinder.PathFinder;
 import name.herve.bastod.engine.pathfinder.PathFinder.Algorithm;
 import name.herve.bastod.engine.units.Blocking;
@@ -40,7 +40,7 @@ public class TestPathFinderPerf {
 
 		Configuration gconf = Configuration.load(Type.TWO_PLAYERS.getFile());
 		long seed = 1864752003l;
-		BASToDGame game = BASToDGameFactory.createGame(Type.TWO_PLAYERS, gconf, seed);
+		BASToDGameState game = BASToDGameFactory.createGame(Type.TWO_PLAYERS, gconf, seed);
 
 		// --------------------------------
 		// test.comparePathFinders(game);
@@ -99,7 +99,7 @@ public class TestPathFinderPerf {
 		bean = ManagementFactory.getThreadMXBean();
 	}
 
-	public void checkPerf(BASToDGame game) {
+	public void checkPerf(BASToDGameState game) {
 		int nbi = 1;
 		PathFinder pf = initPathFinder(game, Algorithm.ASTAR, true, true);
 
@@ -113,7 +113,7 @@ public class TestPathFinderPerf {
 		displayPerf(nbi, "game");
 	}
 
-	public void comparePathFinders(BASToDGame game) {
+	public void comparePathFinders(BASToDGameState game) {
 		System.out.println("Comparing PathFinders");
 		PathFinder pfDijkstra = initPathFinder(game, Algorithm.DIJKSTRA, true, true);
 		System.out.println(" - DIJKSTRA initialized");
@@ -157,7 +157,7 @@ public class TestPathFinderPerf {
 		System.out.println("Time [" + msg + "] (" + nbIter + ") : " + dt1 + " / " + dt2 + " / " + dt3);
 	}
 
-	public PathFinder initPathFinder(BASToDGame game, Algorithm algo, boolean allowDiagonal, boolean useSmoothing) {
+	public PathFinder initPathFinder(BASToDGameState game, Algorithm algo, boolean allowDiagonal, boolean useSmoothing) {
 		// Don't use the internal PathFinder, create a new one instead
 		Board board = game.getBoard();
 		PathFinder pf = new PathFinder(algo, board.getGridDimension(), allowDiagonal);
@@ -193,7 +193,7 @@ public class TestPathFinderPerf {
 		stopTime = System.currentTimeMillis();
 	}
 
-	public void testAllPath(PathFinder pf, BASToDGame game, boolean useCache) {
+	public void testAllPath(PathFinder pf, BASToDGameState game, boolean useCache) {
 		Dimension dim = game.getBoard().getGridDimension();
 
 		int ex = dim.getW() - 1;
@@ -208,7 +208,7 @@ public class TestPathFinderPerf {
 		}
 	}
 
-	public void testGamePath(PathFinder pf, BASToDGame game, boolean useCache) {
+	public void testGamePath(PathFinder pf, BASToDGameState game, boolean useCache) {
 		Dimension dim = game.getBoard().getGridDimension();
 
 		int ex = dim.getW() - 1;
@@ -227,7 +227,7 @@ public class TestPathFinderPerf {
 		}
 	}
 
-	public void testSomeGamePath(PathFinder pf, BASToDGame game, boolean useCache) {
+	public void testSomeGamePath(PathFinder pf, BASToDGameState game, boolean useCache) {
 		Dimension dim = game.getBoard().getGridDimension();
 
 		int step = 3;

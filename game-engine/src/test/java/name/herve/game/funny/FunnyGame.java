@@ -18,9 +18,6 @@
  */
 package name.herve.game.funny;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
@@ -28,10 +25,7 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.esotericsoftware.minlog.Log;
 
